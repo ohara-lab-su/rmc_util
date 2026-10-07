@@ -10,9 +10,12 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union, Tuple, Callable, Sequence
 
-from rmc_dft.config import Config
-from rmc_dft.rmc_pot.rmc_pot_dat_free import RmcPotDatFree
-from rmc_dft.rmc_pot.rmc_pot_dat_fixed import RmcPotDatFixed
+# from rmc_dft.config import Config
+# from rmc_dft.rmc_pot.rmc_pot_dat_free import RmcPotDatFree
+# from rmc_dft.rmc_pot.rmc_pot_dat_fixed import RmcPotDatFixed
+from rmc_util.config import Config
+from rmc_util.rmc_pot_dat_free import RmcPotDatFree
+from rmc_util.rmc_pot_dat_fixed import RmcPotDatFixed
 from x_logger import XLogger
 
 

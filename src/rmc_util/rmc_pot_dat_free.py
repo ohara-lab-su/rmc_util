@@ -7,10 +7,12 @@ RMC_POT 自由形式 ``*.dat`` の読み書き機能。
 ``#002`` または ``#003`` で始まる自由形式ファイルを、セクションと
 キーワードを単位として読み書きする。物理行番号には依存しない。
 """
+
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union, Tuple, Callable, Sequence
 
-from rmc_dft.config import Config
+# from rmc_dft.config import Config
+from rmc_util.config import Config
 from x_logger import XLogger
 
 FREE_DAT_TEMPLATE: str = """{version}
@@ -1317,9 +1319,7 @@ class RmcPotDatFree:
 
         current = len(self._find_sections("COS"))
         if requested == 0:
-            self._sections = [
-                item for item in self._sections if item[0] != "COS"
-            ]
+            self._sections = [item for item in self._sections if item[0] != "COS"]
             if self._resolve_auto_write(auto_write):
                 self.write()
             return True
@@ -1350,9 +1350,7 @@ class RmcPotDatFree:
 
         current = len(self._find_sections("COORD"))
         if requested == 0:
-            self._sections = [
-                item for item in self._sections if item[0] != "COORD"
-            ]
+            self._sections = [item for item in self._sections if item[0] != "COORD"]
             if self._resolve_auto_write(auto_write):
                 self.write()
             return True
@@ -1385,9 +1383,7 @@ class RmcPotDatFree:
 
         current = len(self._find_sections("AVCOORD"))
         if requested == 0:
-            self._sections = [
-                item for item in self._sections if item[0] != "AVCOORD"
-            ]
+            self._sections = [item for item in self._sections if item[0] != "AVCOORD"]
             if self._resolve_auto_write(auto_write):
                 self.write()
             return True
@@ -1944,9 +1940,7 @@ class RmcPotDatFree:
 
         if enabled == 0:
             self._sections = [
-                (name, values)
-                for name, values in self._sections
-                if name != "CUSTMOVE"
+                (name, values) for name, values in self._sections if name != "CUSTMOVE"
             ]
         elif not self._find_sections("CUSTMOVE"):
             moved_atoms = self._config.rmc_num_atoms_per_move
@@ -2021,9 +2015,7 @@ class RmcPotDatFree:
 
         if enabled == 0 or swap_fraction == 0.0:
             self._sections = [
-                (name, values)
-                for name, values in self._sections
-                if name != "SWAP"
+                (name, values) for name, values in self._sections if name != "SWAP"
             ]
         else:
             section = self._first_section("SWAP", create=True)
@@ -2158,8 +2150,6 @@ class RmcPotDatFree:
             raise ValueError(f"{argument_name} の上限は下限より大きくしてください.")
         return minimum_value, maximum_value
 
-
-
     @staticmethod
     def _normalize_cos_distribution_type(distribution_type: str) -> str:
         """COS 制約の分布型を RMC_POT 自由形式表記へ正規化する。
@@ -2220,9 +2210,7 @@ class RmcPotDatFree:
 
             distribution_values = section.get("DISTRIB-TYPE", [])
             distribution_type = (
-                distribution_values[0].strip()
-                if distribution_values
-                else "GAUSSIAN"
+                distribution_values[0].strip() if distribution_values else "GAUSSIAN"
             )
 
             degree_values = section.get("DISTRIB-DEGREES", [])
@@ -2324,18 +2312,20 @@ class RmcPotDatFree:
         if target_index < 0:
             raise ValueError("index は 0 以上で指定してください。")
 
-        central_value = self._validate_positive_atom_type(
-            central_type, "central_type"
-        )
+        central_value = self._validate_positive_atom_type(central_type, "central_type")
 
         def _validate_neighbor(
             value: Tuple[int, Union[int, float], Union[int, float]],
             name: str,
         ) -> Tuple[int, float, float]:
             if len(value) != 3:
-                raise ValueError(f"{name} は (atom_type, minimum, maximum) で指定してください。")
+                raise ValueError(
+                    f"{name} は (atom_type, minimum, maximum) で指定してください。"
+                )
             atom_type, minimum, maximum = value
-            atom_value = self._validate_positive_atom_type(atom_type, f"{name}.atom_type")
+            atom_value = self._validate_positive_atom_type(
+                atom_type, f"{name}.atom_type"
+            )
             rmin, rmax = self._validate_distance_range(minimum, maximum, name)
             return atom_value, rmin, rmax
 
@@ -2359,7 +2349,9 @@ class RmcPotDatFree:
                 raise ValueError("angle_degrees は 0～180 度で指定してください。")
             width_value = float(distribution_width)
             if width_value <= 0.0:
-                raise ValueError("distribution_width は 0 より大きい値を指定してください。")
+                raise ValueError(
+                    "distribution_width は 0 より大きい値を指定してください。"
+                )
         else:
             if angle_degrees is not None or distribution_width is not None:
                 raise ValueError(
@@ -2396,22 +2388,14 @@ class RmcPotDatFree:
         }
 
         if predefined:
-            new_values["DISTRIB-DEGREES"] = [
-                self._fmt_sequence([angle_value])
-            ]
-            new_values["DISTRIB-WIDTH"] = [
-                self._fmt_sequence([width_value])
-            ]
+            new_values["DISTRIB-DEGREES"] = [self._fmt_sequence([angle_value])]
+            new_values["DISTRIB-WIDTH"] = [self._fmt_sequence([width_value])]
 
         if dcosth_value is not None:
-            new_values["DCOSTH"] = [
-                self._fmt_sequence([dcosth_value])
-            ]
+            new_values["DCOSTH"] = [self._fmt_sequence([dcosth_value])]
 
         sigma_key = self._sigma_keyword("SIGMA", sigma_mode)
-        new_values[sigma_key] = [
-            self._fmt_sequence([sigma_value])
-        ]
+        new_values[sigma_key] = [self._fmt_sequence([sigma_value])]
 
         section.clear()
         section.update(new_values)
@@ -2436,9 +2420,7 @@ class RmcPotDatFree:
     ) -> None:
         """指定した ``[ COS ]`` 制約を削除する。"""
         self.remove_section("COS", index)
-        self._logger.info(
-            f"[rmc_pot_dat_free] remove_angle_constraint: index={index}"
-        )
+        self._logger.info(f"[rmc_pot_dat_free] remove_angle_constraint: index={index}")
         if self._resolve_auto_write(auto_write):
             self.write()
 
@@ -2449,9 +2431,7 @@ class RmcPotDatFree:
     ) -> None:
         """すべての ``[ COS ]`` 制約を削除する。"""
         self._sections = [
-            (name, values)
-            for name, values in self._sections
-            if name != "COS"
+            (name, values) for name, values in self._sections if name != "COS"
         ]
         self._logger.info("[rmc_pot_dat_free] clear_angle_constraints")
         if self._resolve_auto_write(auto_write):
@@ -2645,9 +2625,7 @@ class RmcPotDatFree:
         for coordination_number, fraction, sigma in subconstraints:
             coordination_value = int(coordination_number)
             if coordination_value < 0:
-                raise ValueError(
-                    "coordination_number は 0 以上で指定してください。"
-                )
+                raise ValueError("coordination_number は 0 以上で指定してください。")
             fraction_value = float(fraction)
             if not 0.0 <= fraction_value <= 1.0:
                 raise ValueError("fraction は 0 以上 1 以下で指定してください。")
@@ -2678,8 +2656,7 @@ class RmcPotDatFree:
         )
         new_values[sigma_key] = [
             self._fmt_sequence([coordination_number, fraction, sigma])
-            for coordination_number, fraction, sigma
-            in validated_subconstraints
+            for coordination_number, fraction, sigma in validated_subconstraints
         ]
 
         if write_cnc_detail:
@@ -2719,9 +2696,7 @@ class RmcPotDatFree:
     ) -> None:
         """すべての通常配位数 ``[ COORD ]`` 制約を削除する。"""
         self._sections = [
-            (name, values)
-            for name, values in self._sections
-            if name != "COORD"
+            (name, values) for name, values in self._sections if name != "COORD"
         ]
         self._logger.info("[rmc_pot_dat_free] clear_coord_constraints")
         if self._resolve_auto_write(auto_write):
@@ -3040,7 +3015,6 @@ class RmcPotDatFree:
             auto_write=auto_write,
         )
 
-
     def get_bvs_constraints(self) -> List[Dict[str, Any]]:
         """自由形式 ``[ BVS ]`` の bond valence sum 制約を取得する。
 
@@ -3182,9 +3156,7 @@ class RmcPotDatFree:
                 "併用できません。"
             )
 
-        central_value = self._validate_positive_atom_type(
-            central_type, "central_type"
-        )
+        central_value = self._validate_positive_atom_type(central_type, "central_type")
         if central_charge is not None:
             central_charge_value = int(central_charge)
         else:
@@ -3214,13 +3186,17 @@ class RmcPotDatFree:
             else:
                 r0_value = float(r0)
                 if r0_value <= 0.0:
-                    raise ValueError("BVS R0 は正値、None、または -1 を指定してください。")
+                    raise ValueError(
+                        "BVS R0 は正値、None、または -1 を指定してください。"
+                    )
             if use_default_b:
                 b_numeric = -1.0
             else:
                 b_numeric = float(b_value)
                 if b_numeric <= 0.0:
-                    raise ValueError("BVS b は正値、None、または -1 を指定してください。")
+                    raise ValueError(
+                        "BVS b は正値、None、または -1 を指定してください。"
+                    )
 
             charge_value = int(charge) if charge is not None else None
             if use_default_r0 and (
@@ -3262,9 +3238,7 @@ class RmcPotDatFree:
         section.clear()
         section["CENT-TYPE_CHARGE"] = [self._fmt_sequence(central_line)]
         section["NEIGH-TYPE_RMAX_R0_B_CHARGE"] = neighbor_lines
-        section[sigma_key] = [
-            self._fmt_sequence([valence_value, sigma_value])
-        ]
+        section[sigma_key] = [self._fmt_sequence([valence_value, sigma_value])]
 
         self._logger.info(
             "[rmc_pot_dat_free] set_bvs_constraint: "
@@ -3324,7 +3298,7 @@ class RmcPotDatFree:
                 for candidate in ("ms", "m", "s"):
                     if numeric_token.startswith(candidate):
                         prefix = candidate
-                        numeric_token = numeric_token[len(candidate):]
+                        numeric_token = numeric_token[len(candidate) :]
                         break
                 try:
                     sigma_numeric = float(numeric_token)
@@ -3363,9 +3337,7 @@ class RmcPotDatFree:
 
     def set_pair_potential(
         self,
-        partials: Sequence[
-            Tuple[int, str, Union[int, float, str], str]
-        ],
+        partials: Sequence[Tuple[int, str, Union[int, float, str], str]],
         *,
         cutoff: Optional[Union[int, float]] = None,
         temperature: Union[int, float] = 298.0,
@@ -3422,9 +3394,7 @@ class RmcPotDatFree:
             if partial_value < 1:
                 raise ValueError("partial_index は 1 以上で指定してください。")
             if partial_value in seen_partials:
-                raise ValueError(
-                    f"partial_index は重複指定できません: {partial_value}"
-                )
+                raise ValueError(f"partial_index は重複指定できません: {partial_value}")
             seen_partials.add(partial_value)
 
             filename_value = str(filename).strip()
@@ -3444,7 +3414,7 @@ class RmcPotDatFree:
                 numeric_token = sigma_token.lower()
                 for candidate in ("ms", "m", "s"):
                     if numeric_token.startswith(candidate):
-                        numeric_token = numeric_token[len(candidate):]
+                        numeric_token = numeric_token[len(candidate) :]
                         break
                 try:
                     sigma_numeric = float(numeric_token)
@@ -3465,9 +3435,7 @@ class RmcPotDatFree:
             )
 
         self._sections = [
-            (name, values)
-            for name, values in self._sections
-            if name != "NBPOT"
+            (name, values) for name, values in self._sections if name != "NBPOT"
         ]
         self._sections.append(("NBPOT", section))
 
@@ -3493,9 +3461,7 @@ class RmcPotDatFree:
                 "現在の [NBPOT] は TABULATED ではありません。LJ 設定は削除しません。"
             )
         self._sections = [
-            (name, values)
-            for name, values in self._sections
-            if name != "NBPOT"
+            (name, values) for name, values in self._sections if name != "NBPOT"
         ]
         if self._resolve_auto_write(auto_write):
             self.write()
@@ -3524,12 +3490,12 @@ class RmcPotDatFree:
         for i in range(2, len(values)):
             current_dr = values[i][0] - values[i - 1][0]
             if abs(current_dr - dr) > tolerance:
-                raise ValueError("RMC_POT tabulated potential の r は等間隔が必要です。")
+                raise ValueError(
+                    "RMC_POT tabulated potential の r は等間隔が必要です。"
+                )
 
         lines = [str(len(values)), str(comment)]
-        lines.extend(
-            f"{cls._fmt_number(r)} {cls._fmt_number(u)}" for r, u in values
-        )
+        lines.extend(f"{cls._fmt_number(r)} {cls._fmt_number(u)}" for r, u in values)
         Path(filename).write_text("\n".join(lines) + "\n", encoding="utf-8")
 
     # ------------------------------------------------------------------

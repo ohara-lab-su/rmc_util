@@ -2,12 +2,14 @@
 """
 K.NAKADA, kengo.nakada@gmail.com
 """
+
 # ppcf_reader.py
 # PPCF (g_ij(r))
 from typing import Any, Dict, List, Optional, Union, Tuple, Callable, Sequence
 import numpy as np
 
-from rmc_dft.config import Config
+# from rmc_dft.config import Config
+from rmc_util.config import Config
 from x_logger import XLogger
 
 
@@ -72,9 +74,7 @@ class RmcPotPpcf:
                     data_start = True
 
         if not gij_list:
-            raise ValueError(
-                f"PPCF data could not be read from {self.filename}."
-            )
+            raise ValueError(f"PPCF data could not be read from {self.filename}.")
 
         self.r = np.array(r_list)
         self.gij = np.array(gij_list)

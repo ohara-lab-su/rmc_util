@@ -3,18 +3,23 @@
 K.NAKADA, Kengo.nakada@gmail.com
 K.KOBAYASHI
 """
+
 import os
 import sys
 from typing import Any, Dict, List, Optional, Union, Tuple, Callable, Sequence
 import subprocess
 import shutil
 
-from rmc_dft.config import Config
-from rmc_dft.rmc_pot.rmc_pot_dat import RmcPotDat
-from rmc_dft.rmc_pot.rmc_pot_log import RmcPotLog
+# from rmc_dft.config import Config
+# from rmc_dft.rmc_pot.rmc_pot_dat import RmcPotDat
+# from rmc_dft.rmc_pot.rmc_pot_log import RmcPotLog
+from rmc_util.config import Config
+from rmc_util.rmc_pot_dat import RmcPotDat
+from rmc_util.rmc_pot_log import RmcPotLog
 
-from rmc_dft.rmc_pot.util.cfg2poscar import cfg2poscar
-from rmc_dft.util import ensure_vasp5_format
+# from rmc_dft.rmc_pot.util.cfg2poscar import cfg2poscar
+# from rmc_dft.util import ensure_vasp5_format
+from rmc_util.util import ensure_vasp5_format
 
 from x_logger import XLogger
 
@@ -384,8 +389,7 @@ class RmcPot:
 
         if len(atom_types) == 0:
             self._logger.error(
-                "[rmc_pot] **Error**: atom types could not be read from %s"
-                % cfg_path
+                "[rmc_pot] **Error**: atom types could not be read from %s" % cfg_path
             )
             return False
 
@@ -596,9 +600,7 @@ class RmcPot:
 
             try:
                 neighbours = [int(value) for value in lines[cursor].split()]
-                constraint_types = [
-                    int(value) for value in lines[cursor + 1].split()
-                ]
+                constraint_types = [int(value) for value in lines[cursor + 1].split()]
             except ValueError:
                 return []
 
