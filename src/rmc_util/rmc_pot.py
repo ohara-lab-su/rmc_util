@@ -19,6 +19,7 @@ from rmc_util.rmc_pot_log import RmcPotLog
 
 # from rmc_dft.rmc_pot.util.cfg2poscar import cfg2poscar
 # from rmc_dft.util import ensure_vasp5_format
+from rmc_util.util.cfg2poscar import cfg2poscar
 from rmc_util.util import ensure_vasp5_format
 
 from x_logger import XLogger
