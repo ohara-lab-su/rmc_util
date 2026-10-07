@@ -1,8 +1,12 @@
 # rmc_util
 
+[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/ohara-lab-su/rmc_util/blob/main/CHANGELOG.md)
+[![ja](https://img.shields.io/badge/lang-ja-yellow.svg)](https://github.com/ohara-lab-su/rmc_util/blob/main/CHANGELOG.ja.md)
+
 RMC_POT の入力ファイルの作成・編集、構造データの変換、計算結果の読み取り・解析を行う Python ライブラリです。
 
-RMC_POT の計算条件（`.dat`）、原子配置（`.cfg`）、構造制約（FNC・topology など）、計算結果（`.fit`・`.hst`・`.ppcf` など）を扱うためのモジュールを提供します。
+RMC_POT の計算条件（`.dat`）、原子配置（`.cfg`）、構造制約（FNC・topology など）、計算結果（`.fit`・`.hst`・`.ppcf`
+など）を扱うためのモジュールを提供します。
 
 ## インストール
 
@@ -14,13 +18,13 @@ pip install .
 
 ## 主な機能
 
-| 分野 | モジュール | 内容 |
-| --- | --- | --- |
-| RMC_POT | `rmc_pot` | RMC_POT 関連の操作 |
-| 計算条件 | `rmc_pot_dat`、`rmc_pot_dat_fixed`、`rmc_pot_dat_free` | `.dat` の各書式 |
-| 構造制約 | `rmc_pot_dat_fnc`、`rmc_pot_dat_top`、`rmc_pot_snc` | FNC、topology、SNC 関連 |
-| 計算結果 | `rmc_pot_fit`、`rmc_pot_hst`、`rmc_pot_log`、`rmc_pot_ppcf` | フィット結果、履歴、ログ、部分二体分布関数 |
-| データ変換 | `util` | CFG、POSCAR、GROMACS topology などの変換・補助処理 |
+| 分野       | モジュール                                                  | 内容                                               |
+|------------|-------------------------------------------------------------|----------------------------------------------------|
+| RMC_POT    | `rmc_pot`                                                   | RMC_POT 関連の操作                                 |
+| 計算条件   | `rmc_pot_dat`、`rmc_pot_dat_fixed`、`rmc_pot_dat_free`      | `.dat` の各書式                                    |
+| 構造制約   | `rmc_pot_dat_fnc`、`rmc_pot_dat_top`、`rmc_pot_snc`         | FNC、topology、SNC 関連                            |
+| 計算結果   | `rmc_pot_fit`、`rmc_pot_hst`、`rmc_pot_log`、`rmc_pot_ppcf` | フィット結果、履歴、ログ、部分二体分布関数         |
+| データ変換 | `util`                                                      | CFG、POSCAR、GROMACS topology などの変換・補助処理 |
 
 モジュールの公開クラス・メソッドは [API リファレンス](docs/api/index.md) を参照してください。
 

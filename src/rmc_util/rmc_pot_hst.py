@@ -28,8 +28,11 @@ _records = [
     ...
 ]
 """
+
 from typing import Any, Dict, List, Optional, Union, Tuple, Callable, Sequence
-from rmc_dft.config import Config
+
+# from rmc_dft.config import Config
+from rmc_util.config import Config
 from x_logger import XLogger
 
 

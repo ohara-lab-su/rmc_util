@@ -14,12 +14,14 @@ RmcPotDat: RMC_POT の .dat 入力ファイル編集クラス
 - 真偽値は .true. / .false. に正規化して出力
 - 任意行の直接取得/更新用に get_line()/set_line() も提供
 """
+
 import time
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Union, Tuple, Callable, Sequence
 from pathlib import Path
 
-from rmc_dft.config import Config
+# from rmc_dft.config import Config
+from rmc_util.config import Config
 from x_logger import XLogger
 
 
