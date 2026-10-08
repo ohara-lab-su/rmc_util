@@ -3,6 +3,10 @@
 [![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/ohara-lab-su/rmc_util/blob/main/CHANGELOG.md)
 [![ja](https://img.shields.io/badge/lang-ja-yellow.svg)](https://github.com/ohara-lab-su/rmc_util/blob/main/CHANGELOG.ja.md)
 
+## v0.0.3
+
+- LICENSE の追加
+
 ## v0.0.2 - 2026-10-07
 
 - bugfix (モジュール周り)
