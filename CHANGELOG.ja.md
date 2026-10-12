@@ -3,6 +3,12 @@
 [![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/ohara-lab-su/rmc_util/blob/main/CHANGELOG.md)
 [![ja](https://img.shields.io/badge/lang-ja-yellow.svg)](https://github.com/ohara-lab-su/rmc_util/blob/main/CHANGELOG.ja.md)
 
+## v0.0.5 - 2026-10-12
+
+- README を更新し、インストール方法と現在の `rmc_util` の機能・利用方法の説明を改善。
+- RMC_POT の fixed / free format を `RmcPotDat` の共通 API から扱えることを説明に追加。
+- RMC-DFT などの上位ワークフローから RMC_POT をハンドリングする利用例を追加。
+
 ## v0.0.3
 
 - LICENSE の追加
