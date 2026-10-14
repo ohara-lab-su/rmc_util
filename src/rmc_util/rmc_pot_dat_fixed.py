@@ -272,18 +272,21 @@ class RmcPotDatFixed:
             return False
 
         self._lines.clear()
-        with p.open("r", encoding="utf-8") as f:
-            for raw in f.readlines():
-                # 行末改行を残した解析は不要 -> strip はしない、'!' で分割のみ
-                if "!" in raw:
-                    left, right = raw.split("!", 1)
-                    self._lines.append(
-                        _Line(value=left.strip(), comment=right.strip(), had_bang=True)
-                    )
-                else:
-                    self._lines.append(
-                        _Line(value=raw.strip(), comment="", had_bang=False)
-                    )
+        try:
+            raw_lines = p.read_text(encoding="utf-8").splitlines()
+        except UnicodeDecodeError:
+            raw_lines = p.read_text(encoding="cp1252").splitlines()
+
+        for raw in raw_lines:
+            if "!" in raw:
+                left, right = raw.split("!", 1)
+                self._lines.append(
+                    _Line(value=left.strip(), comment=right.strip(), had_bang=True)
+                )
+            else:
+                self._lines.append(
+                    _Line(value=raw.strip(), comment="", had_bang=False)
+                )
         return True
 
     def write(
@@ -346,6 +349,46 @@ class RmcPotDatFixed:
         else:
             do_write = auto_write
 
+        if do_write:
+            self.write()
+
+    def insert_line(
+        self,
+        line_no_1based: int,
+        value: Union[str, int, float, Sequence[Union[int, float]], bool],
+        *,
+        comment: str = "",
+        auto_write: Optional[bool] = None,
+    ) -> None:
+        """fixed format の指定物理行へ1行挿入する。"""
+        if line_no_1based < 1 or line_no_1based > len(self._lines) + 1:
+            raise IndexError(f"行番号が範囲外です: {line_no_1based}")
+        line = _Line(
+            value=self._coerce_value(value),
+            comment=comment,
+            had_bang=bool(comment),
+        )
+        self._lines.insert(line_no_1based - 1, line)
+        if auto_write is None:
+            do_write = self._auto_write
+        else:
+            do_write = auto_write
+        if do_write:
+            self.write()
+
+    def remove_line(
+        self,
+        line_no_1based: int,
+        *,
+        auto_write: Optional[bool] = None,
+    ) -> None:
+        """fixed format の指定物理行を削除する。"""
+        idx = self._index(line_no_1based)
+        del self._lines[idx]
+        if auto_write is None:
+            do_write = self._auto_write
+        else:
+            do_write = auto_write
         if do_write:
             self.write()
 
@@ -1940,6 +1983,96 @@ class RmcPotDatFixed:
     ) -> None:
         """33 行目（スレッド数）を設定する。"""
         self.set_line(33, str(int(value)), auto_write=auto_write)
+
+    def get_local_invariance(
+        self,
+        line_no_1based: int,
+    ) -> Tuple[int, List[float], int, List[float]]:
+        """_LOCAL_INV 有効時の fixed-format local invariance 行を読む。"""
+        tokens = self.get_line(line_no_1based).split()
+        count = int(tokens[0])
+        minimum = 2 * count + 3
+        if len(tokens) < minimum:
+            raise ValueError("local invariance 行の要素数が不足しています。")
+        sigma = [float(value) for value in tokens[1 : count + 1]]
+        mode = int(tokens[count + 1])
+        ratios = [float(value) for value in tokens[count + 2 :]]
+        return count, sigma, mode, ratios
+
+    def set_local_invariance(
+        self,
+        line_no_1based: int,
+        sigma_values: Sequence[Union[int, float]],
+        ratios: Sequence[Union[int, float]],
+        *,
+        mode: int = 1,
+        auto_write: Optional[bool] = None,
+    ) -> None:
+        """_LOCAL_INV 有効時の fixed-format local invariance 行を設定する。"""
+        sigma = list(sigma_values)
+        ratio = list(ratios)
+        if not sigma:
+            raise ValueError("sigma_values は1件以上必要です。")
+        if len(ratio) < len(sigma) + 1:
+            raise ValueError("ratios の要素数が不足しています。")
+        if int(mode) not in (0, 1):
+            raise ValueError("mode は0または1です。")
+        values: List[Union[int, float]] = [len(sigma)]
+        values.extend(sigma)
+        values.append(int(mode))
+        values.extend(ratio)
+        self.set_line(line_no_1based, values, auto_write=auto_write)
+
+    def get_non_periodic(
+        self,
+        line_no_1based: int,
+    ) -> Tuple[float, bool]:
+        """_NO_PERIODIC 有効時の fixed-format spherical sample 行を読む。"""
+        tokens = self.get_line(line_no_1based).split()
+        if len(tokens) < 1 or len(tokens) > 2:
+            raise ValueError("non-periodic 行の要素数が fixed-format 規格と一致しません。")
+        radius = float(tokens[0])
+        recentre = False
+        if len(tokens) == 2:
+            recentre = int(tokens[1]) != 0
+        return radius, recentre
+
+    def set_non_periodic(
+        self,
+        line_no_1based: int,
+        sample_radius: Union[int, float],
+        *,
+        recentre: bool = False,
+        auto_write: Optional[bool] = None,
+    ) -> None:
+        """_NO_PERIODIC 有効時の fixed-format spherical sample 行を設定する。"""
+        if float(sample_radius) <= 0.0:
+            raise ValueError("sample_radius は0より大きい値を指定してください。")
+        self.set_line(
+            line_no_1based,
+            [sample_radius, int(bool(recentre))],
+            auto_write=auto_write,
+        )
+
+    def get_vibrational_amplitudes(
+        self,
+        line_no_1based: int,
+    ) -> List[float]:
+        """_VIBR_AMP 有効時の fixed-format sigma 行を読む。"""
+        return [float(value) for value in self.get_line(line_no_1based).split()]
+
+    def set_vibrational_amplitudes(
+        self,
+        line_no_1based: int,
+        sigma_values: Sequence[Union[int, float]],
+        *,
+        auto_write: Optional[bool] = None,
+    ) -> None:
+        """_VIBR_AMP 有効時の fixed-format sigma 行を設定する。"""
+        values = list(sigma_values)
+        if not values:
+            raise ValueError("sigma_values は1件以上必要です。")
+        self.set_line(line_no_1based, values, auto_write=auto_write)
 
 
 @dataclass
