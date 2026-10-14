@@ -3518,6 +3518,283 @@ class RmcPotDatFree:
         """``set_qn_constraint()`` の RMC_POT ``SNC`` 名 alias。"""
         return self.set_qn_constraint(*args, **kwargs)
 
+    def get_lj_potential(self) -> Optional[Dict[str, Any]]:
+        """``[ NBPOT ]`` の Lennard-Jones 非結合ポテンシャル設定を返す。"""
+        sections = self._find_sections("NBPOT")
+        if not sections:
+            return None
+        section = sections[0]
+        nb_type = section.get("NB-TYPE", ["LJ"])[0].strip().upper()
+        if nb_type != "LJ":
+            return None
+        result: Dict[str, Any] = {}
+        for key, values in section.items():
+            result[key] = list(values)
+        return result
+
+    def set_lj_potential(
+        self,
+        ngr_types: int,
+        lj_sigma: Sequence[Union[int, float]],
+        lj_epsilon: Sequence[Union[int, float]],
+        *,
+        cutoff_vdw: Union[int, float] = 1.0,
+        cutoff_coul: Optional[Union[int, float]] = None,
+        vdw_sigma: Union[int, float, str] = 1.0,
+        coul_sigma: Optional[Union[int, float, str]] = None,
+        lj_power: int = 12,
+        scale_14_vdw: Union[int, float] = 1.0,
+        scale_14_coul: Optional[Union[int, float]] = None,
+        chi_lowlimit_ratio: Optional[Union[int, float]] = None,
+        auto_write: Optional[bool] = None,
+    ) -> None:
+        """マニュアルの ``[ NBPOT ] / NB-TYPE=LJ`` を設定する。"""
+        if int(ngr_types) < 1:
+            raise ValueError("ngr_types は1以上で指定してください。")
+        sigma_values = list(lj_sigma)
+        epsilon_values = list(lj_epsilon)
+        if len(sigma_values) != int(ngr_types):
+            raise ValueError("lj_sigma の要素数は ngr_types と一致させてください。")
+        if len(epsilon_values) != int(ngr_types):
+            raise ValueError("lj_epsilon の要素数は ngr_types と一致させてください。")
+        coul_cutoff_value = cutoff_vdw
+        if cutoff_coul is not None:
+            coul_cutoff_value = cutoff_coul
+        coul_sigma_value: Union[int, float, str] = vdw_sigma
+        if coul_sigma is not None:
+            coul_sigma_value = coul_sigma
+        scale_14_coul_value = scale_14_vdw
+        if scale_14_coul is not None:
+            scale_14_coul_value = scale_14_coul
+        section: Dict[str, List[str]] = {
+            "NB-TYPE": ["LJ"],
+            "NGR-TYPES": [str(int(ngr_types))],
+            "CUTOFF-VDW_COUL": [
+                self._fmt_number(cutoff_vdw) + " " + self._fmt_number(coul_cutoff_value)
+            ],
+            "LJ-SIG-GMEAN": [self._fmt_sequence(sigma_values)],
+            "LJ-EPS-GMEAN": [self._fmt_sequence(epsilon_values)],
+            "VDW-SIGMA": [str(vdw_sigma)],
+            "COUL-SIGMA": [str(coul_sigma_value)],
+            "LJ-POW": [str(int(lj_power))],
+            "1-4-SCALE-VDW_COUL": [
+                self._fmt_number(scale_14_vdw) + " " + self._fmt_number(scale_14_coul_value)
+            ],
+        }
+        if chi_lowlimit_ratio is None:
+            section["CHI-LOWLIMIT-RATIO"] = ["NONE"]
+        else:
+            section["CHI-LOWLIMIT-RATIO"] = [self._fmt_number(chi_lowlimit_ratio)]
+        self._sections = [(name, values) for name, values in self._sections if name != "NBPOT"]
+        self._sections.append(("NBPOT", section))
+        if self._resolve_auto_write(auto_write):
+            self.write()
+
+    def get_custom_move(self) -> Optional[Dict[str, Any]]:
+        """``[ CUSTMOVE ]`` の分子 move 設定を返す。"""
+        sections = self._find_sections("CUSTMOVE")
+        if not sections:
+            return None
+        section = sections[0]
+        moved = int(float(section.get("NMOVED-ATOMS", ["0"])[0]))
+        lines = list(section.get("CUSTOM-LINE", []))
+        return {"nmoved_atoms": moved, "custom_lines": lines}
+
+    def set_custom_move(
+        self,
+        nmoved_atoms: int,
+        custom_lines: Sequence[Union[str, int, float]],
+        *,
+        auto_write: Optional[bool] = None,
+    ) -> None:
+        """マニュアルの ``[ CUSTMOVE ]`` を設定する。"""
+        if int(nmoved_atoms) < 1:
+            raise ValueError("nmoved_atoms は1以上で指定してください。")
+        values = [str(value) for value in custom_lines]
+        if not values:
+            raise ValueError("custom_lines は1件以上必要です。")
+        section = {
+            "NMOVED-ATOMS": [str(int(nmoved_atoms))],
+            "CUSTOM-LINE": values,
+        }
+        self._sections = [(name, item) for name, item in self._sections if name != "CUSTMOVE"]
+        self._sections.append(("CUSTMOVE", section))
+        if self._resolve_auto_write(auto_write):
+            self.write()
+
+    def get_local_invariance(self) -> Optional[Dict[str, Any]]:
+        """``[ LOCINV ]`` をマニュアルの区間表現のまま返す。"""
+        sections = self._find_sections("LOCINV")
+        if not sections:
+            return None
+        section = sections[0]
+        result: Dict[str, Any] = {
+            "mode": section.get("LOC-MODE", ["DISTANCE-BASED"])[0],
+            "r_spacing": None,
+            "intervals": [],
+            "end": None,
+        }
+        if "LOC-R-SPACING" in section:
+            result["r_spacing"] = float(section["LOC-R-SPACING"][0])
+        for key in ("LOC-INT-FROM_SIGMA", "LOC-INT-FROM_SIGMA-MASTER", "LOC-INT-FROM_SIGMA-SCALABLE"):
+            for value in section.get(key, []):
+                result["intervals"].append((key, value))
+        if "LOC-INT-TO" in section:
+            result["end"] = float(section["LOC-INT-TO"][0])
+        return result
+
+    def set_local_invariance(
+        self,
+        mode: str,
+        intervals: Sequence[Tuple[Union[int, float], Union[int, float, str], str]],
+        *,
+        r_spacing: Optional[Union[int, float]] = None,
+        end: Optional[Union[int, float]] = None,
+        auto_write: Optional[bool] = None,
+    ) -> None:
+        """マニュアルの ``[ LOCINV ]`` を設定する。
+
+        intervals は ``(開始値, sigma, sigma_mode)``。sigma_mode は
+        ``normal`` / ``master`` / ``scalable``。
+        """
+        mode_value = str(mode).strip().upper()
+        if mode_value not in {"BIN-BASED", "DISTANCE-BASED"}:
+            raise ValueError("mode は BIN-BASED または DISTANCE-BASED です。")
+        if not intervals:
+            raise ValueError("intervals は1件以上必要です。")
+        if mode_value == "BIN-BASED" and len(intervals) != 1:
+            raise ValueError("BIN-BASED の LOCINV interval は1件です。")
+        section: Dict[str, List[str]] = {"LOC-MODE": [mode_value]}
+        if r_spacing is not None:
+            section["LOC-R-SPACING"] = [self._fmt_number(r_spacing)]
+        for start, sigma, sigma_mode in intervals:
+            normalized = self._normalize_sigma_mode(sigma_mode)
+            key = "LOC-INT-FROM_SIGMA"
+            if normalized == "master":
+                key = "LOC-INT-FROM_SIGMA-MASTER"
+            if normalized == "scalable":
+                key = "LOC-INT-FROM_SIGMA-SCALABLE"
+            section.setdefault(key, []).append(self._fmt_number(start) + " " + str(sigma))
+        if end is not None:
+            section["LOC-INT-TO"] = [self._fmt_number(end)]
+        self._sections = [(name, item) for name, item in self._sections if name != "LOCINV"]
+        self._sections.append(("LOCINV", section))
+        if self._resolve_auto_write(auto_write):
+            self.write()
+
+    def get_non_periodic(self) -> Optional[Tuple[float, bool]]:
+        """``[ NOPER ]`` の sample radius と recentre flag を返す。"""
+        sections = self._find_sections("NOPER")
+        if not sections:
+            return None
+        section = sections[0]
+        radius = float(section["SAMPLE-RADIUS"][0])
+        recentre = self._bool_int(section.get("RECENTRE-SPHERE", ["0"])[0]) == "1"
+        return radius, recentre
+
+    def set_non_periodic(
+        self,
+        sample_radius: Union[int, float],
+        *,
+        recentre: bool = False,
+        auto_write: Optional[bool] = None,
+    ) -> None:
+        """マニュアルの ``[ NOPER ]`` を設定する。"""
+        if float(sample_radius) <= 0.0:
+            raise ValueError("sample_radius は0より大きい値を指定してください。")
+        section = {
+            "SAMPLE-RADIUS": [self._fmt_number(sample_radius)],
+            "RECENTRE-SPHERE": [self._bool_int(recentre)],
+        }
+        self._sections = [(name, item) for name, item in self._sections if name != "NOPER"]
+        self._sections.append(("NOPER", section))
+        if self._resolve_auto_write(auto_write):
+            self.write()
+
+    def get_vibrational_amplitudes(self) -> List[float]:
+        """``[ VIBRAMP ] / GAUSSIAN-SIGMA`` を返す。"""
+        sections = self._find_sections("VIBRAMP")
+        if not sections:
+            return []
+        values = sections[0].get("GAUSSIAN-SIGMA", [])
+        if not values:
+            return []
+        return [float(value) for value in values[0].split()]
+
+    def set_vibrational_amplitudes(
+        self,
+        sigma_values: Sequence[Union[int, float]],
+        *,
+        auto_write: Optional[bool] = None,
+    ) -> None:
+        """マニュアルの ``[ VIBRAMP ]`` を設定する。"""
+        values = list(sigma_values)
+        if not values:
+            raise ValueError("sigma_values は1件以上必要です。")
+        section = {"GAUSSIAN-SIGMA": [self._fmt_sequence(values)]}
+        self._sections = [(name, item) for name, item in self._sections if name != "VIBRAMP"]
+        self._sections.append(("VIBRAMP", section))
+        if self._resolve_auto_write(auto_write):
+            self.write()
+
+    def get_common_neighbor_constraints(self) -> List[Dict[str, Any]]:
+        """advanced geometric constraint の ``[ CONC ]`` を返す。"""
+        result: List[Dict[str, Any]] = []
+        for section in self._find_sections("CONC"):
+            item: Dict[str, Any] = {}
+            for key, values in section.items():
+                item[key] = list(values)
+            result.append(item)
+        return result
+
+    def set_common_neighbor_constraint(
+        self,
+        index: int,
+        primary_type1: int,
+        primary_type2: int,
+        primary_minimum: Union[int, float],
+        primary_maximum: Union[int, float],
+        secondary: Sequence[Tuple[int, Union[int, float], Union[int, float], Union[int, float], Union[int, float]]],
+        coordination_number: int,
+        fraction: Union[int, float],
+        sigma: Union[int, float, str],
+        *,
+        sigma_mode: str = "normal",
+        auto_write: Optional[bool] = None,
+    ) -> None:
+        """マニュアルの advanced ``[ CONC ]`` を1件設定する。"""
+        if index < 0:
+            raise ValueError("index は0以上で指定してください。")
+        if not secondary:
+            raise ValueError("secondary は1件以上必要です。")
+        mode = self._normalize_sigma_mode(sigma_mode)
+        sigma_key = "COORDNUM_FRACT_SIGMA"
+        if mode == "master":
+            sigma_key = "COORDNUM_FRACT_SIGMA-MASTER"
+        if mode == "scalable":
+            sigma_key = "COORDNUM_FRACT_SIGMA-SCALABLE"
+        section: Dict[str, List[str]] = {
+            "PTYPE1_PTYPE2_FROM_TO": [
+                str(int(primary_type1)) + " " + str(int(primary_type2)) + " "
+                + self._fmt_number(primary_minimum) + " " + self._fmt_number(primary_maximum)
+            ],
+            "STYPE_FROM1_TO1_FROM2_TO2": [],
+            sigma_key: [str(int(coordination_number)) + " " + self._fmt_number(fraction) + " " + str(sigma)],
+        }
+        for atom_type, from1, to1, from2, to2 in secondary:
+            section["STYPE_FROM1_TO1_FROM2_TO2"].append(
+                str(int(atom_type)) + " " + self._fmt_number(from1) + " " + self._fmt_number(to1)
+                + " " + self._fmt_number(from2) + " " + self._fmt_number(to2)
+            )
+        sections = self._find_sections("CONC")
+        while len(sections) <= index:
+            self.add_section("CONC")
+            sections = self._find_sections("CONC")
+        sections[index].clear()
+        sections[index].update(section)
+        if self._resolve_auto_write(auto_write):
+            self.write()
+
     def get_ann_potential_settings(self) -> Optional[Dict[str, Any]]:
         """``get_aenet_settings()`` の ANN 名 alias。"""
         return self.get_aenet_settings()
