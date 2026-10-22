@@ -3,11 +3,17 @@
 [![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/ohara-lab-su/rmc_util/blob/main/README.md)
 [![ja](https://img.shields.io/badge/lang-ja-yellow.svg)](https://github.com/ohara-lab-su/rmc_util/blob/main/README.ja.md)
 
-`rmc_util` is a Python library for handling RMC_POT calculations from Python.
+`rmc_util` is a Python library for working with `RMC_POT` calculations.
+It was originally developed as a subpackage of `RMC_DFT` and was later separated into an independent package.
 
-The library provides a programmatic interface for preparing and editing RMC_POT input files, defining structural constraints, working with FNC and topology data, running and validating RMC_POT calculations, collecting calculation results, and reading output files such as `.log`, `.hst`, `.fit`, and `.ppcf`.
+The library provides a programmatic interface for preparing and editing RMC_POT input files, defining structural
+constraints, working with FNC and topology data, running and validating RMC_POT calculations, collecting calculation
+results, and reading output files such as `.log`, `.hst`, `.fit`, and `.ppcf`.
 
-It can be used on its own for preparing, running, and analyzing RMC_POT calculations. It is particularly useful as a building block in larger automated workflows, such as RMC-DFT workflows, where RMC parameters need to be changed programmatically, RMC calculations need to be executed repeatedly, and the resulting structures and convergence information need to be passed to subsequent calculations.
+It can be used on its own for preparing, running, and analyzing RMC_POT calculations. It is particularly useful as a
+building block in larger automated workflows, such as RMC-DFT workflows, where RMC parameters need to be changed
+programmatically, RMC calculations need to be executed repeatedly, and the resulting structures and convergence
+information need to be passed to subsequent calculations.
 
 ## Installation
 
@@ -33,15 +39,20 @@ pip install .
 
 ### RMC_POT input and execution
 
-`RmcPotDat` is the main interface for RMC_POT `.dat` files. Calculation parameters such as number density, cutoffs, maximum atomic moves, radial spacing, experimental data range, and calculation/save time can be configured from Python.
+`RmcPotDat` is the main interface for RMC_POT `.dat` files. Calculation parameters such as number density, cutoffs,
+maximum atomic moves, radial spacing, experimental data range, and calculation/save time can be configured from Python.
 
-Parameters common to the fixed and free formats are handled through the same API. With `prefer_existing=True`, an existing `.dat` file is detected and loaded in its existing format; the format can be selected when creating a new file. Free-format-specific structural constraints can also be configured through `RmcPotDat`.
+Parameters common to the fixed and free formats are handled through the same API. With `prefer_existing=True`, an
+existing `.dat` file is detected and loaded in its existing format; the format can be selected when creating a new file.
+Free-format-specific structural constraints can also be configured through `RmcPotDat`.
 
-`RmcPot` handles the RMC_POT calculation itself. Its current workflow includes preprocessing, input validation, RMC_POT execution, result collection/postprocessing, and checks for consistency between FNC constraints and interatomic cutoffs.
+`RmcPot` handles the RMC_POT calculation itself. Its current workflow includes preprocessing, input validation, RMC_POT
+execution, result collection/postprocessing, and checks for consistency between FNC constraints and interatomic cutoffs.
 
 ### Free-format constraints
 
-The free-format implementation supports programmatic construction and editing of constraints and potential-related sections, including:
+The free-format implementation supports programmatic construction and editing of constraints and potential-related
+sections, including:
 
 - angular constraints
 - coordination constraints
@@ -50,21 +61,26 @@ The free-format implementation supports programmatic construction and editing of
 - pair potentials
 - AENET potential settings
 
-This makes it possible to construct or modify RMC conditions directly from a Python workflow instead of manually rewriting `.dat` files for each run.
+This makes it possible to construct or modify RMC conditions directly from a Python workflow instead of manually
+rewriting `.dat` files for each run.
 
 ### FNC and topology
 
-`RmcPotDatFnc` provides operations for creating, loading, editing, validating, and writing FNC data, including distance ranges and atom-neighbour definitions.
+`RmcPotDatFnc` provides operations for creating, loading, editing, validating, and writing FNC data, including distance
+ranges and atom-neighbour definitions.
 
-`RmcPotDatTop` provides a programmatic interface to RMC_POT topology files, including molecule definitions, atoms, bonds, angles, dihedrals, exclusions, virtual sites, and topology validation.
+`RmcPotDatTop` provides a programmatic interface to RMC_POT topology files, including molecule definitions, atoms,
+bonds, angles, dihedrals, exclusions, virtual sites, and topology validation.
 
 ### Results and analysis
 
 The output readers can be used independently of the RMC execution layer.
 
-- `RmcPotLog` reads RMC_POT logs and exposes generated/tried/accepted moves, chi-square values, Rw values, and calculation blocks/loops. It also provides result collection and backup operations.
+- `RmcPotLog` reads RMC_POT logs and exposes generated/tried/accepted moves, chi-square values, Rw values, and
+  calculation blocks/loops. It also provides result collection and backup operations.
 - `RmcPotHst` reads `.hst` histories, exposes acceptance and chi-square histories, and provides convergence detection.
-- `RmcPotFit` reads `.fit` files and provides calculated and experimental F(Q), background data, and corresponding S(Q) values.
+- `RmcPotFit` reads `.fit` files and provides calculated and experimental F (Q), background data, and corresponding S
+  (Q) values.
 - `RmcPotPpcf` reads `.ppcf` files and provides partial pair correlation functions `g_ij(r)`.
 
 ## Basic example: preparing an RMC_POT `.dat` file
@@ -93,7 +109,8 @@ rmc_dat.set_r_spacing(0.025, auto_write=False)
 rmc_dat.write()
 ```
 
-If `sample.dat` already exists and `prefer_existing=True`, its fixed/free format is detected and the existing file is used.
+If `sample.dat` already exists and `prefer_existing=True`, its fixed/free format is detected and the existing file is
+used.
 
 ## Example: free-format coordination and Qn constraints
 
@@ -144,7 +161,8 @@ The same interface is suitable for larger systems with several atom types and mu
 
 ## Example: using rmc_util in an automated RMC workflow
 
-A typical higher-level workflow can keep the RMC settings and RMC execution objects alive and use the output readers to decide what happens next.
+A typical higher-level workflow can keep the RMC settings and RMC execution objects alive and use the output readers to
+decide what happens next.
 
 ```python
 from rmc_util import RmcPot, RmcPotDat, RmcPotHst, RmcPotLog
@@ -187,24 +205,27 @@ loop = hst.detect_convergence(
 )
 ```
 
-This type of use is useful when RMC_POT is one stage of a larger calculation rather than a standalone calculation. For example, an RMC-DFT workflow can modify RMC conditions, execute RMC_POT, inspect convergence, archive the results, and then pass the resulting structure to a DFT stage.
+This type of use is useful when RMC_POT is one stage of a larger calculation rather than a standalone calculation. For
+example, an RMC-DFT workflow can modify RMC conditions, execute RMC_POT, inspect convergence, archive the results, and
+then pass the resulting structure to a DFT stage.
 
-`rmc_util` itself does not provide the DFT calculation layer; it provides the RMC_POT handling required by such workflows.
+`rmc_util` itself does not provide the DFT calculation layer; it provides the RMC_POT handling required by such
+workflows.
 
 ## Main modules
 
-| Area | Module | Purpose |
-|---|---|---|
-| RMC execution | `rmc_pot` | Preprocess, run, validate, and postprocess RMC_POT calculations |
-| DAT interface | `rmc_pot_dat` | Unified API that hides fixed/free-format differences for common RMC parameters |
-| Fixed-format DAT | `rmc_pot_dat_fixed` | Read and edit fixed-format RMC_POT parameters |
-| Free-format DAT | `rmc_pot_dat_free` | Read/edit free-format parameters, constraints, and potential settings |
-| FNC | `rmc_pot_dat_fnc` | Create, edit, and validate FNC files |
-| Topology | `rmc_pot_dat_top` | Create, edit, and validate topology/ITP-style data |
-| RMC log | `rmc_pot_log` | Parse RMC logs and collect/backup results |
-| History | `rmc_pot_hst` | Read `.hst` histories and evaluate convergence |
-| Fit results | `rmc_pot_fit` | Read `.fit` data and obtain F(Q)/S(Q) |
-| Pair correlations | `rmc_pot_ppcf` | Read partial pair correlation functions |
+| Area              | Module              | Purpose                                                                        |
+|-------------------|---------------------|--------------------------------------------------------------------------------|
+| RMC execution     | `rmc_pot`           | Preprocess, run, validate, and postprocess RMC_POT calculations                |
+| DAT interface     | `rmc_pot_dat`       | Unified API that hides fixed/free-format differences for common RMC parameters |
+| Fixed-format DAT  | `rmc_pot_dat_fixed` | Read and edit fixed-format RMC_POT parameters                                  |
+| Free-format DAT   | `rmc_pot_dat_free`  | Read/edit free-format parameters, constraints, and potential settings          |
+| FNC               | `rmc_pot_dat_fnc`   | Create, edit, and validate FNC files                                           |
+| Topology          | `rmc_pot_dat_top`   | Create, edit, and validate topology/ITP-style data                             |
+| RMC log           | `rmc_pot_log`       | Parse RMC logs and collect/backup results                                      |
+| History           | `rmc_pot_hst`       | Read `.hst` histories and evaluate convergence                                 |
+| Fit results       | `rmc_pot_fit`       | Read `.fit` data and obtain F(Q)/S(Q)                                          |
+| Pair correlations | `rmc_pot_ppcf`      | Read partial pair correlation functions                                        |
 
 Structure conversion utilities such as CFG/POSCAR conversion are also provided under `rmc_util.util`.
 

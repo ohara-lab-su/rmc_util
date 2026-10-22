@@ -4,8 +4,10 @@
 [![ja](https://img.shields.io/badge/lang-ja-yellow.svg)](https://github.com/ohara-lab-su/rmc_util/blob/main/README.ja.md)
 
 `rmc_util` は、RMC_POT の計算を Python から扱うためのライブラリです。
+もともと `RMC_DFT` 内のサブパッケージとして作っていたものを独立させました。
 
-RMC_POT の入力条件の作成・編集、各種構造制約、FNC・topology の操作、RMC_POT の実行・入力検証、計算結果の退避、および `.log`・
+RMC_POT の入力条件の作成・編集、各種構造制約、
+FNC・topology の操作、RMC_POT の実行・入力検証、計算結果の退避、および `.log`・
 `.hst`・`.fit`・`.ppcf` などの出力解析を Python から行うための機能を提供します。
 
 単独でも RMC_POT の計算準備・実行・解析に利用できますが、特に RMC-DFT のような上位ワークフローの構成要素として利用すると、RMC
@@ -35,11 +37,15 @@ pip install .
 
 ### RMC_POT の入力条件と実行
 
-`RmcPotDat` は RMC_POT の `.dat` を扱う中心的なインターフェースです。number density、cutoff、最大原子移動量、r spacing、実験データ範囲、計算時間・保存間隔などの計算条件を Python から設定できます。
+`RmcPotDat` は RMC_POT の `.dat` を扱う中心的なインターフェースです。number density、cutoff、最大原子移動量、r
+spacing、実験データ範囲、計算時間・保存間隔などの計算条件を Python から設定できます。
 
-fixed format と free format に共通する計算条件は同じ API で扱えます。既存 `.dat` を `prefer_existing=True` で使用する場合は形式を判定して読み込み、新規作成時には形式を指定できます。free format 固有の構造制約なども `RmcPotDat` から設定できます。
+fixed format と free format に共通する計算条件は同じ API で扱えます。既存 `.dat` を `prefer_existing=True`
+で使用する場合は形式を判定して読み込み、新規作成時には形式を指定できます。free format 固有の構造制約なども `RmcPotDat`
+から設定できます。
 
-`RmcPot` は RMC_POT の実行を扱います。現在の実装では、preprocess、入力検証、RMC_POT の実行、計算後の結果回収・退避に加え、FNC の距離制約と原子種間 cutoff の整合性確認などを行えます。
+`RmcPot` は RMC_POT の実行を扱います。現在の実装では、preprocess、入力検証、RMC_POT の実行、計算後の結果回収・退避に加え、FNC
+の距離制約と原子種間 cutoff の整合性確認などを行えます。
 
 ### 自由形式の構造制約
 
