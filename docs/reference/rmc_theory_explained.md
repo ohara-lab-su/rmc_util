@@ -20,15 +20,14 @@ RMC では、原子配置から計算した散乱関数と実験データの差�
 \Delta\chi^2 = \chi^2_{\mathrm{new}}-\chi^2_{\mathrm{old}}
 ```
 
-を求めます。標準的な RMC の Metropolis 型受理則の一例は、
+を求めます。RMC_POT のユーザーガイドに示される受理則は、
 
 ```{math}
-P_{\mathrm{accept}} = \min\left[1,\exp\left(-\frac{\Delta\chi^2}{2}\right)\right]
+P_{\mathrm{accept}} = \min\left[1,\exp(-\Delta\chi^2)\right]
 ```
 
 です。この式では、一致度が改善する変更（$\Delta\chi^2\leq0$）は受理され、悪化する変更も一定の確率で受理されます。
 
-なお、上式は一般的な説明であり、RMC_POT の特定バージョンにおける実装式をここで断定するものではありません。RMC_POT 固有の定義については、公式ユーザーガイドの受理確率に関する式と入力パラメータの説明を確認してください。
 
 ## 標準偏差の役割
 

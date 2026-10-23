@@ -1,7 +1,7 @@
 # RMC POTのcfgファイルの説明
 
 
-この文書は RMC の cfg 形式ファイル（RMCProfile/RMC_POT 等で使われる）について、例と合わせて分かりやすく説明したものです。必要な箇所だけを編集・抜粋して利用してください。
+この文書は RMC_POT の Version 3 形式の cfg ファイルについて、提示された例を使って説明します。
 
 ![](figs/aaa.vasp.png)
 
@@ -144,11 +144,12 @@ comment sio2
     つまり、セルサイズに応じて、原子座標をスケールさせて記入しています。
     例えば、セルの1辺がL=15.27Åの場合、原子座標が(0.5,0.5,0.5)であれば、実際の座標は(3.8175Å,3.8175Å,3.8175Å)となります。
     ```{math}
-    (cfg形式の座標)*(L/2) + 1 = 実際の座標
-    ( (実際の座標) mod L )*2/L - 1 = cfg形式の座標
+    x_{\mathrm{center}} = x_{\mathrm{cfg}}\frac{L}{2}\\
+    x_{\mathrm{corner}} = (x_{\mathrm{center}}+L/2)\bmod L\\
+    x_{\mathrm{cfg}} = 2\frac{x_{\mathrm{center}}}{L}
     ```
     となります。
-    ここでいう実際の座標は、xyz形式や、vaspのcartesian形式の座標の値です。
+    ここで $x_{\mathrm{center}}$ はセル中心を原点とした Cartesian 座標、$x_{\mathrm{corner}}$ はセル端を原点とした座標です。VASP の Cartesian 座標に変換する際は、POSCAR の格子ベクトルと原点の取り方を確認してください。
 
            
 ---
@@ -158,6 +159,6 @@ comment sio2
 - 先頭行（Version 行）を削除・変更しない。
 - 「types」「atomic sites」「molecules of type」の数や並び順を cfg を読み込むソフトの仕様に合わせる。
 - 座標の順序は必ず「種1 の全座標 → 種2 の全座標 …」の順にする（多くの実装がこの順序を想定）。
-- セル情報（Defining vectors）は L/2 を期待する場合と L を期待する場合があるので、出力ソフト／入力ソフトのドキュメントで単位と意味を確認する。
+- この例の Defining vectors は立方体セルの半辺長 $L/2$ を表す。別形式のファイルに適用する前に、その形式の座標規約を確認する。
 
 ---
