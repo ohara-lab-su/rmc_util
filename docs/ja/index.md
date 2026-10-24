@@ -1,8 +1,8 @@
 # rmc_util
 
 
-[![en](https://img.shields.io/badge/lang-en-red.svg)](/rmc_util/en/index.html)
-[![ja](https://img.shields.io/badge/lang-ja-yellow.svg)](/rmc_util/ja/index.html)
+[![en](https://img.shields.io/badge/lang-en-red.svg)](../en/index.html)
+[![ja](https://img.shields.io/badge/lang-ja-yellow.svg)](../ja/index.html)
 RMC_POT の入力・出力データを Python で扱うためのライブラリ。
 
 ```{toctree}
