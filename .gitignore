@@ -10,3 +10,4 @@ work/
 *.egg-info/
 *.pyc
 *.py[cod]
+*update*.sh

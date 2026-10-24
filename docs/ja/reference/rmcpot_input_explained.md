@@ -2,7 +2,7 @@
 
 # cfgファイル
 原子配置を指定するためのcfgファイルについては、以下のドキュメントで詳しく説明しています。
-(https://github.com/shimane-dev/rmc_dft/docs/tutorials/rmcpot_cfg_explained.md)
+(rmcpot_cfg_explained.md)
 
 # sqファイル
 ```{code}

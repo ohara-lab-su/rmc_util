@@ -1,10 +1,13 @@
 # rmc_util
 
-RMC_POT の入力・出力データを Python で扱うためのライブラリ。
+
+[![en](https://img.shields.io/badge/lang-en-red.svg)](/rmc_util/en/index.html)
+[![ja](https://img.shields.io/badge/lang-ja-yellow.svg)](/rmc_util/ja/index.html)
+Python tools for handling RMC_POT input and output data.
 
 ```{toctree}
 :maxdepth: 2
-:caption: 利用ガイド
+:caption: User guide
 
 guide/overview
 guide/input
@@ -14,7 +17,7 @@ guide/output
 
 ```{toctree}
 :maxdepth: 2
-:caption: 詳細資料
+:caption: Reference
 
 reference/index
 api/index
