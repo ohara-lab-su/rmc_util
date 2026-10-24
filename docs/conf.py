@@ -11,4 +11,4 @@ extensions = ["myst_parser", "sphinx.ext.autodoc", "sphinx.ext.autosummary", "sp
 autosummary_generate = True
 myst_enable_extensions = ["colon_fence", "dollarmath", "amsmath"]
 html_theme = "sphinx_rtd_theme"
-exclude_patterns = ["_build", "_generated"]
+exclude_patterns = ["_build"]
