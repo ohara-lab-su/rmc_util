@@ -1,8 +1,10 @@
 # rmc_util
 
-
 [![en](https://img.shields.io/badge/lang-en-red.svg)](https://ohara-lab-su.github.io/rmc_util/en/index.html)
 [![ja](https://img.shields.io/badge/lang-ja-yellow.svg)](https://ohara-lab-su.github.io/rmc_util/ja/index.html)
+
+[GitHub repository](https://github.com/ohara-lab-su/rmc_util/) · [Project documentation](https://ohara-lab-su.github.io/)
+
 Python tools for handling RMC_POT input and output data.
 
 ```{toctree}
