@@ -3,6 +3,11 @@
 [![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/ohara-lab-su/rmc_util/blob/main/CHANGELOG.md)
 [![ja](https://img.shields.io/badge/lang-ja-yellow.svg)](https://github.com/ohara-lab-su/rmc_util/blob/main/CHANGELOG.ja.md)
 
+## v0.1.4
+
+- rmc_util-install 対応
+  サンプルスクリプトをカレントディレクトリにインストールする
+
 ## v0.1.0
 
 ### DAT free/fixed 対応拡張
