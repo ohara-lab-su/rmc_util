@@ -20,3 +20,5 @@ from rmc_util.rmc_pot_log import RmcPotLog
 from rmc_util.rmc_pot_fit import RmcPotFit
 from rmc_util.rmc_pot_hst import RmcPotHst
 from rmc_util.rmc_pot_ppcf import RmcPotPpcf
+
+from rmc_util.runners.run_rmc import run_rmc
