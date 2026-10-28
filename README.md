@@ -39,9 +39,9 @@ To install a local development checkout, run from the repository root:
 pip install .
 ```
 
-## Installing editable example scripts
+## Installing editable parameter scripts
 
-After installing `rmc-util`, copy the bundled example scripts into the current working directory:
+After installing `rmc-util`, copy the bundled editable parameter script (`rmc_init.py`) into the current working directory:
 
 ```bash
 rmc_util install
@@ -54,6 +54,19 @@ rmc_util install --force
 ```
 
 The copied scripts are intended to be edited for individual calculations. Updating the Python package does not automatically modify copies already placed in a working directory.
+
+## Execution architecture (v0.1.6)
+
+The RMC execution workflow is separated into **package-managed execution code** and **editable, calculation-specific parameters**. Previously, both the execution script (`rmc.py`) and its configuration (`rmc_init.py`) were copied from `examples/` into each calculation directory. This duplicated code that rarely needed editing and could diverge from later package versions.
+
+- `src/rmc_util/runners/run_rmc.py` is the package-side RMC runner. Its execution logic is maintained and updated with `rmc-util`, rather than copied to every working directory.
+- `scripts/rmc_init.py` is the editable parameter/initialization script distributed by the package. It is copied into the working directory using `rmc_util install` and calls the packaged runner.
+- `src/rmc_util/install.py` implements that copy command; it does not execute RMC_POT.
+- The log-directory naming helper (`find_next_log_index.py`, including `next_log_dir_name()`) supports the execution/backup workflow. The next log name is found by scanning existing directories, with numbering starting at **0**; it does not require a central counter. Calculation parameters and scripts are preserved alongside execution results for reproducibility.
+
+The intended layout separates library code (`src/rmc_util/`), reusable runner code (`src/rmc_util/runners/`), and distributed editable files (`scripts/` at repository root). **Only `rmc_init.py` is distributed by `install`; the runner `rmc.py` is not copied.** Changes to runner code are delivered through package updates, while each calculation retains its explicitly edited parameters. Existing copies of `rmc_init.py` are never changed automatically.
+
+The same separation is used in `vasp_util`. Consequently, `rmc_dft` can orchestrate the two packages without maintaining its own copies of their execution scripts; the packages remain usable independently.
 
 ## What rmc_util handles
 
@@ -274,3 +287,18 @@ Source code and development history are available on [GitHub](https://github.com
 ## Reference
 
 Orsolya Gereben, *RMC_POT user guide for version 2023.1* (2023).
+
+
+### Running RMC
+
+Copy `rmc.py` and `rmc_init.py` with `rmc_util install`, edit the parameters in `rmc_init.py`, then run from the same working directory:
+
+```bash
+rmc_util install
+python rmc.py
+```
+
+The launcher executes `rmc_util.runners.run_rmc` without copying the implementation. The runner must support execution as `__main__`.
+
+
+`run_rmc()` requires `config` and receives the execution objects from its caller. `scripts/rmc.py` constructs `Config("config.yml")`, `RmcPotLog`, and `RmcPotDat`, applies parameters through `rmc_init.py`, and calls `run_rmc(config=..., rmc_log=..., rmc_dat=..., rmc_pot=None, auto_converge=False, postprocess=True, msg=None, logger=...)`. The runner does not retain the legacy standalone `if __name__ == "__main__":` entry point.

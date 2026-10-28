@@ -37,9 +37,9 @@ from rmc_util import RmcPot, RmcPotDat, RmcPotHst
 pip install .
 ```
 
-## 編集用サンプルスクリプトの配置
+## 編集用パラメータースクリプトの配置
 
-`rmc-util` をインストールした後、同梱されたサンプルスクリプトをカレントディレクトリにコピーできます。
+`rmc-util` をインストールした後、同梱された起動スクリプト（`rmc.py`）と編集用パラメータースクリプト（`rmc_init.py`）をカレントディレクトリにコピーできます。
 
 ```bash
 rmc_util install
@@ -52,6 +52,20 @@ rmc_util install --force
 ```
 
 コピーしたスクリプトは、計算条件などを利用者が編集して使用するためのものです。パッケージを更新しても、作業ディレクトリに配置済みのファイルは自動更新されません。
+
+## 実行処理と計算条件の分離（v0.1.6）
+
+RMC の実行系を、**パッケージで管理する実行処理**と、**計算ごとに編集するパラメーター**に分離します。従来は `examples/` から `rmc.py` と `rmc_init.py` を計算ディレクトリにコピーしていましたが、ほとんど変更しない実行処理まで複製されるため、パッケージの更新後に各計算ディレクトリのコードとの齟齬が生じる構造でした。
+
+- `src/rmc_util/runners/run_rmc.py`：パッケージ側で保守する RMC 実行処理。各作業ディレクトリにはコピーしません。
+- `scripts/rmc.py`：`rmc_util.runners.run_rmc` を起動するだけのスクリプト。`python rmc.py` で実行できます。
+- `scripts/rmc_init.py`：計算条件を編集するための初期化・パラメータースクリプト。`rmc_util install` で作業ディレクトリに展開し、パッケージ側の runner を呼び出します。
+- `src/rmc_util/install.py`：編集用スクリプトの展開を担当します。RMC_POT の計算実行処理ではありません。
+- `find_next_log_index.py` の `next_log_dir_name()`：既存のログディレクトリを毎回検索して次の名前を決めます。番号は **0 始まり**で、中央管理のカウンターは持ちません。計算条件・実行スクリプトと計算結果を対応付けて保存するための命名規則です。
+
+リポジトリ直下の `scripts/` は配布する編集用ファイルの置き場所であり、Python パッケージ内の `runners/` とは役割が異なります。**`install` の配布対象は `rmc.py`（薄い起動スクリプト）と `rmc_init.py`（編集する計算条件）の2ファイルです。実行処理本体は含めません。** runner の修正はパッケージ更新で反映し、各計算ディレクトリには編集した条件だけを保持します。展開済みの `rmc_init.py` はパッケージ更新で自動的には書き換えません。
+
+`vasp_util` も同じ構成とすることで、`rmc_dft` は両パッケージの実行機能を呼び出して組み合わせる統合層に簡素化できます。RMC と VASP の単独実行も維持します。
 
 ## rmc_util が扱う範囲
 
@@ -265,3 +279,18 @@ HTML は `docs/_build/html/` に出力されます。
 ## 参考文献
 
 Orsolya Gereben, *RMC_POT user guide for version 2023.1* (2023).
+
+
+### RMCの実行
+
+`rmc_util install` で `rmc.py` と `rmc_init.py` を展開し、`rmc_init.py` の計算条件を編集した後、同じ作業ディレクトリで実行します。
+
+```bash
+rmc_util install
+python rmc.py
+```
+
+`rmc.py` は `rmc_util.runners.run_rmc` を実行するだけで、実行処理を複製しません。runner が `__main__` として実行可能であることが前提です。
+
+
+`run_rmc()` は `config` を必須引数として受け取り、`rmc_dat` などの実行に必要なオブジェクトを呼び出し側から受け取ります。`scripts/rmc.py` で `Config("config.yml")`、`RmcPotLog`、`RmcPotDat` を生成し、`rmc_init.py` による条件設定後に `run_rmc(config=..., rmc_log=..., rmc_dat=..., rmc_pot=None, auto_converge=False, postprocess=True, msg=None, logger=...)` を呼び出します。runner 側に旧単独スクリプトの `if __name__ == "__main__":` は残しません。

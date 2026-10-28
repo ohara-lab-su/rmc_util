@@ -4,6 +4,21 @@
 [![ja](https://img.shields.io/badge/lang-ja-yellow.svg)](https://github.com/ohara-lab-su/rmc_util/blob/main/CHANGELOG.ja.md)
 
 
+- Corrected the runner separation: removed legacy standalone initialization from `runners/run_rmc.py`; `scripts/rmc.py` initializes configuration and calls the runner with explicit arguments.
+
+## v0.1.6
+- Added `scripts/rmc.py` as a thin launcher for `rmc_util.runners.run_rmc`, installed alongside editable `rmc_init.py` via `rmc_util install`. The runner implementation is not copied.
+
+
+### Separation of runners and editable calculation parameters
+
+- Moved the RMC execution workflow to package-managed `rmc_util.runners.run_rmc`, separating execution logic from user-editable initialization parameters.
+- `rmc_init.py` remains the editable per-calculation script, installed into the working directory using `rmc_util install`; it calls the packaged runner.
+- Updated the packaged script list to include **only** `scripts/rmc_init.py`. `rmc.py` is no longer copied to each working directory.
+- Added the log-directory naming/backup helper for standalone RMC runs and combined workflows. Log numbering starts at 0 and the next directory name is determined from existing directories, without a centralized counter.
+- Retained the existing `install.py` implementation and CLI (`rmc_util install [--force]`); existing files are skipped unless `--force` is supplied.
+- This structure aligns with `vasp_util` and lets `rmc_dft` orchestrate the independently maintained runners, reducing duplicated scripts and version drift.
+
 ## v0.1.5
 
 - Renamed `install_scripts.py` to `install.py` and changed the CLI entry point from `rmc_util-install` to `rmc_util`.
