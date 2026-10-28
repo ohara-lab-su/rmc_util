@@ -3,6 +3,21 @@
 [![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/ohara-lab-su/rmc_util/blob/main/CHANGELOG.md)
 [![ja](https://img.shields.io/badge/lang-ja-yellow.svg)](https://github.com/ohara-lab-su/rmc_util/blob/main/CHANGELOG.ja.md)
 
+
+## v0.1.5
+
+- Renamed `install_scripts.py` to `install.py` and changed the CLI entry point from `rmc_util-install` to `rmc_util`.
+- Added `rmc_util install` to copy bundled, editable example scripts into the current directory.
+- Added `rmc_util install --force` to overwrite existing files; without `--force`, existing files are skipped.
+- Kept the existing bundled-script discovery and copying behavior.
+
+Usage:
+
+```bash
+rmc_util install
+rmc_util install --force
+```
+
 ## v0.1.0
 
 ### DAT free/fixed format support expansion

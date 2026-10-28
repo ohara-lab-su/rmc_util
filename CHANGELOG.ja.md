@@ -3,6 +3,21 @@
 [![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/ohara-lab-su/rmc_util/blob/main/CHANGELOG.md)
 [![ja](https://img.shields.io/badge/lang-ja-yellow.svg)](https://github.com/ohara-lab-su/rmc_util/blob/main/CHANGELOG.ja.md)
 
+
+## v0.1.5
+
+- `install_scripts.py` を `install.py` に変更し、CLI コマンドを `rmc_util-install` から `rmc_util` に変更した。
+- `rmc_util install` で、編集用サンプルスクリプトをカレントディレクトリへコピーできるようにした。
+- `rmc_util install --force` で既存ファイルを上書きできるようにした。`--force` を指定しない場合は既存ファイルをスキップする。
+- 既存のスクリプト探索・コピー処理は維持した。
+
+使用方法：
+
+```bash
+rmc_util install
+rmc_util install --force
+```
+
 ## v0.1.4
 
 - rmc_util-install 対応
