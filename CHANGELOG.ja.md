@@ -4,6 +4,21 @@
 [![ja](https://img.shields.io/badge/lang-ja-yellow.svg)](https://github.com/ohara-lab-su/rmc_util/blob/main/CHANGELOG.ja.md)
 
 
+- runner の分離を修正：`runners/run_rmc.py` から旧単独実行用の初期化処理を除去し、`scripts/rmc.py` が設定を初期化して引数を明示して runner を呼び出す構成に統一。
+
+## v0.1.6
+- `scripts/rmc.py` を薄い起動スクリプトとして追加。`python rmc.py` でパッケージ内の `rmc_util.runners.run_rmc` を起動する。`rmc_init.py` と併せて `rmc_util install` で展開する。実行処理本体はコピーしない。
+
+
+### runner と編集用計算パラメーターの分離
+
+- RMC の実行処理をパッケージ側の `rmc_util.runners.run_rmc` に配置し、利用者が編集する計算条件と分離した。
+- 計算ごとの編集用ファイルは `rmc_init.py` とし、`rmc_util install` で作業ディレクトリに展開する。`rmc_init.py` からパッケージ側の runner を呼び出す構成とした。
+- 同梱スクリプトの対象を **`scripts/rmc_init.py` のみ**に変更。実行処理の `rmc.py` は各作業ディレクトリへコピーしない。
+- RMC 単独実行および統合実行のログ名決定・バックアップに用いる補助処理を追加。既存ディレクトリを毎回検索して次の名前を決め、番号は **0 始まり**とする。中央管理カウンターは使用しない。
+- `install.py` の実装と `rmc_util install [--force]` の仕様は維持。通常は既存ファイルを保護し、`--force` 指定時のみ上書きする。
+- `vasp_util` と同じ分離方針を採用し、`rmc_dft` は両者の runner を組み合わせる統合層とする。実行スクリプトの複製・散在とバージョン間の齟齬を減らす。
+
 ## v0.1.5
 
 - `install_scripts.py` を `install.py` に変更し、CLI コマンドを `rmc_util-install` から `rmc_util` に変更した。
