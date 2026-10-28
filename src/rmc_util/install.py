@@ -75,12 +75,12 @@ def install_scripts(
 def main() -> None:
     """--force指定時のみ既存の雛形を上書きする。"""
     arguments = sys.argv[1:]
-    if arguments == ["--force"]:
+    if arguments == ["install", "--force"]:
         force = True
-    elif not arguments:
+    elif arguments == ["install"]:
         force = False
     else:
-        print("使用方法: rmc_util-install [--force]", file=sys.stderr)
+        print("使用方法: rmc_util install [--force]", file=sys.stderr)
         raise SystemExit(2)
 
     copied, skipped = install_scripts(DESTINATION_DIRECTORY, force=force)

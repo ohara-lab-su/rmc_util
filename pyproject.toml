@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "rmc-util"
-version = "0.1.4"
+version = "0.1.5"
 
 description = "rmc_util is a Python library for preparing RMC_POT input files, converting atomic configurations, and reading and analyzing simulation results."
 authors = [
@@ -53,7 +53,7 @@ line-length = 88
 profile = "black"
 
 [project.scripts]
-rmc_util-install = "rmc_util.install_scripts:main"
+rmc_util = "rmc_util.install:main"
 
 [tool.setuptools.data-files]
 "share/rmc_util/scripts" = [

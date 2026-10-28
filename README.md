@@ -39,6 +39,22 @@ To install a local development checkout, run from the repository root:
 pip install .
 ```
 
+## Installing editable example scripts
+
+After installing `rmc-util`, copy the bundled example scripts into the current working directory:
+
+```bash
+rmc_util install
+```
+
+Existing files are skipped by default. To overwrite them explicitly:
+
+```bash
+rmc_util install --force
+```
+
+The copied scripts are intended to be edited for individual calculations. Updating the Python package does not automatically modify copies already placed in a working directory.
+
 ## What rmc_util handles
 
 ### RMC_POT input and execution
