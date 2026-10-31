@@ -7,15 +7,26 @@
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Documentation-222222?logo=githubpages&logoColor=white)](https://ohara-lab-su.github.io/rmc_util/ja/)
 [![Ohara Lab](https://img.shields.io/badge/Ohara%20Lab-Home-4B5563?logo=homeassistant&logoColor=white)](https://ohara-lab-su.github.io/)
 
-`rmc_util` は、RMC_POT の計算を Python から扱うためのライブラリです。
-もともと `RMC_DFT` 内のサブパッケージとして作っていたものを独立させました。
+`rmc_util` は、 **RMC_POT の入力作成・計算実行・結果解析を
+Python から扱うためのオープンソースライブラリ**です。
+RMC_POT の既存の計算エンジンを利用しながら、
+入力条件や構造拘束の編集、反復計算、
+収束評価をプログラムで自動化できます。
 
-RMC_POT の入力条件の作成・編集、各種構造制約、
-FNC・topology の操作、RMC_POT の実行・入力検証、計算結果の退避、および `.log`・
-`.hst`・`.fit`・`.ppcf` などの出力解析を Python から行うための機能を提供します。
+`.dat`、FNC、topology の操作から、
+`.log`・`.hst`・`.fit`・`.ppcf`
+の解析までを対象とします。
+RMC_POT を単独で使う研究にも、
+RMC-DFT などの計算ワークフローにも利用できます。
+もともと `RMC_DFT` から独立させたパッケージです。
 
-単独でも RMC_POT の計算準備・実行・解析に利用できますが、特に RMC-DFT のような上位ワークフローの構成要素として利用すると、RMC
-条件の変更、RMC_POT の反復実行、収束判定、結果の保存、その後の計算への構造受け渡しなどを一貫して制御できます。
+**初期構造の作成には、
+同じく公開している
+[`packmol_util`](https://github.com/ohara-lab-su/packmol_util)
+も利用できます。**
+組成・密度・原子数からの非晶質構造生成に加え、
+RMC_POT 用 FNC ファイルの生成に対応しています。
+両パッケージは独立して利用できます。
 
 ## インストール
 
@@ -39,7 +50,8 @@ pip install .
 
 ## 編集用パラメータースクリプトの配置
 
-`rmc-util` をインストールした後、同梱された起動スクリプト（`rmc.py`）と編集用パラメータースクリプト（`rmc_init.py`）をカレントディレクトリにコピーできます。
+`rmc-util` をインストールした後、同梱された起動スクリプト（`rmc.py`）と編集用パラメータースクリプト（`rmc_init.py`
+）をカレントディレクトリにコピーできます。
 
 ```bash
 rmc_util install
@@ -55,17 +67,24 @@ rmc_util install --force
 
 ## 実行処理と計算条件の分離（v0.1.6）
 
-RMC の実行系を、**パッケージで管理する実行処理**と、**計算ごとに編集するパラメーター**に分離します。従来は `examples/` から `rmc.py` と `rmc_init.py` を計算ディレクトリにコピーしていましたが、ほとんど変更しない実行処理まで複製されるため、パッケージの更新後に各計算ディレクトリのコードとの齟齬が生じる構造でした。
+RMC の実行系を、 **パッケージで管理する実行処理**と、 **計算ごとに編集するパラメーター**に分離します。従来は `examples/` から
+`rmc.py` と `rmc_init.py` を計算ディレクトリにコピーしていましたが、ほとんど変更しない実行処理まで複製されるため、パッケージの更新後に各計算ディレクトリのコードとの齟齬が生じる構造でした。
 
 - `src/rmc_util/runners/run_rmc.py`：パッケージ側で保守する RMC 実行処理。各作業ディレクトリにはコピーしません。
 - `scripts/rmc.py`：`rmc_util.runners.run_rmc` を起動するだけのスクリプト。`python rmc.py` で実行できます。
-- `scripts/rmc_init.py`：計算条件を編集するための初期化・パラメータースクリプト。`rmc_util install` で作業ディレクトリに展開し、パッケージ側の runner を呼び出します。
+- `scripts/rmc_init.py`：計算条件を編集するための初期化・パラメータースクリプト。`rmc_util install` で作業ディレクトリに展開し、パッケージ側の
+  runner を呼び出します。
 - `src/rmc_util/install.py`：編集用スクリプトの展開を担当します。RMC_POT の計算実行処理ではありません。
-- `find_next_log_index.py` の `next_log_dir_name()`：既存のログディレクトリを毎回検索して次の名前を決めます。番号は **0 始まり**で、中央管理のカウンターは持ちません。計算条件・実行スクリプトと計算結果を対応付けて保存するための命名規則です。
+- `find_next_log_index.py` の `next_log_dir_name()`：既存のログディレクトリを毎回検索して次の名前を決めます。番号は **0
+  始まり**で、中央管理のカウンターは持ちません。計算条件・実行スクリプトと計算結果を対応付けて保存するための命名規則です。
 
-リポジトリ直下の `scripts/` は配布する編集用ファイルの置き場所であり、Python パッケージ内の `runners/` とは役割が異なります。**`install` の配布対象は `rmc.py`（薄い起動スクリプト）と `rmc_init.py`（編集する計算条件）の2ファイルです。実行処理本体は含めません。** runner の修正はパッケージ更新で反映し、各計算ディレクトリには編集した条件だけを保持します。展開済みの `rmc_init.py` はパッケージ更新で自動的には書き換えません。
+リポジトリ直下の `scripts/` は配布する編集用ファイルの置き場所であり、Python パッケージ内の `runners/` とは役割が異なります。
+**`install` の配布対象は `rmc.py`（薄い起動スクリプト）と `rmc_init.py`
+（編集する計算条件）の2ファイルです。実行処理本体は含めません。** runner の修正はパッケージ更新で反映し、各計算ディレクトリには編集した条件だけを保持します。展開済みの
+`rmc_init.py` はパッケージ更新で自動的には書き換えません。
 
-`vasp_util` も同じ構成とすることで、`rmc_dft` は両パッケージの実行機能を呼び出して組み合わせる統合層に簡素化できます。RMC と VASP の単独実行も維持します。
+`vasp_util` も同じ構成とすることで、`rmc_dft` は両パッケージの実行機能を呼び出して組み合わせる統合層に簡素化できます。RMC
+と VASP の単独実行も維持します。
 
 ## rmc_util が扱う範囲
 
@@ -280,7 +299,6 @@ HTML は `docs/_build/html/` に出力されます。
 
 Orsolya Gereben, *RMC_POT user guide for version 2023.1* (2023).
 
-
 ### RMCの実行
 
 `rmc_util install` で `rmc.py` と `rmc_init.py` を展開し、`rmc_init.py` の計算条件を編集した後、同じ作業ディレクトリで実行します。
@@ -292,5 +310,7 @@ python rmc.py
 
 `rmc.py` は `rmc_util.runners.run_rmc` を実行するだけで、実行処理を複製しません。runner が `__main__` として実行可能であることが前提です。
 
-
-`run_rmc()` は `config` を必須引数として受け取り、`rmc_dat` などの実行に必要なオブジェクトを呼び出し側から受け取ります。`scripts/rmc.py` で `Config("config.yml")`、`RmcPotLog`、`RmcPotDat` を生成し、`rmc_init.py` による条件設定後に `run_rmc(config=..., rmc_log=..., rmc_dat=..., rmc_pot=None, auto_converge=False, postprocess=True, msg=None, logger=...)` を呼び出します。runner 側に旧単独スクリプトの `if __name__ == "__main__":` は残しません。
+`run_rmc()` は `config` を必須引数として受け取り、`rmc_dat` などの実行に必要なオブジェクトを呼び出し側から受け取ります。
+`scripts/rmc.py` で `Config("config.yml")`、`RmcPotLog`、`RmcPotDat` を生成し、`rmc_init.py` による条件設定後に
+`run_rmc(config=..., rmc_log=..., rmc_dat=..., rmc_pot=None, auto_converge=False, postprocess=True, msg=None, logger=...)`
+を呼び出します。runner 側に旧単独スクリプトの `if __name__ == "__main__":` は残しません。

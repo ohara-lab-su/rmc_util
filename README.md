@@ -7,17 +7,11 @@
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Documentation-222222?logo=githubpages&logoColor=white)](https://ohara-lab-su.github.io/rmc_util/en/)
 [![Ohara Lab](https://img.shields.io/badge/Ohara%20Lab-Home-4B5563?logo=homeassistant&logoColor=white)](https://ohara-lab-su.github.io/index.en.html)
 
-`rmc_util` is a Python library for working with `RMC_POT` calculations.
-It was originally developed as a subpackage of `RMC_DFT` and was later separated into an independent package.
+`rmc_util` is an **open-source Python toolkit for preparing, running, and analyzing RMC_POT calculations**. It works with the existing RMC_POT engine and enables programmatic editing of calculation parameters and structural constraints, repeated runs, and convergence analysis.
 
-The library provides a programmatic interface for preparing and editing RMC_POT input files, defining structural
-constraints, working with FNC and topology data, running and validating RMC_POT calculations, collecting calculation
-results, and reading output files such as `.log`, `.hst`, `.fit`, and `.ppcf`.
+It covers `.dat`, FNC, and topology data, as well as analysis of `.log`, `.hst`, `.fit`, and `.ppcf` outputs. The package can be used independently or as part of automated workflows such as RMC-DFT. It was originally separated from `RMC_DFT`.
 
-It can be used on its own for preparing, running, and analyzing RMC_POT calculations. It is particularly useful as a
-building block in larger automated workflows, such as RMC-DFT workflows, where RMC parameters need to be changed
-programmatically, RMC calculations need to be executed repeatedly, and the resulting structures and convergence
-information need to be passed to subsequent calculations.
+**For initial amorphous structures, see the separately maintained [`packmol_util`](https://github.com/ohara-lab-su/packmol_util).** It generates structures from composition, density, and atom count, and can produce FNC files for RMC_POT. Both packages can be used independently.
 
 ## Installation
 
