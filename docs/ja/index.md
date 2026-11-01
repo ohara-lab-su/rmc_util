@@ -13,6 +13,10 @@
 
 **初期構造の生成には [packmol_util](https://ohara-lab-su.github.io/packmol_util/ja/) も利用できます。** 組成・密度・原子数を指定した非晶質構造の作成や、RMC_POT 用 FNC 拘束ファイルの生成に対応する、独立したライブラリです。
 
+## 謝辞について
+
+本ソフトウェアが研究の参考になったり、研究成果に役立ったりした場合には、論文等の謝辞（Acknowledgments）に「島根大学 Ohara Lab」の名前を記載していただけると幸いです。
+
 ```{toctree}
 :maxdepth: 2
 :caption: 利用ガイド
