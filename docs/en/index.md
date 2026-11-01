@@ -13,9 +13,6 @@ It covers `.dat`, FNC, and topology handling, as well as analysis of `.log`, `.h
 
 **For initial structure generation, see [packmol_util](https://ohara-lab-su.github.io/packmol_util/en/).** This independent library supports amorphous structure generation from composition, density, and atom count, including FNC constraint file generation for RMC_POT.
 
-## Acknowledgments
-
-If you find this software helpful in your research, we would be grateful if you could mention Ohara Lab, Shimane University, in the acknowledgments of your publications.
 
 ```{toctree}
 :maxdepth: 2
@@ -34,3 +31,5 @@ guide/output
 reference/index
 api/index
 ```
+
+If you find this software helpful in your research, we would be grateful if you could mention Ohara Lab, Shimane University, in the acknowledgments of your publications.

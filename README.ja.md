@@ -315,6 +315,4 @@ python rmc.py
 `run_rmc(config=..., rmc_log=..., rmc_dat=..., rmc_pot=None, auto_converge=False, postprocess=True, msg=None, logger=...)`
 を呼び出します。runner 側に旧単独スクリプトの `if __name__ == "__main__":` は残しません。
 
-## 謝辞について
-
 本ソフトウェアが研究の参考になったり、研究成果に役立ったりした場合には、論文等の謝辞（Acknowledgments）に「島根大学 Ohara Lab」の名前を記載していただけると幸いです。
