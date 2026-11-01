@@ -296,3 +296,7 @@ The launcher executes `rmc_util.runners.run_rmc` without copying the implementat
 
 
 `run_rmc()` requires `config` and receives the execution objects from its caller. `scripts/rmc.py` constructs `Config("config.yml")`, `RmcPotLog`, and `RmcPotDat`, applies parameters through `rmc_init.py`, and calls `run_rmc(config=..., rmc_log=..., rmc_dat=..., rmc_pot=None, auto_converge=False, postprocess=True, msg=None, logger=...)`. The runner does not retain the legacy standalone `if __name__ == "__main__":` entry point.
+
+## Acknowledgments
+
+If you find this software helpful in your research, we would be grateful if you could mention Ohara Lab, Shimane University, in the acknowledgments of your publications.
