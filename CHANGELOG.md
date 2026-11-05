@@ -4,6 +4,15 @@
 [![ja](https://img.shields.io/badge/lang-ja-yellow.svg)](https://github.com/ohara-lab-su/rmc_util/blob/main/CHANGELOG.ja.md)
 
 
+## v0.1.10
+
+### Bug fixes
+
+- Fixed a circular import triggered by `rmc_util install`: `rmc_pot_log.py` incorrectly imported `Config` from `rmc_dft.config` instead of `rmc_util.config`. This restores the intended one-way dependency from `rmc_dft` to `rmc_util`.
+- Fixed executable permissions for the installed `rmc.py` launcher on Linux and macOS. The installer now sets execute permission when copying the script on POSIX systems.
+- Kept package initialization based on explicit static imports; no dynamic `__getattr__` or lazy-import workaround was introduced.
+
+
 - Corrected the runner separation: removed legacy standalone initialization from `runners/run_rmc.py`; `scripts/rmc.py` initializes configuration and calls the runner with explicit arguments.
 
 ## v0.1.6
