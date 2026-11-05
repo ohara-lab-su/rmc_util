@@ -4,6 +4,15 @@
 [![ja](https://img.shields.io/badge/lang-ja-yellow.svg)](https://github.com/ohara-lab-su/rmc_util/blob/main/CHANGELOG.ja.md)
 
 
+## v0.1.10
+
+### バグ修正
+
+- `rmc_util install` 実行時に発生する循環インポートを修正。`rmc_pot_log.py` が誤って `rmc_dft.config` から `Config` を読み込んでいたため、参照先を `rmc_util.config` に変更し、`rmc_dft` から `rmc_util` への一方向の依存関係を維持した。
+- Linux/macOS 環境で、インストールした起動スクリプト `rmc.py` に実行権限が付与されない問題を修正。POSIX 環境ではコピー時に実行権限を設定するようにした。
+- `__init__.py` は静的な明示的インポートを維持し、`__getattr__` や遅延インポートによる回避策は採用しない。
+
+
 - runner の分離を修正：`runners/run_rmc.py` から旧単独実行用の初期化処理を除去し、`scripts/rmc.py` が設定を初期化して引数を明示して runner を呼び出す構成に統一。
 
 ## v0.1.6

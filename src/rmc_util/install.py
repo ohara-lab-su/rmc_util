@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import os
 import shutil
+import stat
 import sys
 import sysconfig
 from importlib import metadata
@@ -23,7 +25,6 @@ def find_installed_scripts() -> list[Path]:
         for source in sorted(installed_directory.iterdir()):
             if source.is_file():
                 sources_by_name[source.name] = source
-
     distribution = metadata.distribution(DISTRIBUTION_NAME)
     installed_files = distribution.files
     if installed_files is not None:
@@ -34,7 +35,6 @@ def find_installed_scripts() -> list[Path]:
             source = Path(distribution.locate_file(file))
             if source.is_file() and source.name not in sources_by_name:
                 sources_by_name[source.name] = source
-
     return [sources_by_name[name] for name in sorted(sources_by_name)]
 
 
@@ -50,7 +50,6 @@ def install_scripts(
             "インストール済みの雛形が見つかりません。"
             "pipでインストールした環境のshare/rmc_util/scriptsを確認してください。"
         )
-
     destination.mkdir(parents=True, exist_ok=True)
     copied = 0
     skipped = 0
@@ -64,6 +63,8 @@ def install_scripts(
             raise IsADirectoryError(f"コピー先がディレクトリです: {target}")
         existed = target.exists()
         shutil.copy2(source, target)
+        if os.name == "posix" and target.name == "rmc.py":
+            target.chmod(target.stat().st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
         if existed:
             print(f"上書き: {target.name}")
         else:
