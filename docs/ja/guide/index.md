@@ -5,6 +5,9 @@ RMC_UTIL のインストール、入力ファイルの準備、構造制約の�
 ```{toctree}
 :maxdepth: 2
 
+installation
+software
+architecture
 readme_manual
 task_map
 overview

@@ -1,15 +1,4 @@
-# rmc_util の利用ガイド（README に基づく）
-
-このページは README.ja.md の利用説明を収録したものです。
-
-# rmc_util
-
-[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/ohara-lab-su/rmc_util/blob/main/README.md)
-[![ja](https://img.shields.io/badge/lang-ja-yellow.svg)](https://github.com/ohara-lab-su/rmc_util/blob/main/README.ja.md)
-
-[![GitHub](https://img.shields.io/badge/GitHub-ohara--lab--su%2Frmc_util-181717?logo=github)](https://github.com/ohara-lab-su/rmc_util/)
-[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Documentation-222222?logo=githubpages&logoColor=white)](https://ohara-lab-su.github.io/rmc_util/ja/)
-[![Ohara Lab](https://img.shields.io/badge/Ohara%20Lab-Home-4B5563?logo=homeassistant&logoColor=white)](https://ohara-lab-su.github.io/)
+# RMC_UTIL の機能と構成
 
 `rmc_util` は、 **RMC_POT の入力作成・計算実行・結果解析を
 Python から扱うためのオープンソースライブラリ**です。

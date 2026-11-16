@@ -1,29 +1,56 @@
-# インストールと計算スクリプトの準備
+# インストールと計算ディレクトリの準備
 
-## パッケージの導入
+## パッケージと実行プログラム
+
+Pythonパッケージの配布名は `rmc-util`、インポート名は `rmc_util` です。
 
 ```bash
 pip install rmc-util
 ```
 
-開発用のリポジトリを取得している場合は、リポジトリのルートで `pip install .` を使用します。PyPI の配布名は `rmc-util`、Python の import 名は `rmc_util` です。
+ソースツリーからインストールする場合は、リポジトリのルートで `pip install .` を実行します。RMC_UTILはRMC_POTの入力・実行・解析を扱うPythonライブラリです。**RMC_POTの計算実行ファイルそのものをインストールするコマンドではありません。** 計算には別途、RMC_POT実行ファイルと実験データ、初期原子配置などを準備します。
 
-## 計算ディレクトリへのスクリプト展開
+## `rmc_util install` の役割
+
+計算を行うディレクトリに移動して、次を実行します。
 
 ```bash
 rmc_util install
 ```
 
-このコマンドで `rmc.py` と `rmc_init.py` を作業ディレクトリに展開します。既存の同名ファイルは上書きしません。上書きを明示する場合は次のとおりです。
+インストール済みパッケージに同梱された `rmc.py` と `rmc_init.py` を、**現在の作業ディレクトリ**に配置します。前者は計算の起動、後者は計算条件の編集に使用します。`rmc_util install` は新しい仮想環境の作成やRMC_POT本体の導入を行いません。
+
+配置先に同名ファイルが存在すると、既定ではそのファイルをスキップします。既存ファイルを置き換える場合だけ、次を実行します。
 
 ```bash
 rmc_util install --force
 ```
 
-`rmc_init.py` の計算条件を編集し、必要な RMC_POT の入力データと実行環境を準備した後、次のコマンドで起動します。
+`--force` は既存の `rmc.py`、`rmc_init.py` を上書きし得るため、利用者が編集した設定を保持する場合は使用しません。パッケージの更新によって、すでに計算ディレクトリへコピーしたスクリプトが自動更新されることもありません。
+
+## 配置元とコピー処理
+
+`rmc_util.install.find_installed_scripts()` は、Pythonのインストール先にある `share/rmc_util/scripts` と、インストール済み配布物のファイル記録から雛形を探します。同名ファイルは重複してコピーしません。雛形が見つからない場合はエラーになります。
+
+`rmc_util.install.install_scripts(destination, force=False)` はコピー件数とスキップ件数を返します。`rmc.py` についてはPOSIX環境で実行権限を付加します。コマンドの引数は `install` または `install --force` のみです。
+
+## 計算の開始と設定の分離
 
 ```bash
 python rmc.py
 ```
 
-RMC_POT 本体、実験データ、初期構造の準備は `pip install` のみでは完了しません。必要な入力については [RMC_POT 入力形式](../reference/rmcpot_input_explained.md)を参照してください。
+起動スクリプト `rmc.py` は `config.yml` を読み込み、ログ・入力条件を準備し、作業ディレクトリの `rmc_init.py` にある `run_rmc_init()` で計算条件を適用してから `rmc_util.runners.run_rmc.run_rmc()` を呼び出します。計算の反復処理はパッケージ側に置き、物質系ごとの条件を `rmc_init.py` で管理する構成です。
+
+`.dat` の固定形式・自由形式は `RmcPotDat` の共通メソッドから操作できます。具体的な設定例は [入力条件の編集](../tutorial/configure.md)、構造制約は [制約の設定](../tutorial/constraints.md)、ファイル仕様は [RMC_POT入力形式](../reference/rmcpot_input_explained.md)を参照してください。
+
+## Python APIからの利用
+
+```python
+from pathlib import Path
+from rmc_util.install import install_scripts
+
+copied, skipped = install_scripts(Path.cwd(), force=False)
+```
+
+このAPIはスクリプトの配置を行います。計算条件の編集やRMC計算の開始は別の操作です。関数の詳細は [インストールAPI](../api/install.md)を参照してください。

@@ -1,63 +1,22 @@
 # `rmc_util.install`
 
-Source: `src/rmc_util/install.py`
+This module deploys calculation scripts included in the installed Python distribution to a specified directory. See the [installation guide](../guide/installation.md) for CLI usage.
 
-## `find_installed_scripts()`
+## `find_installed_scripts() -> list[Path]`
 
-Inspect the installation destination and distribution records, and retrieve each template with the same name only once.
+Searches `share/rmc_util/scripts` under the directory returned by `sysconfig.get_path("data")` and the installed file records provided by `importlib.metadata.distribution("rmc-util")`. Returns a name-sorted list of `Path` objects, with duplicate filenames included only once.
 
-## `install_scripts(destination: Path, *, force: bool=False)`
+## `install_scripts(destination: Path, *, force: bool = False) -> tuple[int, int]`
 
-Place the templates. Overwrite existing files only when `force` is true.
+Copies the bundled scripts to `destination`. Existing files are skipped when `force=False` and overwritten when `force=True`. Raises `IsADirectoryError` if a target path is a directory. Returns `(number_copied, number_skipped)`. On POSIX systems, adds executable permissions to `rmc.py`. Raises `RuntimeError` if no bundled scripts are found.
 
-## `main()`
+```python
+from pathlib import Path
+from rmc_util.install import install_scripts
 
-Overwrite existing templates only when `--force` is specified.
+copied, skipped = install_scripts(Path.cwd(), force=False)
+```
 
+## `main() -> None`
 
-## Methods
-
-
-### Module Function `find_installed_scripts()`
-
-- Definition line: 19
-- Description: Inspect the installation destination and distribution records, and retrieve each template with the same name only once.
-
-### Module Function `install_scripts()`
-
-- Definition line: 41
-- Description: Place the templates. Overwrite existing files only when `force` is true.
-
-### Module Function `main()`
-
-- Definition line: 76
-- Description: Overwrite existing templates only when `--force` is specified.
-
-## Arguments and Return Values
-
-Arguments and return values without type annotations are marked “Not specified.” This does not imply that a function returns `None`.
-
-### `find_installed_scripts`
-
-| Argument | Type annotation |
-|---|---|
-| (None) | — |
-
-Return type annotation: `list[Path]`. Definition location: `install.py:19`.
-
-### `install_scripts`
-
-| Argument | Type annotation |
-|---|---|
-| `destination` | `Path` |
-| `force` | `bool` |
-
-Return type annotation: `tuple[int, int]`. Definition location: `install.py:41`.
-
-### `main`
-
-| Argument | Type annotation |
-|---|---|
-| (None) | — |
-
-Return type annotation: `None`. Definition location: `install.py:76`.
+The CLI entry point. Handles `rmc_util install` and `rmc_util install --force`, printing the copied and skipped counts. Other arguments print usage to standard error and exit with status 2.
