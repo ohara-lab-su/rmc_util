@@ -1,6 +1,6 @@
-# File formats and RMC theory
+# RMC theory and RMC_POT file formats
 
-The detailed reference materials are collected here.
+The following reference articles are translated from the corresponding Japanese pages. File examples, formulas, and figures are preserved.
 
 ```{toctree}
 :maxdepth: 2
@@ -10,5 +10,3 @@ rmcpot_cfg_explained
 rmcpot_input_explained
 rmcpot_output_explained
 ```
-
-For authoritative syntax and keyword definitions, see Chapter II of Orsolya Gereben, *RMC_POT user guide for version 2023.1*.

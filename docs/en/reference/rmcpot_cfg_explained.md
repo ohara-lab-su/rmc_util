@@ -1,15 +1,15 @@
-# RMC_POT cfg File Format
+# Explanation of the RMC_POT cfg file
 
 
-This document explains the Version 3 RMC_POT `cfg` configuration format using a concrete example.
+This document explains the RMC_POT Version 3 cfg configuration-file format using the supplied example.
 
 ![](figs/aaa.vasp.png)
 
 ---
 
-## Example: Excerpt from `aaa.cfg`
+## Example: excerpt from aaa.cfg
 
-The following is an excerpt from a typical `cfg` file. The first line must be preserved verbatim.
+The following is an excerpt from a typical cfg file. The first line must be preserved exactly.
 
 
 aaa.cfg
@@ -57,15 +57,15 @@ comment sio2
  0.899782755769483  0.086198503510151  0.756794255625409
 ```
 
-## Explanation of Each Section (in File Order)
+## Explanation of each section (in order)
 
 1. First line (required)
 
-    The first line is:
+    The first line is
     ```{code}
      (Version 3 format configuration file) !file created by SimpleCfg::save !
     ```
-    Copy this line exactly as shown; do not modify it.
+    This line must be copied without modification.
 
 2. Comment line
     
@@ -74,26 +74,26 @@ comment sio2
     ```
     This is a comment.
 
-3. Total count and molecular summary (when using molecular information)
+3. Total count and molecular overview (when molecular information is used)
     
-    The molecular information begins at line 8 of the example.
+    Molecular information starts at line 8.
     ```{code}
     300 molecules of all types
     ```
-    In this example, RMC is performed using atomic information only, without explicit molecular information.
-    Accordingly, this field gives the total number of atoms.
+    In this example, RMC is performed with atomic information only, without molecular information.
+    Enter the number of atoms here.
 
-4. Number of types, molecule size, and Euler angles
+4. Number of types, molecular size, and Euler-angle flag
 
     ```{code}
     3 types of molecules 
     1 is the largest number of atoms in a molecule 
     0 Euler angles are provided 
     ```
-    Specify the number of atomic species. Here there are three species, so the value is 3.
-    Because molecular information is not used, set the second line to 1 and the third to 0.
+    Specify the number of atomic species. There are three species in this example, so the value is 3.
+    Because molecular information is not used, the second line is 1 and the third line is 0.
 
-5. Simulation cell (box) information
+5. Cell (box) information
 
     ```{code}
       F (box is cubic)	
@@ -102,12 +102,12 @@ comment sio2
           0.000000   7.635000   0.000000
           0.000000   0.000000   7.635000
     ```
-    For the cubic cell used here, enter half the edge length, L/2.
+    For a cubic cell of side length L, enter L/2.
     In this example, 15.27 Å / 2 = 7.635 Å.
 
-6. Population and number of sites for each atomic (molecular) type
+6. Counts of each atomic (molecular) species and atomic sites
 
-    Next, specify the number of atoms of each species.       
+    Next come the counts for each atomic species.
     ```{code}
     100 molecules of type  1
       1 atomic sites 
@@ -121,12 +121,12 @@ comment sio2
       1 atomic sites 
           0.000000   0.000000   0.000000
     ```
-    In this example, type 1 has 100 atoms, type 2 has 160 atoms, and type 3 has 40 atoms.
-    The atomic coordinates that follow are ordered by species: type 1, then type 2, then type 3.
+    This example has 100 atoms of species 1, 160 of species 2, and 40 of species 3.
+    The atomic coordinates that follow must be listed in species order: 1, 2, then 3.
 
 7. Coordinate block (end of file)
 
-    Atomic coordinates appear at the end of the file.
+    The atomic coordinates are written at the end.
     ```{code}
      0.469499871368697  0.860252930085134  0.143086911460380
      0.506517212128356  0.782365058978389  -0.044207465828422
@@ -140,25 +140,25 @@ comment sio2
      0.032760774708579  0.186415932416503  -0.177798618166339
      0.899782755769483  0.086198503510151  0.756794255625409
     ```
-    These coordinates are expressed in the range (-1, 1), with the center of the cubic cell as the origin.
-    In other words, atomic coordinates are scaled relative to the cell size.
-    For example, if the edge length is L = 15.27 Å, a cfg coordinate of (0.5, 0.5, 0.5) corresponds to the Cartesian position (3.8175 Å, 3.8175 Å, 3.8175 Å) relative to the cell center.
+    Coordinates are expressed in the range (-1, 1), with the center of the cubic cell as the origin.
+    In other words, the coordinates are scaled according to the cell size.
+    For example, when L = 15.27 Å, coordinates (0.5, 0.5, 0.5) correspond to physical coordinates (3.8175 Å, 3.8175 Å, 3.8175 Å).
     ```{math}
     x_{\mathrm{center}} = x_{\mathrm{cfg}}\frac{L}{2}\\
     x_{\mathrm{corner}} = (x_{\mathrm{center}}+L/2)\bmod L\\
     x_{\mathrm{cfg}} = 2\frac{x_{\mathrm{center}}}{L}
     ```
-    The conversion is given by these equations.
-    Here, $x_{\mathrm{center}}$ is the Cartesian coordinate relative to the cell center, while $x_{\mathrm{corner}}$ uses the cell corner as its origin. When converting to VASP Cartesian coordinates, check the lattice vectors and origin convention used in the POSCAR file.
+    Therefore,
+    Here $x_{\mathrm{center}}$ denotes Cartesian coordinates relative to the cell center, and $x_{\mathrm{corner}}$ denotes coordinates relative to a cell corner. When converting to VASP Cartesian coordinates, verify the POSCAR lattice vectors and origin convention.
 
            
 ---
 
-## Practical Notes / Checklist
+## Practical notes / checklist
 
-- Do not delete or modify the first (version) line.
-- Ensure that the counts and ordering of `types`, `atomic sites`, and `molecules of type` conform to the requirements of the software reading the cfg file.
-- List all coordinates of type 1 first, followed by all coordinates of type 2, and so on (as expected by many implementations).
-- In this example, the defining vectors represent the half-edge length $L/2$ of the cubic cell. Verify the coordinate conventions before applying this interpretation to other file formats.
+- Do not remove or modify the first (Version) line.
+- Match the counts and ordering of “types”, “atomic sites”, and “molecules of type” to the specification of the cfg reader.
+- List all coordinates for species 1 first, then species 2, and so on (as expected by many implementations).
+- The Defining vectors in this example represent the half-side length $L/2$ of the cubic cell. Check the coordinate convention before applying this rule to other file formats.
 
 ---
