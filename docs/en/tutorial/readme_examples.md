@@ -1,6 +1,6 @@
 # README execution and configuration examples
 
-The following code examples are reproduced unchanged from the supplied `README.ja.md`. Numerical values and filenames are README examples; check input conditions before using them in an actual calculation.
+The examples cover installation, calculation parameters, and structural constraints. Numerical values and filenames are illustrative and must be adjusted to the target system.
 
 ## README code example 1
 
