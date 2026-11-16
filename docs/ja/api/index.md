@@ -5,7 +5,7 @@ RMC_UTIL の公開クラス、関数、メソッドの仕様を示します。�
 ```{toctree}
 :maxdepth: 2
 
-Generated Python API <generated/modules>
+Python API（自動生成） <generated/modules>
 
 implementation_index
 

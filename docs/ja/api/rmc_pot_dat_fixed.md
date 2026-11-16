@@ -6,11 +6,19 @@
 
 RMC_POT の .dat ファイルを行番号ベースで編集するためのクラス。
 
-使い方:
-    dat = RmcPotDat("/abs/path/to/aaa.dat", auto_write=True)
-    rho = dat.get_density()
-    dat.set_cutoffs((2.5, 2.2, 2.0))  # auto_write=True なら即時保存
-    dat.write()  # 明示保存も可能
+固定形式を直接扱う例（通常は形式共通の `RmcPotDat` を使用します）:
+
+```python
+from rmc_util.rmc_pot_dat_fixed import RmcPotDatFixed
+
+dat = RmcPotDatFixed(cfg_name="sample", auto_write=False)
+if dat.load():
+    density = dat.get_density()
+    dat.set_density(0.0915)
+    dat.write()
+```
+
+`cfg_name` は拡張子 `.dat` を付けない基底名です。`load()` は対象ファイルが存在しない場合 `False` を返します。`auto_write=False` の場合、変更をファイルに反映するには `write()` が必要です。既存ファイルを変更する例のため、実行前に対象ファイルを確認してください。
 
 注意:
     - 行番号は 1 始まり。内部処理では 0 始まりのリストに対応付け

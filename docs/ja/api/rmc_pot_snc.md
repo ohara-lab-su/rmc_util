@@ -64,7 +64,7 @@ Raises:
 | `self` | `指定なし` |
 | `path` | `str` |
 
-戻り値の型注釈: `None`。定義位置: `rmc_pot_snc(3).py:17`。
+戻り値の型注釈: `None`。定義位置: `src/rmc_util/rmc_pot_snc.py`。
 
 ### `RmcPotSnc.load`
 
@@ -72,7 +72,7 @@ Raises:
 |---|---|
 | `self` | `指定なし` |
 
-戻り値の型注釈: `None`。定義位置: `rmc_pot_snc(3).py:27`。
+戻り値の型注釈: `None`。定義位置: `src/rmc_util/rmc_pot_snc.py`。
 
 ### `RmcPotSnc.get_qn_counts`
 
@@ -81,7 +81,7 @@ Raises:
 | `self` | `指定なし` |
 | `constraint_index` | `int` |
 
-戻り値の型注釈: `Dict[int, int]`。定義位置: `rmc_pot_snc(3).py:69`。
+戻り値の型注釈: `Dict[int, int]`。定義位置: `src/rmc_util/rmc_pot_snc.py`。
 
 ### `RmcPotSnc.get_common_qn_counts`
 
@@ -89,5 +89,5 @@ Raises:
 |---|---|
 | `self` | `指定なし` |
 
-戻り値の型注釈: `Dict[int, int]`。定義位置: `rmc_pot_snc(3).py:82`。
+戻り値の型注釈: `Dict[int, int]`。定義位置: `src/rmc_util/rmc_pot_snc.py`。
 
