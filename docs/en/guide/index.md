@@ -6,6 +6,7 @@ This guide covers installation, input preparation, structural constraints, calcu
 :maxdepth: 2
 
 installation
+workflow
 software
 architecture
 readme_manual
@@ -15,5 +16,7 @@ input
 constraints
 output
 ```
+
+For the complete Python execution example, see [Execution workflow](../tutorial/workflow.md).
 
 For RMC theory and RMC_POT file specifications, see [RMC Theory and File Formats](../reference/index.md).

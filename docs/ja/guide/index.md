@@ -16,4 +16,6 @@ constraints
 output
 ```
 
+計算の起動手順と `run_rmc()` の呼び出しは [実行ワークフロー](../tutorial/workflow.md) を参照してください。
+
 RMC の理論と RMC_POT のファイル仕様は [RMC 理論・ファイル形式](../reference/index.md)を参照してください。
