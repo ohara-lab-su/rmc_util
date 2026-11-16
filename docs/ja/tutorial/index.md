@@ -7,6 +7,7 @@ RMC_UTIL を用いた計算条件の設定、構造制約の指定、結果の�
 
 setup
 configure
+input_editing
 readme_examples
 first_run
 constraints

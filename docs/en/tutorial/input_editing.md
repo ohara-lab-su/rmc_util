@@ -1,11 +1,20 @@
-# Editing RMC_POT inputs
+# Editing RMC_POT input files
 
-The input classes are split by format and purpose:
+`RmcPotDat` provides a common Python interface for fixed-format and free-format `.dat` files. The same setters are used for parameters supported by both formats; the output format is selected during initialization.
 
-- `rmc_pot_dat`: main DAT interface.
-- `rmc_pot_dat_fixed`: fixed-format DAT support.
-- `rmc_pot_dat_free`: free-format DAT support.
-- `rmc_pot_dat_fnc`: FNC constraints.
-- `rmc_pot_dat_top`: topology information.
+```python
+from rmc_util import RmcPotDat
 
-Select the class and methods supported by the actual file format. Use the signatures in the [API reference](../api/index.md), and the detailed [RMC_POT input format explanation](../reference/rmcpot_input_explained.md). Do not mix fixed- and free-format syntax without checking the implementation.
+rmc_dat = RmcPotDat(cfg_name="sample", auto_write=False)
+rmc_dat.init(use_free_format=True, prefer_existing=True)
+rmc_dat.set_density(0.0665715652)
+rmc_dat.set_cutoffs([2.40, 1.25, 2.10])
+rmc_dat.set_maximum_moves([0.01, 0.01])
+rmc_dat.write()
+```
+
+For a new fixed-format input, specify `use_free_format=False`. When `prefer_existing=True` and a `.dat` file already exists, its detected format takes precedence over `use_free_format`. Confirm the existing file before choosing an initialization mode.
+
+The format-specific implementations are organized in `rmc_pot_dat_fixed` and `rmc_pot_dat_free`, but ordinary input editing should use the common `RmcPotDat` interface. FNC and topology settings are handled by the corresponding support modules. Free-format sections such as coordination and SNC constraints require the free-format functionality; they are not interchangeable with fixed-format text records.
+
+For complete parameter examples, including different atom-type counts and structural constraints, see [Calculation parameters](configure.md) and [Structural constraints](constraints.md). The [API reference](../api/rmc_pot_dat.md) documents the Python interface, while the [RMC_POT input reference](../reference/rmcpot_input_explained.md) describes the file specification.

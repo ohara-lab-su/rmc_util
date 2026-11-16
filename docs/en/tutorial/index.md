@@ -7,6 +7,7 @@ This tutorial collects Python examples for configuring RMC calculations, specify
 
 setup
 configure
+input_editing
 readme_examples
 first_run
 constraints
