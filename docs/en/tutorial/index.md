@@ -5,12 +5,6 @@
 
 readme_examples
 
-setup
-first_run
-configure
-constraints
-workflow
-analysis
 ```
 
 Prepare the initial structure, experimental data, and RMC_POT executable separately according to the calculation target. The `sample` below is the base name of the input files.

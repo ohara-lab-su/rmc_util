@@ -7,7 +7,7 @@
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Documentation-222222?logo=githubpages&logoColor=white)](https://ohara-lab-su.github.io/rmc_util/en/)
 [![Ohara Lab](https://img.shields.io/badge/Ohara%20Lab-Home-4B5563?logo=homeassistant&logoColor=white)](https://ohara-lab-su.github.io/)
 
-This documentation covers the use of RMC_UTIL, tutorials, and the API reference. The existing explanations of RMC theory and RMC_POT file formats are also retained in a separate section.
+RMC_UTIL is a Python library for preparing and editing RMC_POT input files, running calculations, and analyzing results. This documentation describes the main workflows, APIs, and file formats used to prepare RMC calculations and evaluate their results.
 
 ```{toctree}
 :maxdepth: 2

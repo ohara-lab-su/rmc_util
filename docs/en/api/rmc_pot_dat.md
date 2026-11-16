@@ -63,9 +63,8 @@ Notes:
     SNC-related operations are delegated to ``RmcPotDatFree`` as before.
 
 
-## API List Based on the Implementation
+## Methods
 
-This list was created from the function definitions in the provided `rmc_pot_dat(20261116-081310).py`. The existing descriptions are retained above; argument and return types and side effects that are not explicitly specified have not been inferred.
 
 ### Methods of `RmcPotDat`
 
@@ -97,7 +96,7 @@ This section directly checks the function declarations and type annotations in t
 | `auto_write` | `bool` |
 | `use_free_format` | `Optional[bool]` |
 
-Return type annotation: `None`. Definition: `rmc_pot_dat(20261116-081310).py:25`.
+Return type annotation: `None`. Definition: `rmc_pot_dat.py:25`.
 
 ### `RmcPotDat.set_free_format`
 
@@ -106,7 +105,7 @@ Return type annotation: `None`. Definition: `rmc_pot_dat(20261116-081310).py:25`
 | `self` | `Not specified` |
 | `use_free_format` | `bool` |
 
-Return type annotation: `None`. Definition: `rmc_pot_dat(20261116-081310).py:55`.
+Return type annotation: `None`. Definition: `rmc_pot_dat.py:55`.
 
 ### `RmcPotDat.set_cfg_name`
 
@@ -115,7 +114,7 @@ Return type annotation: `None`. Definition: `rmc_pot_dat(20261116-081310).py:55`
 | `self` | `Not specified` |
 | `cfg_name` | `str` |
 
-Return type annotation: `None`. Definition: `rmc_pot_dat(20261116-081310).py:71`.
+Return type annotation: `None`. Definition: `rmc_pot_dat.py:71`.
 
 ### `RmcPotDat.init`
 
@@ -125,7 +124,7 @@ Return type annotation: `None`. Definition: `rmc_pot_dat(20261116-081310).py:71`
 | `use_free_format` | `Optional[bool]` |
 | `prefer_existing` | `bool` |
 
-Return type annotation: `None`. Definition: `rmc_pot_dat(20261116-081310).py:82`.
+Return type annotation: `None`. Definition: `rmc_pot_dat.py:82`.
 
 ### `RmcPotDat.is_free_format`
 
@@ -133,7 +132,7 @@ Return type annotation: `None`. Definition: `rmc_pot_dat(20261116-081310).py:82`
 |---|---|
 | `self` | `Not specified` |
 
-Return type annotation: `bool`. Definition: `rmc_pot_dat(20261116-081310).py:155`.
+Return type annotation: `bool`. Definition: `rmc_pot_dat.py:155`.
 
 ### `main`
 
@@ -141,4 +140,4 @@ Return type annotation: `bool`. Definition: `rmc_pot_dat(20261116-081310).py:155
 |---|---|
 | (None) | — |
 
-Return type annotation: `None`. Definition: `rmc_pot_dat(20261116-081310).py:181`.
+Return type annotation: `None`. Definition: `rmc_pot_dat.py:181`.

@@ -42,9 +42,8 @@ Raises:
     ValueError: If the coordination numbers of central atoms differ between constraints.
 
 
-## API List Based on the Implementation
+## Methods
 
-This list was created from the function definitions in the provided `rmc_pot_snc(3).py`. The existing descriptions are retained above; argument types, return types, and side effects not explicitly stated are not inferred.
 
 ### Methods of `RmcPotSnc`
 
@@ -66,7 +65,7 @@ This section directly checks the function declarations and type annotations in t
 | `self` | `Not specified` |
 | `path` | `str` |
 
-Return type annotation: `None`. Definition: `rmc_pot_snc(3).py:17`.
+Return type annotation: `None`. Definition: `rmc_pot_snc.py:17`.
 
 ### `RmcPotSnc.load`
 
@@ -74,7 +73,7 @@ Return type annotation: `None`. Definition: `rmc_pot_snc(3).py:17`.
 |---|---|
 | `self` | `Not specified` |
 
-Return type annotation: `None`. Definition: `rmc_pot_snc(3).py:27`.
+Return type annotation: `None`. Definition: `rmc_pot_snc.py:27`.
 
 ### `RmcPotSnc.get_qn_counts`
 
@@ -83,7 +82,7 @@ Return type annotation: `None`. Definition: `rmc_pot_snc(3).py:27`.
 | `self` | `Not specified` |
 | `constraint_index` | `int` |
 
-Return type annotation: `Dict[int, int]`. Definition: `rmc_pot_snc(3).py:69`.
+Return type annotation: `Dict[int, int]`. Definition: `rmc_pot_snc.py:69`.
 
 ### `RmcPotSnc.get_common_qn_counts`
 
@@ -91,4 +90,4 @@ Return type annotation: `Dict[int, int]`. Definition: `rmc_pot_snc(3).py:69`.
 |---|---|
 | `self` | `Not specified` |
 
-Return type annotation: `Dict[int, int]`. Definition: `rmc_pot_snc(3).py:82`.
+Return type annotation: `Dict[int, int]`. Definition: `rmc_pot_snc.py:82`.

@@ -56,9 +56,8 @@ Examples:
   log09 → next log10 (retains width 2)
 
 
-## API List Based on the Implementation
+## Methods
 
-This list was created from the function definitions in the provided `find_next_log_index(20261116-081327).py`. The existing descriptions are retained above; argument types, return types, and side effects not explicitly stated are not inferred.
 
 ### Module function `next_log_dir_name()`
 
@@ -81,7 +80,7 @@ This section directly checks the function declarations and type annotations in t
 | `stage` | `str` |
 | `log_index_width` | `Optional[int]` |
 
-Return type annotation: `str`. Definition: `find_next_log_index(20261116-081327).py:11`.
+Return type annotation: `str`. Definition: `find_next_log_index.py:11`.
 
 ### `find_next_log_index`
 
@@ -90,4 +89,4 @@ Return type annotation: `str`. Definition: `find_next_log_index(20261116-081327)
 | `prefix` | `str` |
 | `max_loop` | `int` |
 
-Return type annotation: `Tuple[int, int]`. Definition: `find_next_log_index(20261116-081327).py:94`.
+Return type annotation: `Tuple[int, int]`. Definition: `find_next_log_index.py:94`.

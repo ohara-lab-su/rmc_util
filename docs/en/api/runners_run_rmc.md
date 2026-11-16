@@ -7,18 +7,17 @@ Source: `src/rmc_util/runners/run_rmc.py`
 RMC
 
 
-## API List Based on the Implementation
+## Methods
 
-This list was created from the function definitions in the provided `run_rmc(1).py`. The existing descriptions are retained above. Argument types, return types, and side effects that are not explicitly specified have not been inferred.
 
 ### Module Function `run_rmc()`
 
 - Definition line: 11
 - Description: RMC
 
-## List of Arguments and Return Values Based on Source Code
+## Arguments and Return Values
 
-This section lists function declarations and type annotations checked directly against the provided implementation. Arguments and return values without type annotations are marked “Not specified.” This does not mean that the runtime return value is `None`.
+Arguments and return values without type annotations are marked “Not specified.” This does not imply that a function returns `None`.
 
 ### `run_rmc`
 
@@ -33,4 +32,4 @@ This section lists function declarations and type annotations checked directly a
 | `msg` | `Optional[str]` |
 | `logger` | `Optional[Any]` |
 
-Return type annotation: `bool`. Definition location: `run_rmc(1).py:11`.
+Return type annotation: `bool`. Definition location: `run_rmc.py:11`.

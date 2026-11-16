@@ -1,6 +1,6 @@
-# RMC 法・RMC_POT の理論とファイル形式
+# ファイル形式と RMC 法の詳説
 
-この章には従来の RMC 法と RMC_POT に関する解説を、内容を変更せず収録しています。`rmc_util` の操作手順は [利用ガイド](../guide/software.md)、[チュートリアル](../tutorial/index.md)、[API リファレンス](../api/index.md)を参照してください。
+既存の解説資料を収録しています。
 
 ```{toctree}
 :maxdepth: 2
@@ -10,3 +10,5 @@ rmcpot_cfg_explained
 rmcpot_input_explained
 rmcpot_output_explained
 ```
+
+RMC_POT の書式やキーワードの厳密な定義については、Orsolya Gereben, *RMC_POT user guide for version 2023.1* の II 章を参照してください。

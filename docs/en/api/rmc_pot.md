@@ -131,7 +131,7 @@ Args:
 
 ## API list based on the implementation
 
-This list was compiled from the function definitions in the provided `rmc_pot(20261116-081310).py`. The existing descriptions are preserved above; types of arguments and return values and side effects not explicitly stated have not been inferred.
+This list was compiled from the function definitions in the provided `rmc_pot.py`. The existing descriptions are preserved above; types of arguments and return values and side effects not explicitly stated have not been inferred.
 
 ### Methods of `RmcPot`
 
@@ -166,7 +166,7 @@ This section directly checks the function declarations and type annotations in t
 | `use_free_format` | `bool` |
 | `logger` | `Optional[XLogger]` |
 
-Return type annotation: `None`。Definition location: `rmc_pot(20261116-081310).py:34`。
+Return type annotation: `None`。Definition location: `rmc_pot.py:34`。
 
 ### `RmcPot.rmc_dat`
 
@@ -174,7 +174,7 @@ Return type annotation: `None`。Definition location: `rmc_pot(20261116-081310).
 |---|---|
 | `self` | `Not specified` |
 
-Return type annotation: `Not specified`。Definition location: `rmc_pot(20261116-081310).py:114`。
+Return type annotation: `Not specified`。Definition location: `rmc_pot.py:114`。
 
 ### `RmcPot.set_cfg_name`
 
@@ -183,7 +183,7 @@ Return type annotation: `Not specified`。Definition location: `rmc_pot(20261116
 | `self` | `Not specified` |
 | `cfg_name` | `str` |
 
-Return type annotation: `Not specified`。Definition location: `rmc_pot(20261116-081310).py:117`。
+Return type annotation: `Not specified`。Definition location: `rmc_pot.py:117`。
 
 ### `RmcPot.set_tag`
 
@@ -193,7 +193,7 @@ Return type annotation: `Not specified`。Definition location: `rmc_pot(20261116
 | `tag_name` | `str` |
 | `args` | `Not specified` |
 
-Return type annotation: `None`。Definition location: `rmc_pot(20261116-081310).py:132`。
+Return type annotation: `None`。Definition location: `rmc_pot.py:132`。
 
 ### `RmcPot.get_tag`
 
@@ -203,7 +203,7 @@ Return type annotation: `None`。Definition location: `rmc_pot(20261116-081310).
 | `tag_name` | `str` |
 | `args` | `Not specified` |
 
-Return type annotation: `Not specified`。Definition location: `rmc_pot(20261116-081310).py:148`。
+Return type annotation: `Not specified`。Definition location: `rmc_pot.py:148`。
 
 ### `RmcPot.init`
 
@@ -212,7 +212,7 @@ Return type annotation: `Not specified`。Definition location: `rmc_pot(20261116
 | `self` | `Not specified` |
 | `cfg_name` | `str` |
 
-Return type annotation: `Not specified`。Definition location: `rmc_pot(20261116-081310).py:167`。
+Return type annotation: `Not specified`。Definition location: `rmc_pot.py:167`。
 
 ### `RmcPot.preprocess`
 
@@ -220,7 +220,7 @@ Return type annotation: `Not specified`。Definition location: `rmc_pot(20261116
 |---|---|
 | `self` | `Not specified` |
 
-Return type annotation: `bool`。Definition location: `rmc_pot(20261116-081310).py:181`。
+Return type annotation: `bool`。Definition location: `rmc_pot.py:181`。
 
 ### `RmcPot.postprocess`
 
@@ -231,7 +231,7 @@ Return type annotation: `bool`。Definition location: `rmc_pot(20261116-081310).
 | `cfg_name` | `Optional[str]` |
 | `element_info` | `Optional[Union[str, Sequence[str]]]` |
 
-Return type annotation: `bool`。Definition location: `rmc_pot(20261116-081310).py:261`。
+Return type annotation: `bool`。Definition location: `rmc_pot.py:261`。
 
 ### `RmcPot.check_fnc_cutoff_consistency`
 
@@ -240,7 +240,7 @@ Return type annotation: `bool`。Definition location: `rmc_pot(20261116-081310).
 | `self` | `Not specified` |
 | `cfg_name` | `Optional[str]` |
 
-Return type annotation: `bool`。Definition location: `rmc_pot(20261116-081310).py:342`。
+Return type annotation: `bool`。Definition location: `rmc_pot.py:342`。
 
 ### `RmcPot.run`
 
@@ -251,7 +251,7 @@ Return type annotation: `bool`。Definition location: `rmc_pot(20261116-081310).
 | `blocking` | `Optional[bool]` |
 | `save_stdout` | `Optional[bool]` |
 
-Return type annotation: `bool`。Definition location: `rmc_pot(20261116-081310).py:729`。
+Return type annotation: `bool`。Definition location: `rmc_pot.py:729`。
 
 ### `RmcPot.ensure_vasp5_format`
 
@@ -261,7 +261,7 @@ Return type annotation: `bool`。Definition location: `rmc_pot(20261116-081310).
 | `element_info` | `Optional[str]` |
 | `logger` | `XLogger` |
 
-Return type annotation: `bool`。Definition location: `rmc_pot(20261116-081310).py:839`。
+Return type annotation: `bool`。Definition location: `rmc_pot.py:839`。
 
 ### `RmcPot.cfg2poscar`
 
@@ -272,5 +272,5 @@ Return type annotation: `bool`。Definition location: `rmc_pot(20261116-081310).
 | `vasp_name` | `Optional[str]` |
 | `element_info` | `Optional[Union[str, Sequence[str]]]` |
 
-Return type annotation: `bool`。Definition location: `rmc_pot(20261116-081310).py:863`。
+Return type annotation: `bool`。Definition location: `rmc_pot.py:863`。
 

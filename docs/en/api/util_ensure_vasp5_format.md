@@ -20,9 +20,8 @@ Returns:
     bool: True/False
 
 
-## API List Based on the Implementation
+## Methods
 
-This list was created from the function definitions in the provided `ensure_vasp5_format(1).py`. The existing description is retained above. Argument types, return types, and side effects that are not explicitly stated have not been inferred.
 
 ### Module Function `ensure_vasp5_format()`
 
@@ -41,4 +40,4 @@ This section lists declarations and type annotations checked directly against th
 | `element_info` | `Optional[Union[str, Sequence[str]]]` |
 | `logger` | `Optional[XLogger]` |
 
-Return type annotation: `bool`. Definition location: `ensure_vasp5_format(1).py:10`.
+Return type annotation: `bool`. Definition location: `ensure_vasp5_format.py:10`.

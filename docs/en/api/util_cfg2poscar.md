@@ -24,9 +24,8 @@ Returns:
     bool:
 
 
-## API List Based on the Implementation
+## Methods
 
-This list was created from the function definitions in the provided `cfg2poscar(5).py`. The existing description is retained above. Argument types, return types, and side effects that are not explicitly stated have not been inferred.
 
 ### Module Function `parse_elements()`
 
@@ -53,7 +52,7 @@ This section lists function declarations and type annotations checked directly a
 |---|---|
 | `element_info` | `Optional[Union[str, Sequence[str]]]` |
 
-Return type annotation: `Optional[List[str]]`. Definition location: `cfg2poscar(5).py:42`.
+Return type annotation: `Optional[List[str]]`. Definition location: `cfg2poscar.py:42`.
 
 ### `make_vasp_elements_line`
 
@@ -61,7 +60,7 @@ Return type annotation: `Optional[List[str]]`. Definition location: `cfg2poscar(
 |---|---|
 | `elements` | `List[str]` |
 
-Return type annotation: `str`. Definition location: `cfg2poscar(5).py:87`.
+Return type annotation: `str`. Definition location: `cfg2poscar.py:87`.
 
 ### `cfg2poscar`
 
@@ -72,4 +71,4 @@ Return type annotation: `str`. Definition location: `cfg2poscar(5).py:87`.
 | `element_info` | `Optional[Union[str, Sequence[str]]]` |
 | `logger` | `Optional[Any]` |
 
-Return type annotation: `bool`. Definition location: `cfg2poscar(5).py:99`.
+Return type annotation: `bool`. Definition location: `cfg2poscar.py:99`.

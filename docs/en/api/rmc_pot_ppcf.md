@@ -15,15 +15,15 @@ Args:
 
 ### `load(self)`
 
-This method has no docstring. Refer to the implementation for details of its behavior.
+No docstring is defined for this method.
 
 ### `get_r(self)`
 
-This method has no docstring. Refer to the implementation for details of its behavior.
+No docstring is defined for this method.
 
 ### `get_gij(self)`
 
-This method has no docstring. Refer to the implementation for details of its behavior.
+No docstring is defined for this method.
 
 ### `get_single(self, index: int)`
 
@@ -31,12 +31,11 @@ Return one partial g_ij(r) selected by its zero-based index.
 
 ### `get_labels(self)`
 
-This method has no docstring. Refer to the implementation for details of its behavior.
+No docstring is defined for this method.
 
 
-## API List Based on the Implementation
+## Methods
 
-This list was created from the function definitions in the provided `rmc_pot_ppcf(9).py`. The existing descriptions are retained above; argument types, return types, and side effects not explicitly stated are not inferred.
 
 ### Methods of `RmcPotPpcf`
 
@@ -62,7 +61,7 @@ This section directly checks the function declarations and type annotations in t
 | `config` | `Optional[Config]` |
 | `logger` | `Optional[XLogger]` |
 
-Return type annotation: `Not specified`. Definition: `rmc_pot_ppcf(9).py:17`.
+Return type annotation: `Not specified`. Definition: `rmc_pot_ppcf.py:17`.
 
 ### `RmcPotPpcf.load`
 
@@ -70,7 +69,7 @@ Return type annotation: `Not specified`. Definition: `rmc_pot_ppcf(9).py:17`.
 |---|---|
 | `self` | `Not specified` |
 
-Return type annotation: `None`. Definition: `rmc_pot_ppcf(9).py:42`.
+Return type annotation: `None`. Definition: `rmc_pot_ppcf.py:42`.
 
 ### `RmcPotPpcf.get_r`
 
@@ -78,7 +77,7 @@ Return type annotation: `None`. Definition: `rmc_pot_ppcf(9).py:42`.
 |---|---|
 | `self` | `Not specified` |
 
-Return type annotation: `np.ndarray`. Definition: `rmc_pot_ppcf(9).py:82`.
+Return type annotation: `np.ndarray`. Definition: `rmc_pot_ppcf.py:82`.
 
 ### `RmcPotPpcf.get_gij`
 
@@ -86,7 +85,7 @@ Return type annotation: `np.ndarray`. Definition: `rmc_pot_ppcf(9).py:82`.
 |---|---|
 | `self` | `Not specified` |
 
-Return type annotation: `np.ndarray`. Definition: `rmc_pot_ppcf(9).py:85`.
+Return type annotation: `np.ndarray`. Definition: `rmc_pot_ppcf.py:85`.
 
 ### `RmcPotPpcf.get_single`
 
@@ -95,7 +94,7 @@ Return type annotation: `np.ndarray`. Definition: `rmc_pot_ppcf(9).py:85`.
 | `self` | `Not specified` |
 | `index` | `int` |
 
-Return type annotation: `np.ndarray`. Definition: `rmc_pot_ppcf(9).py:88`.
+Return type annotation: `np.ndarray`. Definition: `rmc_pot_ppcf.py:88`.
 
 ### `RmcPotPpcf.get_labels`
 
@@ -103,4 +102,4 @@ Return type annotation: `np.ndarray`. Definition: `rmc_pot_ppcf(9).py:88`.
 |---|---|
 | `self` | `Not specified` |
 
-Return type annotation: `List[str]`. Definition: `rmc_pot_ppcf(9).py:94`.
+Return type annotation: `List[str]`. Definition: `rmc_pot_ppcf.py:94`.

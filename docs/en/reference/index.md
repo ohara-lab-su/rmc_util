@@ -1,6 +1,6 @@
 # Detailed Explanations of File Formats and the RMC Method
 
-This section contains existing explanatory materials.
+This section explains RMC theory and the RMC_POT configuration, input, and output file formats.
 
 ```{toctree}
 :maxdepth: 2

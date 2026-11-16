@@ -42,9 +42,8 @@ S_exp_original(Q) = original F_exp + 1
 Used to return the data in dictionary form.
 
 
-## API List Based on the Implementation
+## Methods
 
-This list was created from the function definitions in the provided `rmc_pot_fit(7).py`. The existing descriptions are retained above; argument and return types and side effects that are not explicitly specified have not been inferred.
 
 ### Methods of `RmcPotFit`
 
@@ -71,7 +70,7 @@ This section directly checks the function declarations and type annotations in t
 | `config` | `Optional[Config]` |
 | `logger` | `Optional[XLogger]` |
 
-Return type annotation: `Not specified`. Definition: `rmc_pot_fit(7).py:20`.
+Return type annotation: `Not specified`. Definition: `rmc_pot_fit.py:20`.
 
 ### `RmcPotFit.read_fit`
 
@@ -80,7 +79,7 @@ Return type annotation: `Not specified`. Definition: `rmc_pot_fit(7).py:20`.
 | `self` | `Not specified` |
 | `filename` | `Optional[str]` |
 
-Return type annotation: `Optional[bool]`. Definition: `rmc_pot_fit(7).py:59`.
+Return type annotation: `Optional[bool]`. Definition: `rmc_pot_fit.py:59`.
 
 ### `RmcPotFit.get_S_calc`
 
@@ -88,7 +87,7 @@ Return type annotation: `Optional[bool]`. Definition: `rmc_pot_fit(7).py:59`.
 |---|---|
 | `self` | `Not specified` |
 
-Return type annotation: `List[float]`. Definition: `rmc_pot_fit(7).py:114`.
+Return type annotation: `List[float]`. Definition: `rmc_pot_fit.py:114`.
 
 ### `RmcPotFit.get_S_exp`
 
@@ -96,7 +95,7 @@ Return type annotation: `List[float]`. Definition: `rmc_pot_fit(7).py:114`.
 |---|---|
 | `self` | `Not specified` |
 
-Return type annotation: `List[float]`. Definition: `rmc_pot_fit(7).py:136`.
+Return type annotation: `List[float]`. Definition: `rmc_pot_fit.py:136`.
 
 ### `RmcPotFit.get_S_exp_original`
 
@@ -104,7 +103,7 @@ Return type annotation: `List[float]`. Definition: `rmc_pot_fit(7).py:136`.
 |---|---|
 | `self` | `Not specified` |
 
-Return type annotation: `List[float]`. Definition: `rmc_pot_fit(7).py:140`.
+Return type annotation: `List[float]`. Definition: `rmc_pot_fit.py:140`.
 
 ### `RmcPotFit.as_dict`
 
@@ -112,4 +111,4 @@ Return type annotation: `List[float]`. Definition: `rmc_pot_fit(7).py:140`.
 |---|---|
 | `self` | `Not specified` |
 
-Return type annotation: `Dict[str, List[float]]`. Definition: `rmc_pot_fit(7).py:144`.
+Return type annotation: `Dict[str, List[float]]`. Definition: `rmc_pot_fit.py:144`.

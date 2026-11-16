@@ -54,9 +54,8 @@ Args:
 Returns:
 
 
-## API List Based on the Implementation
+## Methods
 
-This list was created from the function definitions in the supplied `poscar2cfg(8).py`. The existing descriptions are retained above; argument and return types and side effects that are not explicitly stated have not been inferred.
 
 ### Module Function `contcar2cfg()`
 
@@ -89,7 +88,7 @@ This section lists the function declarations and type annotations verified direc
 | `cfg_name` | `str` |
 | `logger` | `Optional[Any]` |
 
-Return type annotation: `Not specified`. Definition location: `poscar2cfg(8).py:42`.
+Return type annotation: `Not specified`. Definition location: `poscar2cfg.py:42`.
 
 ### `poscar2cfg`
 
@@ -99,7 +98,7 @@ Return type annotation: `Not specified`. Definition location: `poscar2cfg(8).py:
 | `poscar_name` | `Optional[str]` |
 | `logger` | `Optional[Any]` |
 
-Return type annotation: `bool`. Definition location: `poscar2cfg(8).py:67`.
+Return type annotation: `bool`. Definition location: `poscar2cfg.py:67`.
 
 ### `vasp2cfg`
 
@@ -109,7 +108,7 @@ Return type annotation: `bool`. Definition location: `poscar2cfg(8).py:67`.
 | `cfg_name` | `str` |
 | `logger` | `Optional[Any]` |
 
-Return type annotation: `Not specified`. Definition location: `poscar2cfg(8).py:98`.
+Return type annotation: `Not specified`. Definition location: `poscar2cfg.py:98`.
 
 ### `convert_to_cfg`
 
@@ -119,4 +118,4 @@ Return type annotation: `Not specified`. Definition location: `poscar2cfg(8).py:
 | `cfg_name` | `str` |
 | `logger` | `Optional[Any]` |
 
-Return type annotation: `bool`. Definition location: `poscar2cfg(8).py:137`.
+Return type annotation: `bool`. Definition location: `poscar2cfg.py:137`.

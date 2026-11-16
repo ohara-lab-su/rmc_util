@@ -4,7 +4,7 @@ Source: `src/rmc_util/config.py`
 
 ## Class `Config`
 
-The source does not contain a docstring describing this class.
+No class docstring is defined.
 
 ### `__init__(self, yaml_path: Optional[str]=None, *, logger: Optional[XLogger]=XLogger())`
 
@@ -14,12 +14,11 @@ Args:
 
 ### `load_yaml(cls, yaml_path=None)`
 
-This method has no docstring. Refer to the implementation for details of its behavior.
+No docstring is defined for this method.
 
 
-## API List Based on the Implementation
+## Methods
 
-This list was created from the function definitions in the provided `config(20261116-081311).py`. The existing descriptions are retained above. Argument types, return types, and side effects that are not explicitly specified have not been inferred.
 
 ### Methods of `Config`
 
@@ -28,9 +27,9 @@ This list was created from the function definitions in the provided `config(2026
 | `__init__()` | 88 | Args: |
 | `load_yaml()` | 107 | No description in source |
 
-## List of Arguments and Return Values Based on Source Code
+## Arguments and Return Values
 
-This section lists function declarations and type annotations checked directly against the provided implementation. Arguments and return values without type annotations are marked “Not specified.” This does not mean that the runtime return value is `None`.
+Arguments and return values without type annotations are marked “Not specified.” This does not imply that a function returns `None`.
 
 ### `Config.__init__`
 
@@ -40,7 +39,7 @@ This section lists function declarations and type annotations checked directly a
 | `yaml_path` | `Optional[str]` |
 | `logger` | `Optional[XLogger]` |
 
-Return type annotation: `Not specified`. Definition location: `config(20261116-081311).py:88`.
+Return type annotation: `Not specified`. Definition location: `config.py:88`.
 
 ### `Config.load_yaml`
 
@@ -49,4 +48,4 @@ Return type annotation: `Not specified`. Definition location: `config(20261116-0
 | `cls` | `Not specified` |
 | `yaml_path` | `Not specified` |
 
-Return type annotation: `Not specified`. Definition location: `config(20261116-081311).py:107`.
+Return type annotation: `Not specified`. Definition location: `config.py:107`.
