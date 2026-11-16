@@ -4,101 +4,81 @@ Free-format DAT input handling.
 
 Source: `src/rmc_util/rmc_pot_dat_free.py`.
 
-This reference is generated from the supplied Python source. Signatures and declaration lines are taken from that source; implementation-specific behavior must be checked against the code.
+This module provides section- and keyword-based access to free-format RMC_POT DAT files.
 
 ## Class `RmcPotDatFree`
 
-Defined at line 53.
+`RmcPotDatFree` reads and writes free-format RMC_POT `*.dat` files using `[ SECTION ]` and `KEY = VALUE` entries. Settings can be changed through the standard getters and setters or through the free-format-specific `get()`, `set()`, and `add()` operations.
 
-### `__init__(self, config: Optional[Config]=None, logger: Optional[XLogger]=None, *, cfg_name: Optional[str]=None, auto_write: bool=True, version: str='#003') -> None`
+The RMC_POT executable must support the required advanced geometric constraints when those constraints are used; the corresponding build options are described in the RMC_POT manual.
 
-Defined at line 77.
+### `__init__(self, config: Optional[Config]=None, logger: Optional[XLogger]=None, *, cfg_name: Optional[str]=None, auto_write: bool=True, version: str='#003')`
 
-Refer to the implementation for detailed semantics, side effects, and return values.
+Initialize the free-format input editor.
 
-### `create_dat_file(self, basename: str) -> bool`
+- `config`: Overall configuration; a new `Config` is used when omitted.
+- `logger`: `XLogger` instance; a new logger is created when omitted.
+- `cfg_name`: File basename without `.dat`; defaults to `config.cfg_name`.
+- `auto_write`: Save the DAT file after each setter by default.
+- `version`: Format marker for newly created files, normally `#002` or `#003`.
 
-Defined at line 174.
+If `<cfg_name>.dat` already exists, its format marker is preserved. The `version` argument applies when creating a new file. Set `auto_write=False` to apply multiple changes before writing the result.
 
-Refer to the implementation for detailed semantics, side effects, and return values.
+### `create_dat_file(self, basename: str)`
 
-### `load(self) -> bool`
+Create a free-format DAT file with initial settings in `[ GENERAL ]`. The argument is the basename without `.dat`. Returns `True` when a new file is created and `False` when the file already exists; existing files are not overwritten. The initial configuration uses `FNC-TYPE = NONE` and does not create a `[ BPOT ]` section.
 
-Defined at line 255.
+### `load(self)`
 
-Refer to the implementation for detailed semantics, side effects, and return values.
+Read the DAT file selected by `cfg_name`. Returns `True` when the file is loaded and `False` when it does not exist. Raises `ValueError` for an empty file, invalid format marker, or a key/value entry outside a section. Repeated keys are retained as ordered lists; continuation lines are joined to the preceding value.
 
-### `write(self, out_name: Optional[str]=None) -> None`
+### `write(self, out_name: Optional[str]=None)`
 
-Defined at line 313.
+Write the current free-format data to `<out_name>.dat`, or to the current `cfg_name` when omitted. Section order, key order, and the order of repeated values are preserved.
 
-Refer to the implementation for detailed semantics, side effects, and return values.
+### `set(self, section: str, key: str, value: Any, index: int=0)`
 
-### `set(self, section: str, key: str, value: Any, index: int=0) -> None`
+Replace the value of `key` in the zero-based occurrence `index` of `section`. Missing section occurrences are created as needed. Existing values for the key are replaced.
 
-Defined at line 516.
+### `add(self, section: str, key: str, value: Any, index: int=0)`
 
-Refer to the implementation for detailed semantics, side effects, and return values.
+Append a value to `key` in the selected occurrence of `section`, retaining existing values and their order.
 
-### `add(self, section: str, key: str, value: Any, index: int=0) -> None`
+### `get(self, section: str, key: str, index: int=0, default: Optional[str]=None)`
 
-Defined at line 536.
+Return the first value for the specified key and section occurrence. Return `default` when the section or key does not exist.
 
-Refer to the implementation for detailed semantics, side effects, and return values.
+### `get_all(self, section: str, key: str, index: int=0)`
 
-### `get(self, section: str, key: str, index: int=0, default: Optional[str]=None) -> Optional[str]`
+Return all values for the key in insertion order. Return an empty list when no matching entry exists.
 
-Defined at line 555.
+### `initialize_sections(self, section: str, *, auto_write: Optional[bool]=None)`
 
-Refer to the implementation for detailed semantics, side effects, and return values.
+Remove all occurrences of the named section without creating an empty replacement. This is useful before rebuilding repeated `[ SNC ]`, `[ EXP ]`, or `[ COS ]` sections. `auto_write=None` uses the instance-level setting.
 
-### `get_all(self, section: str, key: str, index: int=0) -> List[str]`
+### `initialize_qn_constraints(self, *, auto_write: Optional[bool]=None)`
 
-Defined at line 577.
+Compatibility method for older Qn/SNC initialization code. Delegates removal to `clear_qn_constraints()`; new code can call that method directly.
 
-Refer to the implementation for detailed semantics, side effects, and return values.
+### `add_section(self, section: str)`
 
-### `initialize_sections(self, section: str, *, auto_write: Optional[bool]=None) -> None`
+Append an empty section and return its zero-based occurrence index. This low-level operation does not write the file automatically. For normal constraint definitions, use the corresponding high-level constraint setter.
 
-Defined at line 597.
+### `remove_section(self, section: str, index: int=0)`
 
-Refer to the implementation for detailed semantics, side effects, and return values.
+Remove the selected occurrence of a section. Raises `IndexError` if the specified occurrence does not exist.
 
-### `initialize_qn_constraints(self, *, auto_write: Optional[bool]=None) -> None`
+### `remove(self, section: str, key: str, index: int=0)`
 
-Defined at line 637.
+Remove a key and all its values from the selected section. Does nothing if the section or key does not exist.
 
-Refer to the implementation for detailed semantics, side effects, and return values.
+### `section_count(self, section: str)`
 
-### `add_section(self, section: str) -> int`
+Return the number of occurrences of the specified section.
 
-Defined at line 652.
+### `set_cfg_name(self, cfg_name: str)`
 
-Refer to the implementation for detailed semantics, side effects, and return values.
-
-### `remove_section(self, section: str, index: int=0) -> None`
-
-Defined at line 670.
-
-Refer to the implementation for detailed semantics, side effects, and return values.
-
-### `remove(self, section: str, key: str, index: int=0) -> None`
-
-Defined at line 689.
-
-Refer to the implementation for detailed semantics, side effects, and return values.
-
-### `section_count(self, section: str) -> int`
-
-Defined at line 705.
-
-Refer to the implementation for detailed semantics, side effects, and return values.
-
-### `set_cfg_name(self, cfg_name: str) -> None`
-
-Defined at line 716.
-
-Refer to the implementation for detailed semantics, side effects, and return values.
+Change the DAT file basename (without `.dat`) and update the corresponding `Config.cfg_name` value.
 
 ### `set_element_info(self, element_info: Sequence[str], *, auto_write: Optional[bool]=None) -> None`
 
