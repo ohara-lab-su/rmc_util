@@ -131,7 +131,6 @@ Args:
 
 ## API list based on the implementation
 
-This list was compiled from the function definitions in the provided `rmc_pot.py`. The existing descriptions are preserved above; types of arguments and return values and side effects not explicitly stated have not been inferred.
 
 ### Methods of `RmcPot`
 
@@ -152,7 +151,6 @@ This list was compiled from the function definitions in the provided `rmc_pot.py
 
 ## Argument and return-value list based on source code
 
-This section directly checks the function declarations and type annotations in the provided implementation. Arguments and return values without type annotations are marked “Not specified”; this does not mean their runtime return value is `None`.
 
 ### `RmcPot.__init__`
 

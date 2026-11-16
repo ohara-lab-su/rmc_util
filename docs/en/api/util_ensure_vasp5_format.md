@@ -30,7 +30,6 @@ Returns:
 
 ## Arguments and Return Values Based on the Source Code
 
-This section lists declarations and type annotations checked directly against the provided implementation. Arguments and return values without type annotations are marked as “not specified.” This does not imply that their runtime return value is `None`.
 
 ### `ensure_vasp5_format`
 

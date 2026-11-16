@@ -36,7 +36,6 @@ Return one partial g_ij(r) selected by its zero-based index.
 
 ## 実装に基づく API 一覧
 
-この一覧は提供された `rmc_pot_ppcf(9).py` の関数定義から作成しています。既存の説明は上に保持し、引数・戻り値の型や副作用が明示されていないものは推測していません。
 
 ### `RmcPotPpcf` のメソッド
 
@@ -51,7 +50,6 @@ Return one partial g_ij(r) selected by its zero-based index.
 
 ## ソースコードに基づく引数・戻り値一覧
 
-この節は提供された実装の関数宣言と型注釈を直接確認した一覧です。型注釈のない引数・戻り値は「指定なし」と記載しています。実行時の戻り値が `None` であることを意味しません。
 
 ### `RmcPotPpcf.__init__`
 

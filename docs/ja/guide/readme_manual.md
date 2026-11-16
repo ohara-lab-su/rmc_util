@@ -4,12 +4,6 @@ RMC_UTIL のインストール、計算条件の設定、実行および結果�
 
 ## rmc_util
 
-[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/ohara-lab-su/rmc_util/blob/main/README.md)
-[![ja](https://img.shields.io/badge/lang-ja-yellow.svg)](https://github.com/ohara-lab-su/rmc_util/blob/main/README.ja.md)
-
-[![GitHub](https://img.shields.io/badge/GitHub-ohara--lab--su%2Frmc_util-181717?logo=github)](https://github.com/ohara-lab-su/rmc_util/)
-[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Documentation-222222?logo=githubpages&logoColor=white)](https://ohara-lab-su.github.io/rmc_util/ja/)
-[![Ohara Lab](https://img.shields.io/badge/Ohara%20Lab-Home-4B5563?logo=homeassistant&logoColor=white)](https://ohara-lab-su.github.io/)
 
 `rmc_util` は、 **RMC_POT の入力作成・計算実行・結果解析を
 Python から扱うためのオープンソースライブラリ**です。
@@ -279,13 +273,13 @@ CFG / POSCAR 変換などの構造変換・補助機能は `rmc_util.util` に�
 
 ### ドキュメント
 
-- [ドキュメントホーム](https://github.com/ohara-lab-su/rmc_util/blob/main/docs/index.md)
-- [RMC 法と RMC_POT](https://github.com/ohara-lab-su/rmc_util/blob/main/docs/guide/overview.md)
-- [入力ファイル](https://github.com/ohara-lab-su/rmc_util/blob/main/docs/guide/input.md)
-- [構造制約](https://github.com/ohara-lab-su/rmc_util/blob/main/docs/guide/constraints.md)
-- [出力と解析](https://github.com/ohara-lab-su/rmc_util/blob/main/docs/guide/output.md)
-- [ファイル形式の詳説](https://github.com/ohara-lab-su/rmc_util/blob/main/docs/reference/index.md)
-- [API リファレンス](https://github.com/ohara-lab-su/rmc_util/blob/main/docs/api/index.md)
+- [ドキュメントホーム](../index.md)
+- [RMC 法と RMC_POT](../guide/overview.md)
+- [入力ファイル](../guide/input.md)
+- [構造制約](../guide/constraints.md)
+- [出力と解析](../guide/output.md)
+- [ファイル形式の詳説](../reference/index.md)
+- [API リファレンス](../api/index.md)
 
 ドキュメントをローカルで HTML 化する場合は次を実行します。
 

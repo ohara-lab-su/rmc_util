@@ -44,7 +44,6 @@ Returns:
 
 ## Arguments and Return Values Based on the Source Code
 
-This section lists function declarations and type annotations checked directly against the provided implementation. Arguments and return values without type annotations are marked as “not specified.” This does not imply that their runtime return value is `None`.
 
 ### `parse_elements`
 

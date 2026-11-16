@@ -4,12 +4,6 @@ This manual describes installing RMC_UTIL, configuring and running calculations,
 
 ## rmc_util
 
-[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/ohara-lab-su/rmc_util/blob/main/README.md)
-[![ja](https://img.shields.io/badge/lang-ja-yellow.svg)](https://github.com/ohara-lab-su/rmc_util/blob/main/README.ja.md)
-
-[![GitHub](https://img.shields.io/badge/GitHub-ohara--lab--su%2Frmc_util-181717?logo=github)](https://github.com/ohara-lab-su/rmc_util/)
-[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Documentation-222222?logo=githubpages&logoColor=white)](https://ohara-lab-su.github.io/rmc_util/ja/)
-[![Ohara Lab](https://img.shields.io/badge/Ohara%20Lab-Home-4B5563?logo=homeassistant&logoColor=white)](https://ohara-lab-su.github.io/)
 
 `rmc_util` is an **open-source library for preparing RMC_POT input, running calculations, and analyzing results from Python**. While using the existing RMC_POT calculation engine, it enables programmatic automation of input conditions, editing structural constraints, iterative calculations, and convergence evaluation.
 
@@ -248,13 +242,13 @@ Structural conversion and auxiliary functionality, including CFG / POSCAR conver
 
 ### Documentation
 
-- [Documentation Home](https://github.com/ohara-lab-su/rmc_util/blob/main/docs/index.md)
-- [RMC Method and RMC_POT](https://github.com/ohara-lab-su/rmc_util/blob/main/docs/guide/overview.md)
-- [Input Files](https://github.com/ohara-lab-su/rmc_util/blob/main/docs/guide/input.md)
-- [Structural Constraints](https://github.com/ohara-lab-su/rmc_util/blob/main/docs/guide/constraints.md)
-- [Output and Analysis](https://github.com/ohara-lab-su/rmc_util/blob/main/docs/guide/output.md)
-- [Detailed File Formats](https://github.com/ohara-lab-su/rmc_util/blob/main/docs/reference/index.md)
-- [API Reference](https://github.com/ohara-lab-su/rmc_util/blob/main/docs/api/index.md)
+- [Documentation Home](../index.md)
+- [RMC Method and RMC_POT](../guide/overview.md)
+- [Input Files](../guide/input.md)
+- [Structural Constraints](../guide/constraints.md)
+- [Output and Analysis](../guide/output.md)
+- [Detailed File Formats](../reference/index.md)
+- [API Reference](../api/index.md)
 
 To build the documentation as HTML locally, run:
 

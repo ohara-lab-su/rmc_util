@@ -1,10 +1,11 @@
-# 実装に基づく API 索引
+# API 定義索引
 
-このページは、提供された Python ソースの定義を基に作成した索引です。関数名・クラス名は実装から取得しています。**公開 API の保証を示すものではありません。** 実際の利用手順は [README ベースのマニュアル](../guide/readme_manual.md) を参照してください。
+RMC_UTIL のモジュール別に、クラス、関数、メソッドと定義位置を示します。詳細は各モジュールの API リファレンスを参照してください。
+
+
 
 ## [`config`](config.md)
 
-対象ソース: `config(20261116-081311).py`
 
 - クラス `Config`（定義行 13）
   - `__init__()`（定義行 88）
@@ -12,7 +13,6 @@
 
 ## [`install`](install.md)
 
-対象ソース: `install.py`
 
 - 関数 `find_installed_scripts()`（定義行 19）
 - 関数 `install_scripts()`（定義行 41）
@@ -20,7 +20,6 @@
 
 ## [`rmc_pot`](rmc_pot.md)
 
-対象ソース: `rmc_pot(20261116-081310).py`
 
 - クラス `RmcPot`（定義行 28）
   - `__init__()`（定義行 34）
@@ -38,7 +37,6 @@
 
 ## [`rmc_pot_dat`](rmc_pot_dat.md)
 
-対象ソース: `rmc_pot_dat(20261116-081310).py`
 
 - クラス `RmcPotDat`（定義行 22）
   - `__init__()`（定義行 25）
@@ -50,7 +48,6 @@
 
 ## [`rmc_pot_dat_fixed`](rmc_pot_dat_fixed.md)
 
-対象ソース: `rmc_pot_dat_fixed(10).py`
 
 - クラス `RmcPotDatFixed`（定義行 67）
   - `__init__()`（定義行 82）
@@ -142,7 +139,6 @@
 
 ## [`rmc_pot_dat_fnc`](rmc_pot_dat_fnc.md)
 
-対象ソース: `rmc_pot_dat_fnc(10).py`
 
 - クラス `FncNeighbour`（定義行 19）
 - クラス `RmcPotDatFnc`（定義行 31）
@@ -173,7 +169,6 @@
 
 ## [`rmc_pot_dat_free`](rmc_pot_dat_free.md)
 
-対象ソース: `rmc_pot_dat_free(20261116-081310).py`
 
 - クラス `RmcPotDatFree`（定義行 53）
   - `__init__()`（定義行 77）
@@ -311,7 +306,6 @@
 
 ## [`rmc_pot_dat_top`](rmc_pot_dat_top.md)
 
-対象ソース: `rmc_pot_dat_top(10).py`
 
 - クラス `TopologySection`（定義行 21）
 - クラス `RmcPotDatTop`（定義行 33）
@@ -356,7 +350,6 @@
 
 ## [`rmc_pot_fit`](rmc_pot_fit.md)
 
-対象ソース: `rmc_pot_fit(7).py`
 
 - クラス `RmcPotFit`（定義行 14）
   - `__init__()`（定義行 20）
@@ -368,7 +361,6 @@
 
 ## [`rmc_pot_hst`](rmc_pot_hst.md)
 
-対象ソース: `rmc_pot_hst(6).py`
 
 - クラス `RmcPotHst`（定義行 39）
   - `__init__()`（定義行 41）
@@ -387,7 +379,6 @@
 
 ## [`rmc_pot_log`](rmc_pot_log.md)
 
-対象ソース: `rmc_pot_log(7).py`
 
 - クラス `RmcPotLog`（定義行 19）
   - `__init__()`（定義行 21）
@@ -412,7 +403,6 @@
 
 ## [`rmc_pot_ppcf`](rmc_pot_ppcf.md)
 
-対象ソース: `rmc_pot_ppcf(9).py`
 
 - クラス `RmcPotPpcf`（定義行 16）
   - `__init__()`（定義行 17）
@@ -424,7 +414,6 @@
 
 ## [`rmc_pot_snc`](rmc_pot_snc.md)
 
-対象ソース: `rmc_pot_snc(3).py`
 
 - クラス `RmcPotSnc`（定義行 14）
   - `__init__()`（定義行 17）
@@ -434,13 +423,11 @@
 
 ## [`runners_run_rmc`](runners_run_rmc.md)
 
-対象ソース: `run_rmc(1).py`
 
 - 関数 `run_rmc()`（定義行 11）
 
 ## [`util_cfg2poscar`](util_cfg2poscar.md)
 
-対象ソース: `cfg2poscar(5).py`
 
 - 関数 `parse_elements()`（定義行 42）
 - 関数 `make_vasp_elements_line()`（定義行 87）
@@ -448,20 +435,17 @@
 
 ## [`util_ensure_vasp5_format`](util_ensure_vasp5_format.md)
 
-対象ソース: `ensure_vasp5_format(1).py`
 
 - 関数 `ensure_vasp5_format()`（定義行 10）
 
 ## [`util_find_next_log_index`](util_find_next_log_index.md)
 
-対象ソース: `find_next_log_index(20261116-081327).py`
 
 - 関数 `next_log_dir_name()`（定義行 11）
 - 関数 `find_next_log_index()`（定義行 94）
 
 ## [`util_gromacs_top_to_rmc_top`](util_gromacs_top_to_rmc_top.md)
 
-対象ソース: `gromacs_top_to_rmc_top(2).py`
 
 - クラス `TopologyConvertError`（定義行 47）
 - クラス `GroAtom`（定義行 51）
@@ -484,7 +468,6 @@
 
 ## [`util_poscar2cfg`](util_poscar2cfg.md)
 
-対象ソース: `poscar2cfg(8).py`
 
 - 関数 `contcar2cfg()`（定義行 42）
 - 関数 `poscar2cfg()`（定義行 67）
@@ -493,7 +476,6 @@
 
 ## [`util_zeolite`](util_zeolite.md)
 
-対象ソース: `zeolite(2).py`
 
 - クラス `ZeoliteCutoffs`（定義行 48）
   - `range_for_t()`（定義行 60）

@@ -50,7 +50,6 @@ No docstring is defined for this method.
 
 ## Argument and Return-Type List Based on Source Code
 
-This section directly checks the function declarations and type annotations in the provided implementation. Arguments and return values without type annotations are marked “Not specified.” This does not mean that their runtime return value is `None`.
 
 ### `RmcPotPpcf.__init__`
 

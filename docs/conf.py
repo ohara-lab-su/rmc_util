@@ -7,6 +7,8 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 project = "RMC_UTIL"
 master_doc = "index"
+# The language is selected separately for each Sphinx build.
+language = os.environ.get("RMC_DOC_LANGUAGE", "en")
 extensions = [
     "myst_parser",
     "sphinx.ext.autodoc",
