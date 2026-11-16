@@ -79,7 +79,7 @@ Returns:
 
 ## Argument and Return Type List Based on the Source Code
 
-This section lists the function declarations and type annotations verified directly against the supplied implementation. Arguments and return values without type annotations are marked "Not specified." This does not mean that the runtime return value is `None`.
+This section lists the function declarations and type annotations defined in the implementation. Arguments and return values without type annotations are marked "Not specified." This does not mean that the runtime return value is `None`.
 
 ### `contcar2cfg`
 

@@ -26,7 +26,7 @@ RMC_POT supports the original **fixed format** and a **free format** based on se
 
 The default handling of X-ray scattering coefficients differs between `#002` and `#003`. According to section II.C, `#002` defaults to reading coefficients from files, whereas `#003` defaults to calculating them when chemical symbols are supplied. Check consistency with experimental data when using `READ-COEFFS`.
 
-The supplied `RmcPotDatFree` source includes template keywords such as `NDENS`, `CUT-OFF`, `MAX-MOVES`, `R-SPACING`, `RUN-TIME`, `SAVE-TIME`, `TYPE`, `DATAFILE`, `POINT-RANGE`, and `SIGMA`. **Template values are not universal recommendations**; they must be selected for the sample, atom types, and experimental range.
+The `RmcPotDatFree` implementation supports template keywords such as `NDENS`, `CUT-OFF`, `MAX-MOVES`, `R-SPACING`, `RUN-TIME`, `SAVE-TIME`, `TYPE`, `DATAFILE`, `POINT-RANGE`, and `SIGMA`. **Template values are not universal recommendations**; they must be selected for the sample, atom types, and experimental range.
 
 ## Experimental data and units
 

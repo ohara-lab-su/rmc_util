@@ -91,7 +91,7 @@ CLI entry point。
 
 ## 実装に基づく API 一覧
 
-この一覧は提供された `gromacs_top_to_rmc_top(2).py` の関数定義から作成しています。既存の説明は上に保持し、引数・戻り値の型や副作用が明示されていないものは推測していません。
+モジュールに定義されているクラスと関数を示します。
 
 ### `TopologyConvertError` のメソッド
 
@@ -174,7 +174,7 @@ CLI entry point。
 
 ## ソースコードに基づく引数・戻り値一覧
 
-この節は提供された実装の関数宣言と型注釈を直接確認した一覧です。型注釈のない引数・戻り値は「指定なし」と記載しています。実行時の戻り値が `None` であることを意味しません。
+関数宣言における引数と戻り値の型注釈を示します。「指定なし」は型注釈が定義されていないことを表します。
 
 ### `GroAtom.__init__`
 
@@ -185,7 +185,7 @@ CLI entry point。
 | `residue_name` | `str` |
 | `atom_name` | `str` |
 
-戻り値の型注釈: `None`。定義位置: `gromacs_top_to_rmc_top(2).py:54`。
+戻り値の型注釈: `None`。定義位置: `src/rmc_util/util/gromacs_top_to_rmc_top.py:54`。
 
 ### `MoleculeType.__init__`
 
@@ -195,7 +195,7 @@ CLI entry point。
 | `name` | `str` |
 | `nrexcl` | `str` |
 
-戻り値の型注釈: `None`。定義位置: `gromacs_top_to_rmc_top(2).py:63`。
+戻り値の型注釈: `None`。定義位置: `src/rmc_util/util/gromacs_top_to_rmc_top.py:63`。
 
 ### `TopologyInfo.__init__`
 
@@ -203,7 +203,7 @@ CLI entry point。
 |---|---|
 | `self` | `指定なし` |
 
-戻り値の型注釈: `None`。定義位置: `gromacs_top_to_rmc_top(2).py:72`。
+戻り値の型注釈: `None`。定義位置: `src/rmc_util/util/gromacs_top_to_rmc_top.py:72`。
 
 ### `read_text_lines`
 
@@ -211,7 +211,7 @@ CLI entry point。
 |---|---|
 | `path` | `str` |
 
-戻り値の型注釈: `List[str]`。定義位置: `gromacs_top_to_rmc_top(2).py:109`。
+戻り値の型注釈: `List[str]`。定義位置: `src/rmc_util/util/gromacs_top_to_rmc_top.py:109`。
 
 ### `write_text_lines`
 
@@ -220,7 +220,7 @@ CLI entry point。
 | `path` | `str` |
 | `lines` | `Sequence[str]` |
 
-戻り値の型注釈: `None`。定義位置: `gromacs_top_to_rmc_top(2).py:115`。
+戻り値の型注釈: `None`。定義位置: `src/rmc_util/util/gromacs_top_to_rmc_top.py:115`。
 
 ### `read_gro`
 
@@ -228,7 +228,7 @@ CLI entry point。
 |---|---|
 | `path` | `str` |
 
-戻り値の型注釈: `List[GroAtom]`。定義位置: `gromacs_top_to_rmc_top(2).py:125`。
+戻り値の型注釈: `List[GroAtom]`。定義位置: `src/rmc_util/util/gromacs_top_to_rmc_top.py:125`。
 
 ### `expand_local_includes`
 
@@ -240,7 +240,7 @@ CLI entry point。
 | `expand_local_itp` | `bool` |
 | `_seen` | `Optional[set]` |
 
-戻り値の型注釈: `List[str]`。定義位置: `gromacs_top_to_rmc_top(2).py:176`。
+戻り値の型注釈: `List[str]`。定義位置: `src/rmc_util/util/gromacs_top_to_rmc_top.py:176`。
 
 ### `parse_topology_info`
 
@@ -248,7 +248,7 @@ CLI entry point。
 |---|---|
 | `lines` | `Sequence[str]` |
 
-戻り値の型注釈: `TopologyInfo`。定義位置: `gromacs_top_to_rmc_top(2).py:239`。
+戻り値の型注釈: `TopologyInfo`。定義位置: `src/rmc_util/util/gromacs_top_to_rmc_top.py:239`。
 
 ### `build_rmc_index_map`
 
@@ -256,7 +256,7 @@ CLI entry point。
 |---|---|
 | `info` | `TopologyInfo` |
 
-戻り値の型注釈: `Tuple[Dict[str, int], Dict[Tuple[str, int], List[int]], int]`。定義位置: `gromacs_top_to_rmc_top(2).py:310`。
+戻り値の型注釈: `Tuple[Dict[str, int], Dict[Tuple[str, int], List[int]], int]`。定義位置: `src/rmc_util/util/gromacs_top_to_rmc_top.py:310`。
 
 ### `replace_force_field_include`
 
@@ -265,7 +265,7 @@ CLI entry point。
 | `lines` | `Sequence[str]` |
 | `force_field_include` | `Optional[str]` |
 
-戻り値の型注釈: `List[str]`。定義位置: `gromacs_top_to_rmc_top(2).py:378`。
+戻り値の型注釈: `List[str]`。定義位置: `src/rmc_util/util/gromacs_top_to_rmc_top.py:378`。
 
 ### `convert_topology_lines`
 
@@ -275,7 +275,7 @@ CLI entry point。
 | `gro_atoms` | `Sequence[GroAtom]` |
 | `force_field_include` | `Optional[str]` |
 
-戻り値の型注釈: `Tuple[List[str], TopologyInfo]`。定義位置: `gromacs_top_to_rmc_top(2).py:430`。
+戻り値の型注釈: `Tuple[List[str], TopologyInfo]`。定義位置: `src/rmc_util/util/gromacs_top_to_rmc_top.py:430`。
 
 ### `convert_gromacs_top_to_rmc_top`
 
@@ -288,7 +288,7 @@ CLI entry point。
 | `include_dirs` | `Optional[Sequence[str]]` |
 | `expand_local_itp` | `bool` |
 
-戻り値の型注釈: `TopologyInfo`。定義位置: `gromacs_top_to_rmc_top(2).py:489`。
+戻り値の型注釈: `TopologyInfo`。定義位置: `src/rmc_util/util/gromacs_top_to_rmc_top.py:489`。
 
 ### `build_arg_parser`
 
@@ -296,7 +296,7 @@ CLI entry point。
 |---|---|
 | （なし） | — |
 
-戻り値の型注釈: `argparse.ArgumentParser`。定義位置: `gromacs_top_to_rmc_top(2).py:515`。
+戻り値の型注釈: `argparse.ArgumentParser`。定義位置: `src/rmc_util/util/gromacs_top_to_rmc_top.py:515`。
 
 ### `main`
 
@@ -304,5 +304,5 @@ CLI entry point。
 |---|---|
 | `argv` | `Optional[Sequence[str]]` |
 
-戻り値の型注釈: `int`。定義位置: `gromacs_top_to_rmc_top(2).py:544`。
+戻り値の型注釈: `int`。定義位置: `src/rmc_util/util/gromacs_top_to_rmc_top.py:544`。
 

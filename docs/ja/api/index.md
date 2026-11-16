@@ -1,9 +1,11 @@
 # API リファレンス
 
-以下は提供された Python ソースコードから抽出した公開クラス・関数・メソッドです。引数の既定値はソースコードの宣言に従います。先頭 `_` の内部メソッドは原則として掲載しません。
+RMC_UTIL の公開クラス、関数、メソッドの仕様を示します。引数の既定値と型注釈は各 API の定義に従います。
 
 ```{toctree}
 :maxdepth: 2
+
+Generated Python API <generated/modules>
 
 implementation_index
 
@@ -31,8 +33,8 @@ util_gromacs_top_to_rmc_top
 
 ## API の読み方
 
-各モジュールのページには、ソースコードにあるシグネチャと docstring に加え、クラスごとの公開メソッド一覧および定義行を収録しています。定義行は今回提供されたソースファイルでの位置であり、将来のリリースでは変わる可能性があります。
+各モジュールのページには、主要な公開メソッドとその引数、戻り値、処理内容を記載しています。正確なシグネチャとdocstringは自動生成APIから参照できます。
 
 まず `RmcPotDat` の初期化と入力操作、次に `RmcPot` の実行・前後処理、`run_rmc()` の反復処理を参照してください。結果解析は `RmcPotLog`、`RmcPotHst`、`RmcPotFit`、`RmcPotPpcf` の各ページから確認できます。
 
-**注意：** `scripts/rmc.py`、`scripts/rmc_init.py`、パッケージの `__init__.py` は提供されていないため、それらの関数仕様は本リファレンスに含めていません。
+

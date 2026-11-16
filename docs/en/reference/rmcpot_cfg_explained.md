@@ -1,7 +1,7 @@
 # Explanation of the RMC_POT cfg file
 
 
-This document explains the RMC_POT Version 3 cfg configuration-file format using the supplied example.
+This page describes the RMC_POT Version 3 `.cfg` configuration-file format, including its header and atomic coordinates.
 
 ![](figs/aaa.vasp.png)
 

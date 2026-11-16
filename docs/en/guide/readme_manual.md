@@ -1,5 +1,6 @@
-# Software User Manual Based on the README
+# Software User Manual
 
+This manual describes installing RMC_UTIL, configuring and running calculations, and analyzing results. See the [API Reference](../api/index.md) for class and function specifications and the [Tutorial](../tutorial/index.md) for procedures.
 
 ## rmc_util
 
