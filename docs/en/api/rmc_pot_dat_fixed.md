@@ -4,7 +4,21 @@ Fixed-format DAT input handling.
 
 Source: `src/rmc_util/rmc_pot_dat_fixed.py`.
 
-This reference is generated from the supplied Python source. Signatures and declaration lines are taken from that source; implementation-specific behavior must be checked against the code.
+The fixed-format DAT reader and writer addresses parameters by physical line number. It preserves `!` comments when modifying a value. The `RmcPotDat` wrapper provides a common interface for fixed-format and free-format DAT files; use `RmcPotDatFixed` directly when line-level access is required.
+
+## Fixed-format example
+
+```python
+from rmc_util.rmc_pot_dat_fixed import RmcPotDatFixed
+
+dat = RmcPotDatFixed(cfg_name="sample", auto_write=False)
+if dat.load():
+    density = dat.get_density()
+    dat.set_density(0.0915)
+    dat.write()
+```
+
+`cfg_name` is the basename without the `.dat` extension. `load()` returns `False` when the file is absent. With `auto_write=False`, modifications remain in memory until `write()` is called. Check the target file before running an example that modifies existing input.
 
 ## Class `RmcPotDatFixed`
 
@@ -14,61 +28,61 @@ Defined at line 67.
 
 Defined at line 82.
 
-Refer to the implementation for detailed semantics, side effects, and return values.
+Creates a fixed-format DAT editor. `cfg_name` is the basename without `.dat`; `auto_write` controls immediate saving by setters.
 
 ### `set_cfg_name(self, cfg_name: str) -> None`
 
 Defined at line 184.
 
-Refer to the implementation for detailed semantics, side effects, and return values.
+Changes the input/output basename and the associated configuration.
 
 ### `create_dat_file(self, basename: str) -> bool`
 
 Defined at line 193.
 
-Refer to the implementation for detailed semantics, side effects, and return values.
+Writes a default fixed-format DAT template to `<basename>.dat`; returns `False` if the file already exists.
 
 ### `load(self) -> bool`
 
 Defined at line 260.
 
-Refer to the implementation for detailed semantics, side effects, and return values.
+Reads `<cfg_name>.dat` into memory, preserving `!` comments. Returns `False` if the file does not exist. Decoding uses UTF-8, then CP1252 if needed.
 
 ### `write(self, out_name: Optional[str]=None) -> None`
 
 Defined at line 292.
 
-Refer to the implementation for detailed semantics, side effects, and return values.
+Writes the current DAT lines as UTF-8. The optional `out_name` is a basename without `.dat`.
 
 ### `get_line(self, line_no_1based: int) -> str`
 
 Defined at line 311.
 
-Refer to the implementation for detailed semantics, side effects, and return values.
+Returns the value field of the specified one-based physical line, without its comment.
 
 ### `set_line(self, line_no_1based: int, value: Union[str, int, float, Sequence[Union[int, float]], bool], *, auto_write: Optional[bool]=None) -> None`
 
 Defined at line 325.
 
-Refer to the implementation for detailed semantics, side effects, and return values.
+Replaces the value field of a one-based physical line and preserves its comment. `auto_write` can override the instance default.
 
 ### `insert_line(self, line_no_1based: int, value: Union[str, int, float, Sequence[Union[int, float]], bool], *, comment: str='', auto_write: Optional[bool]=None) -> None`
 
 Defined at line 355.
 
-Refer to the implementation for detailed semantics, side effects, and return values.
+Inserts a value at a specified one-based physical line, with an optional comment.
 
 ### `remove_line(self, line_no_1based: int, *, auto_write: Optional[bool]=None) -> None`
 
 Defined at line 379.
 
-Refer to the implementation for detailed semantics, side effects, and return values.
+Deletes the specified one-based physical line.
 
 ### `set_element_info(self, element_info: Sequence[str], *, auto_write: Optional[bool]=None) -> bool`
 
 Defined at line 444.
 
-Refer to the implementation for detailed semantics, side effects, and return values.
+Updates the element information in the fixed-format input.
 
 ### `get_comment(self) -> str`
 
