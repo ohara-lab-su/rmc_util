@@ -642,25 +642,25 @@ Refer to the implementation for detailed semantics, side effects, and return val
 
 Defined at line 3505.
 
-Refer to the implementation for detailed semantics, side effects, and return values.
+Return angle (COS) constraints. This is an alias of `get_angle_constraints()` and returns the same list of constraint dictionaries.
 
 ### `set_cos_constraint(self, *args: Any, **kwargs: Any) -> int`
 
 Defined at line 3509.
 
-Refer to the implementation for detailed semantics, side effects, and return values.
+Add or update a COS angle constraint. This is an alias of `set_angle_constraint()`; positional and keyword arguments are forwarded unchanged, and the integer result is returned.
 
 ### `get_snc_constraints(self) -> List[Dict[str, Any]]`
 
 Defined at line 3513.
 
-Refer to the implementation for detailed semantics, side effects, and return values.
+Return SNC (Qn) constraints using `get_qn_constraints()`. This alias preserves the underlying list-of-dictionaries representation.
 
 ### `set_snc_constraint(self, *args: Any, **kwargs: Any) -> int`
 
 Defined at line 3517.
 
-Refer to the implementation for detailed semantics, side effects, and return values.
+Set an SNC (Qn) constraint by forwarding all arguments to `set_qn_constraint()`. The return value is the integer returned by the underlying method.
 
 ### `get_lj_potential(self) -> Optional[Dict[str, Any]]`
 
@@ -750,31 +750,31 @@ Refer to the implementation for detailed semantics, side effects, and return val
 
 Defined at line 3835.
 
-Refer to the implementation for detailed semantics, side effects, and return values.
+Read the `[ AENET ]` section. Return `None` if the section is absent, otherwise a dictionary containing the atom-type potential files, sigma mode, cutoff, atomic-energy output option, and evaluation interval. Each `IND_ANN-FILE_TYPE-NAME` entry contains `atom_type filename [type_name]`. The section must occur only once and must specify exactly one of `SIGMA`, `SIGMA-MASTER`, or `SIGMA-SCALABLE`; malformed or missing mandatory entries raise `ValueError`.
 
 ### `set_aenet_potential(self, potentials: Sequence[Tuple[int, str, Optional[str]]], sigma: Union[int, float], *, sigma_mode: str='normal', cutoff: Optional[Union[int, float]]=None, write_atomic_energy: bool=False, aenet_step: int=5, auto_write: Optional[bool]=None) -> None`
 
 Defined at line 3923.
 
-Refer to the implementation for detailed semantics, side effects, and return values.
+Create or replace the `[ AENET ]` section for the supplied `(atom_type, filename, type_name)` tuples. `type_name=None` omits the explicit type name, allowing RMC_POT to derive it from `[ GENERAL ]` / `CHEMICAL-SYMBOLS`. `sigma_mode` selects `normal`, `master`, or `scalable`; `cutoff=None` uses the cutoff stored in the potential file. `write_atomic_energy` enables per-atom energy output to `*.en`, and `aenet_step` sets the evaluation interval (default 5). The method validates section compatibility, requires at least one potential, positive sigma and cutoff values, and `aenet_step >= 1`; invalid settings raise `ValueError`. `auto_write` controls whether the edited DAT is saved immediately.
 
 ### `add_aenet_potential_file(self, atom_type: int, filename: str, type_name: Optional[str]=None, *, auto_write: Optional[bool]=None) -> None`
 
 Defined at line 4038.
 
-Refer to the implementation for detailed semantics, side effects, and return values.
+Append one atom-type potential-file entry to an existing `[ AENET ]` section. Atom-type indices are 1-based and must be unique. `type_name=None` omits the optional type-name field. Raises `ValueError` if AENET is not configured, the type already exists, or the filename is invalid. `auto_write` controls saving.
 
 ### `remove_aenet_potential_file(self, atom_type: int, *, auto_write: Optional[bool]=None) -> None`
 
 Defined at line 4100.
 
-Refer to the implementation for detailed semantics, side effects, and return values.
+Remove the potential-file entry for the specified 1-based atom type. Raises `ValueError` if `[ AENET ]` is absent, the type does not exist, or removal would leave the mandatory potential-file list empty. `auto_write` controls saving.
 
 ### `clear_aenet_potential(self, *, auto_write: Optional[bool]=None) -> None`
 
 Defined at line 4150.
 
-Refer to the implementation for detailed semantics, side effects, and return values.
+Remove the complete `[ AENET ]` section and its ANN-potential settings. `auto_write` controls whether the change is saved immediately.
 
 ## `main() -> None`
 
