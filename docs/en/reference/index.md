@@ -1,6 +1,7 @@
 # Detailed Explanations of File Formats and the RMC Method
 
-This section explains RMC theory and the RMC_POT configuration, input, and output file formats.
+This reference describes the principles of reverse Monte Carlo modeling and the RMC_POT file formats for atomic configurations (`.cfg`), calculation settings (`.dat`), and simulation results.
+
 
 ```{toctree}
 :maxdepth: 2
