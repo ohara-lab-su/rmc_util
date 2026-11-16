@@ -49,9 +49,9 @@ rmc_util install --force
 
 The copied scripts are intended for users to edit calculation conditions and other settings. Updating the package does not automatically update files already installed in working directories.
 
-### Separation of Execution Processing and Calculation Conditions (v0.1.6)
+### Separation of Execution Processing and Calculation Conditions
 
-The RMC execution system is separated into **execution processing managed by the package** and **parameters edited for each calculation**. Previously, `rmc.py` and `rmc_init.py` were copied from `examples/` into each calculation directory. Because this duplicated even the execution processing that rarely changes, the code in individual calculation directories could diverge from the package after updates.
+The RMC execution system separates **execution processing maintained by the package** from **parameters edited for each calculation**. The execution logic remains in the package, while working directories contain the launcher and calculation settings.
 
 - `src/rmc_util/runners/run_rmc.py`: RMC execution processing maintained within the package. It is not copied into individual working directories.
 - `scripts/rmc.py`: A script that only launches `rmc_util.runners.run_rmc`. It can be executed with `python rmc.py`.
@@ -61,7 +61,7 @@ The RMC execution system is separated into **execution processing managed by the
 
 The repository-root `scripts/` directory holds editable files for distribution and has a different role from `runners/` inside the Python package. **The `install` command distributes two files: `rmc.py` (a thin launcher) and `rmc_init.py` (editable calculation conditions). It does not include the execution-processing implementation.** Changes to the runner take effect when the package is updated, while individual calculation directories retain only their edited conditions. A deployed `rmc_init.py` is not automatically rewritten by package updates.
 
-Using the same organization for `vasp_util` allows `rmc_dft` to be simplified into an integration layer that calls and combines the execution functionality of both packages. Independent RMC and VASP execution is also preserved.
+Integration workflows such as `rmc_dft` can call the execution functionality maintained by the package. Standalone RMC execution is also supported.
 
 ### Scope of rmc_util
 

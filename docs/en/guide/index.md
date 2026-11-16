@@ -6,7 +6,6 @@ This guide covers installation, input preparation, structural constraints, calcu
 :maxdepth: 2
 
 installation
-workflow
 software
 architecture
 readme_manual
