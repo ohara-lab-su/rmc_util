@@ -1,18 +1,12 @@
 # `rmc_util.config`
 
-Shared configuration management.
-
-Source: `src/rmc_util/config.py`.
-
-This reference is generated from the supplied Python source. Signatures and declaration lines are taken from that source; implementation-specific behavior must be checked against the code.
+Source: `src/rmc_util/config.py`
 
 ## Class `Config`
 
-Defined at line 13.
+The source does not contain a docstring describing this class.
 
 ### `__init__(self, yaml_path: Optional[str]=None, *, logger: Optional[XLogger]=XLogger())`
-
-Defined at line 88.
 
 Args:
     yaml_path (str):
@@ -20,7 +14,39 @@ Args:
 
 ### `load_yaml(cls, yaml_path=None)`
 
-Defined at line 107.
+This method has no docstring. Refer to the implementation for details of its behavior.
 
-Refer to the implementation for detailed semantics, side effects, and return values.
 
+## API List Based on the Implementation
+
+This list was created from the function definitions in the provided `config(20261116-081311).py`. The existing descriptions are retained above. Argument types, return types, and side effects that are not explicitly specified have not been inferred.
+
+### Methods of `Config`
+
+| Method | Definition line | Description (beginning of docstring) |
+|---|---:|---|
+| `__init__()` | 88 | Args: |
+| `load_yaml()` | 107 | No description in source |
+
+## List of Arguments and Return Values Based on Source Code
+
+This section lists function declarations and type annotations checked directly against the provided implementation. Arguments and return values without type annotations are marked “Not specified.” This does not mean that the runtime return value is `None`.
+
+### `Config.__init__`
+
+| Argument | Type annotation |
+|---|---|
+| `self` | `Not specified` |
+| `yaml_path` | `Optional[str]` |
+| `logger` | `Optional[XLogger]` |
+
+Return type annotation: `Not specified`. Definition location: `config(20261116-081311).py:88`.
+
+### `Config.load_yaml`
+
+| Argument | Type annotation |
+|---|---|
+| `cls` | `Not specified` |
+| `yaml_path` | `Not specified` |
+
+Return type annotation: `Not specified`. Definition location: `config(20261116-081311).py:107`.

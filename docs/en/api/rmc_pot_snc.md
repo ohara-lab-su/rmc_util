@@ -1,36 +1,94 @@
 # `rmc_util.rmc_pot_snc`
 
-SNC constraint data.
-
-Source: `src/rmc_util/rmc_pot_snc.py`.
-
-This reference is generated from the supplied Python source. Signatures and declaration lines are taken from that source; implementation-specific behavior must be checked against the code.
+Source: `src/rmc_util/rmc_pot_snc.py`
 
 ## Class `RmcPotSnc`
 
-Defined at line 14.
+Reads the Second Neighbour Constraint output from RMC_POT.
 
-### `__init__(self, path: str) -> None`
+### `__init__(self, path: str)`
 
-Defined at line 17.
+Reads ``*.snc``.
 
-Refer to the implementation for detailed semantics, side effects, and return values.
+Args:
+    path: The ``*.snc`` file to analyze.
 
-### `load(self) -> None`
+### `load(self)`
 
-Defined at line 27.
+Reloads the file and stores constraint information and coordination numbers for each central atom.
 
-Refer to the implementation for detailed semantics, side effects, and return values.
+Raises:
+    FileNotFoundError: If the specified file does not exist.
+    ValueError: If a required section of ``*.snc`` cannot be interpreted.
 
-### `get_qn_counts(self, constraint_index: int=0) -> Dict[int, int]`
+### `get_qn_counts(self, constraint_index: int=0)`
 
-Defined at line 69.
+Returns the Qn distribution of central atoms recorded in the specified constraint block.
 
-Refer to the implementation for detailed semantics, side effects, and return values.
+Args:
+    constraint_index: Zero-based constraint index.
 
-### `get_common_qn_counts(self) -> Dict[int, int]`
+Returns:
+    A dictionary mapping Qn values to counts of central atoms.
 
-Defined at line 82.
+### `get_common_qn_counts(self)`
 
-Refer to the implementation for detailed semantics, side effects, and return values.
+Checks that all constraints contain the same coordination-number sequence and returns the distribution.
 
+Returns:
+    A dictionary mapping Qn values to counts of central atoms.
+
+Raises:
+    ValueError: If the coordination numbers of central atoms differ between constraints.
+
+
+## API List Based on the Implementation
+
+This list was created from the function definitions in the provided `rmc_pot_snc(3).py`. The existing descriptions are retained above; argument types, return types, and side effects not explicitly stated are not inferred.
+
+### Methods of `RmcPotSnc`
+
+| Method | Definition line | Description (start of docstring) |
+|---|---:|---|
+| `__init__()` | 17 | Reads \`\`*.snc\`\`. |
+| `load()` | 27 | Reloads the file and stores constraint information and coordination numbers for each central atom. |
+| `get_qn_counts()` | 69 | Returns the Qn distribution of central atoms recorded in the specified constraint block. |
+| `get_common_qn_counts()` | 82 | Checks that all constraints contain the same coordination-number sequence and returns the distribution. |
+
+## Argument and Return-Type List Based on Source Code
+
+This section directly checks the function declarations and type annotations in the provided implementation. Arguments and return values without type annotations are marked “Not specified.” This does not mean that their runtime return value is `None`.
+
+### `RmcPotSnc.__init__`
+
+| Argument | Type annotation |
+|---|---|
+| `self` | `Not specified` |
+| `path` | `str` |
+
+Return type annotation: `None`. Definition: `rmc_pot_snc(3).py:17`.
+
+### `RmcPotSnc.load`
+
+| Argument | Type annotation |
+|---|---|
+| `self` | `Not specified` |
+
+Return type annotation: `None`. Definition: `rmc_pot_snc(3).py:27`.
+
+### `RmcPotSnc.get_qn_counts`
+
+| Argument | Type annotation |
+|---|---|
+| `self` | `Not specified` |
+| `constraint_index` | `int` |
+
+Return type annotation: `Dict[int, int]`. Definition: `rmc_pot_snc(3).py:69`.
+
+### `RmcPotSnc.get_common_qn_counts`
+
+| Argument | Type annotation |
+|---|---|
+| `self` | `Not specified` |
+
+Return type annotation: `Dict[int, int]`. Definition: `rmc_pot_snc(3).py:82`.

@@ -1,26 +1,75 @@
 # `rmc_util.util.cfg2poscar`
 
-CFG to POSCAR conversion.
+Source: `src/rmc_util/util/cfg2poscar.py`
 
-Source: `src/rmc_util/util/cfg2poscar.py`.
+## `parse_elements(element_info: Optional[Union[str, Sequence[str]]]=None)`
 
-This reference is generated from the supplied Python source. Signatures and declaration lines are taken from that source; implementation-specific behavior must be checked against the code.
+This function has no docstring. Consult the implementation for details of its behavior.
 
-## `parse_elements(element_info: Optional[Union[str, Sequence[str]]]=None) -> Optional[List[str]]`
+## `make_vasp_elements_line(elements: List[str])`
 
-Defined at line 42.
+This function has no docstring. Consult the implementation for details of its behavior.
 
-Refer to the implementation for detailed semantics, side effects, and return values.
+## `cfg2poscar(cfg_name: str, vasp_name: Optional[str]=None, element_info: Optional[Union[str, Sequence[str]]]=None, logger: Optional[Any]=None)`
 
-## `make_vasp_elements_line(elements: List[str]) -> str`
+Convert RMCPOT cfg format to POSCAR format.
+Standalone version without SAE (noLIB).
 
-Defined at line 87.
+Args:
+    cfg_name (str):
+    vasp_name (str):
+    element_info (str or Sequence[str]):
+    logger (Any):
+Returns:
+    bool:
 
-Refer to the implementation for detailed semantics, side effects, and return values.
 
-## `cfg2poscar(cfg_name: str, vasp_name: Optional[str]=None, element_info: Optional[Union[str, Sequence[str]]]=None, logger: Optional[Any]=None) -> bool`
+## API List Based on the Implementation
 
-Defined at line 99.
+This list was created from the function definitions in the provided `cfg2poscar(5).py`. The existing description is retained above. Argument types, return types, and side effects that are not explicitly stated have not been inferred.
 
-Refer to the implementation for detailed semantics, side effects, and return values.
+### Module Function `parse_elements()`
 
+- Definition location: line 42
+- Description: No description in the source code.
+
+### Module Function `make_vasp_elements_line()`
+
+- Definition location: line 87
+- Description: No description in the source code.
+
+### Module Function `cfg2poscar()`
+
+- Definition location: line 99
+- Description: Convert RMCPOT cfg format to POSCAR format.
+
+## Arguments and Return Values Based on the Source Code
+
+This section lists function declarations and type annotations checked directly against the provided implementation. Arguments and return values without type annotations are marked as “not specified.” This does not imply that their runtime return value is `None`.
+
+### `parse_elements`
+
+| Argument | Type annotation |
+|---|---|
+| `element_info` | `Optional[Union[str, Sequence[str]]]` |
+
+Return type annotation: `Optional[List[str]]`. Definition location: `cfg2poscar(5).py:42`.
+
+### `make_vasp_elements_line`
+
+| Argument | Type annotation |
+|---|---|
+| `elements` | `List[str]` |
+
+Return type annotation: `str`. Definition location: `cfg2poscar(5).py:87`.
+
+### `cfg2poscar`
+
+| Argument | Type annotation |
+|---|---|
+| `cfg_name` | `str` |
+| `vasp_name` | `Optional[str]` |
+| `element_info` | `Optional[Union[str, Sequence[str]]]` |
+| `logger` | `Optional[Any]` |
+
+Return type annotation: `bool`. Definition location: `cfg2poscar(5).py:99`.
