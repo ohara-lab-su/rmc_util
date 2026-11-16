@@ -5,7 +5,13 @@ This tutorial collects Python examples for configuring RMC calculations, specify
 ```{toctree}
 :maxdepth: 2
 
+setup
+configure
 readme_examples
+first_run
+constraints
+analysis
+workflow
 ```
 
 ## Prepare the input files

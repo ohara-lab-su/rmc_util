@@ -1,63 +1,22 @@
 # `rmc_util.install`
 
-ソース: `src/rmc_util/install.py`
+インストール済みパッケージに含まれる計算用スクリプトを、指定したディレクトリへ配置するモジュールです。CLIの使用方法は [インストールガイド](../guide/installation.md)を参照してください。
 
-## `find_installed_scripts()`
+## `find_installed_scripts() -> list[Path]`
 
-インストール先と配布記録を調べ、同名の雛形を一度だけ取得する。
+Pythonの `sysconfig.get_path("data")` で得られるディレクトリ内の `share/rmc_util/scripts` と、`importlib.metadata.distribution("rmc-util")` のファイル記録を調べます。同名の雛形は一度だけ取得し、名前順の `Path` リストを返します。
 
-## `install_scripts(destination: Path, *, force: bool=False)`
+## `install_scripts(destination: Path, *, force: bool = False) -> tuple[int, int]`
 
-雛形を配置する。forceが真のときだけ既存ファイルを上書きする。
+`destination` に雛形をコピーします。既存の同名ファイルは `force=False` ではスキップし、`force=True` では上書きします。コピー先がディレクトリであれば `IsADirectoryError` が発生します。戻り値は `(コピー件数, スキップ件数)` です。POSIXでは `rmc.py` に実行権限を付加します。雛形が見つからない場合は `RuntimeError` が発生します。
 
-## `main()`
+```python
+from pathlib import Path
+from rmc_util.install import install_scripts
 
---force指定時のみ既存の雛形を上書きする。
+copied, skipped = install_scripts(Path.cwd(), force=False)
+```
 
+## `main() -> None`
 
-## 実装に基づく API 一覧
-
-
-### モジュール関数 `find_installed_scripts()`
-
-- 定義位置：19 行
-- 説明：インストール先と配布記録を調べ、同名の雛形を一度だけ取得する。
-
-### モジュール関数 `install_scripts()`
-
-- 定義位置：41 行
-- 説明：雛形を配置する。forceが真のときだけ既存ファイルを上書きする。
-
-### モジュール関数 `main()`
-
-- 定義位置：76 行
-- 説明：--force指定時のみ既存の雛形を上書きする。
-
-## ソースコードに基づく引数・戻り値一覧
-
-
-### `find_installed_scripts`
-
-| 引数 | 型注釈 |
-|---|---|
-| （なし） | — |
-
-戻り値の型注釈: `list[Path]`。定義位置: `install.py:19`。
-
-### `install_scripts`
-
-| 引数 | 型注釈 |
-|---|---|
-| `destination` | `Path` |
-| `force` | `bool` |
-
-戻り値の型注釈: `tuple[int, int]`。定義位置: `install.py:41`。
-
-### `main`
-
-| 引数 | 型注釈 |
-|---|---|
-| （なし） | — |
-
-戻り値の型注釈: `None`。定義位置: `install.py:76`。
-
+CLIのエントリーポイントです。`rmc_util install` と `rmc_util install --force` を処理し、コピー・スキップ件数を表示します。それ以外の引数では使用方法を標準エラーへ表示し、終了コード2で終了します。

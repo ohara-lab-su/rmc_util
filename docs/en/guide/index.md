@@ -5,6 +5,9 @@ This guide covers installation, input preparation, structural constraints, calcu
 ```{toctree}
 :maxdepth: 2
 
+installation
+software
+architecture
 readme_manual
 task_map
 overview
