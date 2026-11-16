@@ -13,7 +13,7 @@ for lang in en ja; do
     mkdir -p "$API_DIR"
     find "$API_DIR" -maxdepth 1 -type f -name '*.rst' -delete
     sphinx-apidoc --force --module-first --separate --output-dir "$API_DIR" "$PKG_DIR"
-    sphinx-build -b html -c "$DOCS_DIR" "$DOCS_DIR/$lang" "$DOCS_DIR/_build/html/$lang"
+    RMC_DOC_LANGUAGE="$lang" sphinx-build -b html -c "$DOCS_DIR" "$DOCS_DIR/$lang" "$DOCS_DIR/_build/html/$lang"
 done
 cp -a "$DOCS_DIR/_build/html/en/." "$DOCS_DIR/_build/html/"
 touch "$DOCS_DIR/_build/html/.nojekyll"

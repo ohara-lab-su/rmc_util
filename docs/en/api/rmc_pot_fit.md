@@ -58,7 +58,6 @@ Used to return the data in dictionary form.
 
 ## Argument and Return Type List Based on Source Code
 
-This section directly checks the function declarations and type annotations in the provided implementation. Arguments and return values without type annotations are marked "Not specified". This does not mean that the runtime return value is `None`.
 
 ### `RmcPotFit.__init__`
 

@@ -5,114 +5,105 @@
 
 [![GitHub](https://img.shields.io/badge/GitHub-ohara--lab--su%2Frmc_util-181717?logo=github)](https://github.com/ohara-lab-su/rmc_util/)
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Documentation-222222?logo=githubpages&logoColor=white)](https://ohara-lab-su.github.io/rmc_util/en/)
-[![Ohara Lab](https://img.shields.io/badge/Ohara%20Lab-Home-4B5563?logo=homeassistant&logoColor=white)](https://ohara-lab-su.github.io/index.en.html)
+[![Ohara Lab](https://img.shields.io/badge/Ohara%20Lab-Home-4B5563?logo=homeassistant&logoColor=white)](https://ohara-lab-su.github.io/)
 
-`rmc_util` is an **open-source Python toolkit for preparing, running, and analyzing RMC_POT calculations**. It works with the existing RMC_POT engine and enables programmatic editing of calculation parameters and structural constraints, repeated runs, and convergence analysis.
+`rmc_util` is an **open-source library for preparing RMC_POT input, running calculations, and analyzing results from Python**. While using the existing RMC_POT calculation engine, it enables programmatic automation of input conditions, editing structural constraints, iterative calculations, and convergence evaluation.
 
-It covers `.dat`, FNC, and topology data, as well as analysis of `.log`, `.hst`, `.fit`, and `.ppcf` outputs. The package can be used independently or as part of automated workflows such as RMC-DFT. It was originally separated from `RMC_DFT`.
+Its scope extends from handling `.dat`, FNC, and topology files to analyzing `.log`, `.hst`, `.fit`, and `.ppcf` files. It can be used both for research employing RMC_POT alone and for computational workflows such as RMC-DFT. The package was originally separated from `RMC_DFT`.
 
-**For initial amorphous structures, see the separately maintained [`packmol_util`](https://github.com/ohara-lab-su/packmol_util).** It generates structures from composition, density, and atom count, and can produce FNC files for RMC_POT. Both packages can be used independently.
+**For generating initial structures, the separately published [`packmol_util`](https://github.com/ohara-lab-su/packmol_util) can also be used.** In addition to generating amorphous structures from composition, density, and atom count, it supports generating FNC files for RMC_POT. Both packages can be used independently.
 
-## Installation
+### Installation
 
-Install the released package from PyPI:
+Install the package published on PyPI with the following command:
 
 ```bash
 pip install rmc-util
 ```
 
-The PyPI project name is `rmc-util`, while the Python package is imported as `rmc_util`.
+The project name on PyPI is `rmc-util`, whereas the package name used from Python is `rmc_util`.
 
 ```python
 from rmc_util import RmcPot, RmcPotDat, RmcPotHst
 ```
 
-To install a local development checkout, run from the repository root:
+To use a development version cloned locally, run the following in the repository root:
 
 ```bash
 pip install .
 ```
 
-## Installing editable parameter scripts
+### Installing Editable Parameter Scripts
 
-After installing `rmc-util`, copy the bundled editable parameter script (`rmc_init.py`) into the current working directory:
+After installing `rmc-util`, the bundled launcher script (`rmc.py`) and editable parameter script (`rmc_init.py`) can be copied into the current directory.
 
 ```bash
 rmc_util install
 ```
 
-Existing files are skipped by default. To overwrite them explicitly:
+Existing files with the same names are skipped rather than overwritten. To explicitly overwrite them, run:
 
 ```bash
 rmc_util install --force
 ```
 
-The copied scripts are intended to be edited for individual calculations. Updating the Python package does not automatically modify copies already placed in a working directory.
+The copied scripts are intended for users to edit calculation conditions and other settings. Updating the package does not automatically update files already installed in working directories.
 
-## Execution architecture (v0.1.6)
+### Separation of Execution Processing and Calculation Conditions (v0.1.6)
 
-The RMC execution workflow is separated into **package-managed execution code** and **editable, calculation-specific parameters**. Previously, both the execution script (`rmc.py`) and its configuration (`rmc_init.py`) were copied from `examples/` into each calculation directory. This duplicated code that rarely needed editing and could diverge from later package versions.
+The RMC execution system is separated into **execution processing managed by the package** and **parameters edited for each calculation**. Previously, `rmc.py` and `rmc_init.py` were copied from `examples/` into each calculation directory. Because this duplicated even the execution processing that rarely changes, the code in individual calculation directories could diverge from the package after updates.
 
-- `src/rmc_util/runners/run_rmc.py` is the package-side RMC runner. Its execution logic is maintained and updated with `rmc-util`, rather than copied to every working directory.
-- `scripts/rmc_init.py` is the editable parameter/initialization script distributed by the package. It is copied into the working directory using `rmc_util install` and calls the packaged runner.
-- `src/rmc_util/install.py` implements that copy command; it does not execute RMC_POT.
-- The log-directory naming helper (`find_next_log_index.py`, including `next_log_dir_name()`) supports the execution/backup workflow. The next log name is found by scanning existing directories, with numbering starting at **0**; it does not require a central counter. Calculation parameters and scripts are preserved alongside execution results for reproducibility.
+- `src/rmc_util/runners/run_rmc.py`: RMC execution processing maintained within the package. It is not copied into individual working directories.
+- `scripts/rmc.py`: A script that only launches `rmc_util.runners.run_rmc`. It can be executed with `python rmc.py`.
+- `scripts/rmc_init.py`: Initialization and parameter script for editing calculation conditions. It is deployed to working directories with `rmc_util install` and calls the package-side runner.
+- `src/rmc_util/install.py`: Responsible for deploying editable scripts. It does not execute RMC_POT calculations.
+- `next_log_dir_name()` in `find_next_log_index.py`: Searches existing log directories each time to determine the next name. Numbering **starts at 0**, and there is no centrally managed counter. This naming convention associates calculation conditions and execution scripts with their saved results.
 
-The intended layout separates library code (`src/rmc_util/`), reusable runner code (`src/rmc_util/runners/`), and distributed editable files (`scripts/` at repository root). **Only `rmc_init.py` is distributed by `install`; the runner `rmc.py` is not copied.** Changes to runner code are delivered through package updates, while each calculation retains its explicitly edited parameters. Existing copies of `rmc_init.py` are never changed automatically.
+The repository-root `scripts/` directory holds editable files for distribution and has a different role from `runners/` inside the Python package. **The `install` command distributes two files: `rmc.py` (a thin launcher) and `rmc_init.py` (editable calculation conditions). It does not include the execution-processing implementation.** Changes to the runner take effect when the package is updated, while individual calculation directories retain only their edited conditions. A deployed `rmc_init.py` is not automatically rewritten by package updates.
 
-The same separation is used in `vasp_util`. Consequently, `rmc_dft` can orchestrate the two packages without maintaining its own copies of their execution scripts; the packages remain usable independently.
+Using the same organization for `vasp_util` allows `rmc_dft` to be simplified into an integration layer that calls and combines the execution functionality of both packages. Independent RMC and VASP execution is also preserved.
 
-## What rmc_util handles
+### Scope of rmc_util
 
-### RMC_POT input and execution
+#### RMC_POT Input Conditions and Execution
 
-`RmcPotDat` is the main interface for RMC_POT `.dat` files. Calculation parameters such as number density, cutoffs,
-maximum atomic moves, radial spacing, experimental data range, and calculation/save time can be configured from Python.
+`RmcPotDat` is the central interface for handling RMC_POT `.dat` files. It allows calculation conditions such as number density, cutoff, maximum atomic displacement, r spacing, experimental data range, calculation time, and save interval to be configured from Python.
 
-Parameters common to the fixed and free formats are handled through the same API. With `prefer_existing=True`, an
-existing `.dat` file is detected and loaded in its existing format; the format can be selected when creating a new file.
-Free-format-specific structural constraints can also be configured through `RmcPotDat`.
+Conditions shared by fixed and free formats are handled through the same API. When using an existing `.dat` file with `prefer_existing=True`, its format is detected and the file is read; when creating a new file, the format can be specified. Structural constraints specific to the free format can also be configured through `RmcPotDat`.
 
-`RmcPot` handles the RMC_POT calculation itself. Its current workflow includes preprocessing, input validation, RMC_POT
-execution, result collection/postprocessing, and checks for consistency between FNC constraints and interatomic cutoffs.
+`RmcPot` handles RMC_POT execution. The current implementation supports preprocessing, input validation, running RMC_POT, collecting and archiving results after calculation, and checking consistency between FNC distance constraints and interspecies cutoffs.
 
-### Free-format constraints
+#### Free-Format Structural Constraints
 
-The free-format implementation supports programmatic construction and editing of constraints and potential-related
-sections, including:
+In free-format `.dat` files, the following constraints and potential-related settings can be created and edited from Python:
 
-- angular constraints
-- coordination constraints
-- SNC/Qn constraints
-- BVS constraints
-- pair potentials
-- AENET potential settings
+- angle constraint
+- coordination constraint
+- SNC / Qn constraint
+- BVS constraint
+- pair potential
+- AENET potential
 
-This makes it possible to construct or modify RMC conditions directly from a Python workflow instead of manually
-rewriting `.dat` files for each run.
+This allows calculation conditions to be assembled or changed by higher-level scripts instead of manually rewriting `.dat` files for each RMC run.
 
-### FNC and topology
+#### FNC and Topology
 
-`RmcPotDatFnc` provides operations for creating, loading, editing, validating, and writing FNC data, including distance
-ranges and atom-neighbour definitions.
+`RmcPotDatFnc` handles creating, reading, editing, validating, and writing FNC data. Distance ranges for each constraint type, neighbors of each atom, and atom pairs can be manipulated from Python.
 
-`RmcPotDatTop` provides a programmatic interface to RMC_POT topology files, including molecule definitions, atoms,
-bonds, angles, dihedrals, exclusions, virtual sites, and topology validation.
+`RmcPotDatTop` provides functionality for constructing and editing RMC_POT topology from Python. It handles molecules, atoms, bonds, angles, dihedrals, exclusions, virtual sites, and other data, and can validate topology.
 
-### Results and analysis
+#### Calculation Results and Analysis
 
-The output readers can be used independently of the RMC execution layer.
+Output files can also be read independently of the RMC_POT execution functionality.
 
-- `RmcPotLog` reads RMC_POT logs and exposes generated/tried/accepted moves, chi-square values, Rw values, and
-  calculation blocks/loops. It also provides result collection and backup operations.
-- `RmcPotHst` reads `.hst` histories, exposes acceptance and chi-square histories, and provides convergence detection.
-- `RmcPotFit` reads `.fit` files and provides calculated and experimental F (Q), background data, and corresponding S
-  (Q) values.
-- `RmcPotPpcf` reads `.ppcf` files and provides partial pair correlation functions `g_ij(r)`.
+- `RmcPotLog`: Reads RMC_POT logs and obtains generated / tried / accepted counts, χ², Rw, RMC blocks / loops, and other information. It also handles collecting and backing up calculation results.
+- `RmcPotHst`: Reads `.hst` histories, retrieves acceptance and χ² histories, and determines convergence.
+- `RmcPotFit`: Reads `.fit` files and obtains calculated and experimental F(Q), background, and corresponding S(Q).
+- `RmcPotPpcf`: Reads `.ppcf` files and obtains partial pair distribution functions `g_ij(r)`.
 
-## Basic example: preparing an RMC_POT `.dat` file
+### Basic Example: Configuring an RMC_POT `.dat` File
 
-`RmcPotDat` delays initialization until the file is actually accessed, or it can be initialized explicitly.
+`RmcPotDat` can defer initialization until necessary, but it can also be initialized explicitly with `init()`.
 
 ```python
 from rmc_util import RmcPotDat
@@ -136,12 +127,11 @@ rmc_dat.set_r_spacing(0.025, auto_write=False)
 rmc_dat.write()
 ```
 
-If `sample.dat` already exists and `prefer_existing=True`, its fixed/free format is detected and the existing file is
-used.
+If `sample.dat` already exists and `prefer_existing=True`, its fixed or free format is detected automatically and the existing file is used.
 
-## Example: free-format coordination and Qn constraints
+### Example: Free-Format Coordination / Qn Constraints
 
-The free-format interface can be used to build structural constraints from Python.
+In the free format, structural constraints can be configured directly from Python.
 
 ```python
 from rmc_util import RmcPotDat
@@ -184,12 +174,11 @@ rmc_dat.set_qn_constraint(
 )
 ```
 
-The same interface is suitable for larger systems with several atom types and multiple coordination or Qn constraints.
+Multiple coordination constraints and Qn constraints can also be specified for systems containing multiple atomic species.
 
-## Example: using rmc_util in an automated RMC workflow
+### Example: Using It from an RMC Workflow
 
-A typical higher-level workflow can keep the RMC settings and RMC execution objects alive and use the output readers to
-decide what happens next.
+A higher-level workflow can retain RMC configuration and execution objects, read output, and determine subsequent processing.
 
 ```python
 from rmc_util import RmcPot, RmcPotDat, RmcPotHst, RmcPotLog
@@ -232,69 +221,64 @@ loop = hst.detect_convergence(
 )
 ```
 
-This type of use is useful when RMC_POT is one stage of a larger calculation rather than a standalone calculation. For
-example, an RMC-DFT workflow can modify RMC conditions, execute RMC_POT, inspect convergence, archive the results, and
-then pass the resulting structure to a DFT stage.
+This approach allows RMC_POT to be treated not only as an independent calculation but also as one stage of a larger computational workflow. For example, in RMC-DFT, it can be used to change RMC conditions, execute RMC_POT, check convergence, archive results, and pass the resulting structure to the DFT stage.
 
-`rmc_util` itself does not provide the DFT calculation layer; it provides the RMC_POT handling required by such
-workflows.
+`rmc_util` itself does not provide DFT calculations; it handles the RMC_POT side required by such workflows.
 
-## Main modules
+### Main Modules
 
-| Area              | Module              | Purpose                                                                        |
-|-------------------|---------------------|--------------------------------------------------------------------------------|
-| RMC execution     | `rmc_pot`           | Preprocess, run, validate, and postprocess RMC_POT calculations                |
-| DAT interface     | `rmc_pot_dat`       | Unified API that hides fixed/free-format differences for common RMC parameters |
-| Fixed-format DAT  | `rmc_pot_dat_fixed` | Read and edit fixed-format RMC_POT parameters                                  |
-| Free-format DAT   | `rmc_pot_dat_free`  | Read/edit free-format parameters, constraints, and potential settings          |
-| FNC               | `rmc_pot_dat_fnc`   | Create, edit, and validate FNC files                                           |
-| Topology          | `rmc_pot_dat_top`   | Create, edit, and validate topology/ITP-style data                             |
-| RMC log           | `rmc_pot_log`       | Parse RMC logs and collect/backup results                                      |
-| History           | `rmc_pot_hst`       | Read `.hst` histories and evaluate convergence                                 |
-| Fit results       | `rmc_pot_fit`       | Read `.fit` data and obtain F(Q)/S(Q)                                          |
-| Pair correlations | `rmc_pot_ppcf`      | Read partial pair correlation functions                                        |
+| Area | Module | Description |
+|---|---|---|
+| RMC execution | `rmc_pot` | RMC_POT preprocessing, execution, validation, and postprocessing |
+| Common DAT | `rmc_pot_dat` | Abstracts fixed/free differences and handles common RMC conditions through one API |
+| Fixed-format DAT | `rmc_pot_dat_fixed` | Reads and writes fixed-format RMC_POT parameters |
+| Free-format DAT | `rmc_pot_dat_free` | Reads and writes free-format parameters, structural constraints, and potential settings |
+| FNC | `rmc_pot_dat_fnc` | Creates, edits, and validates FNC |
+| topology | `rmc_pot_dat_top` | Creates, edits, and validates topology / ITP-format data |
+| RMC log | `rmc_pot_log` | Analyzes RMC logs and collects and backs up results |
+| history | `rmc_pot_hst` | Analyzes `.hst` and determines convergence |
+| fit | `rmc_pot_fit` | Reads `.fit` and obtains F(Q) / S(Q) |
+| PPCF | `rmc_pot_ppcf` | Reads partial pair distribution functions |
 
-Structure conversion utilities such as CFG/POSCAR conversion are also provided under `rmc_util.util`.
+Structural conversion and auxiliary functionality, including CFG / POSCAR conversion, are included in `rmc_util.util`.
 
-## Documentation
+### Documentation
 
-- [Documentation home](https://github.com/ohara-lab-su/rmc_util/blob/main/docs/index.md)
-- [RMC and RMC_POT](https://github.com/ohara-lab-su/rmc_util/blob/main/docs/guide/overview.md)
-- [Input files](https://github.com/ohara-lab-su/rmc_util/blob/main/docs/guide/input.md)
-- [Structural constraints](https://github.com/ohara-lab-su/rmc_util/blob/main/docs/guide/constraints.md)
-- [Output and analysis](https://github.com/ohara-lab-su/rmc_util/blob/main/docs/guide/output.md)
-- [File format reference](https://github.com/ohara-lab-su/rmc_util/blob/main/docs/reference/index.md)
-- [API reference](https://github.com/ohara-lab-su/rmc_util/blob/main/docs/api/index.md)
+- [Documentation Home](https://ohara-lab-su.github.io/rmc_util/en/)
+- [RMC Method and RMC_POT](https://ohara-lab-su.github.io/rmc_util/en/guide/overview.html)
+- [Input Files](https://ohara-lab-su.github.io/rmc_util/en/guide/input.html)
+- [Structural Constraints](https://ohara-lab-su.github.io/rmc_util/en/guide/constraints.html)
+- [Output and Analysis](https://ohara-lab-su.github.io/rmc_util/en/guide/output.html)
+- [Detailed File Formats](https://ohara-lab-su.github.io/rmc_util/en/reference/index.html)
+- [API Reference](https://ohara-lab-su.github.io/rmc_util/en/api/index.html)
 
-To build the HTML documentation locally:
+To build the documentation as HTML locally, run:
 
 ```bash
 docs/build.sh
 ```
 
-The generated HTML is written to `docs/_build/html/`.
+HTML is output to `docs/_build/html/`.
 
-## Source code
+### Source Code
 
-Source code and development history are available on [GitHub](https://github.com/ohara-lab-su/rmc_util).
+The source code and development history are published on [GitHub](https://github.com/ohara-lab-su/rmc_util).
 
-## Reference
+### References
 
 Orsolya Gereben, *RMC_POT user guide for version 2023.1* (2023).
 
+#### Running RMC
 
-### Running RMC
-
-Copy `rmc.py` and `rmc_init.py` with `rmc_util install`, edit the parameters in `rmc_init.py`, then run from the same working directory:
+Use `rmc_util install` to deploy `rmc.py` and `rmc_init.py`, edit the calculation conditions in `rmc_init.py`, and then execute in the same working directory.
 
 ```bash
 rmc_util install
 python rmc.py
 ```
 
-The launcher executes `rmc_util.runners.run_rmc` without copying the implementation. The runner must support execution as `__main__`.
+`rmc.py` only executes `rmc_util.runners.run_rmc` and does not duplicate the execution processing. This assumes that the runner is executable as `__main__`.
 
+`run_rmc()` requires `config` as an argument and receives the objects needed for execution, including `rmc_dat`, from the caller. In `scripts/rmc.py`, `Config("config.yml")`, `RmcPotLog`, and `RmcPotDat` are created; after configuring conditions using `rmc_init.py`, it calls `run_rmc(config=..., rmc_log=..., rmc_dat=..., rmc_pot=None, auto_converge=False, postprocess=True, msg=None, logger=...)`. The runner does not retain the old standalone script's `if __name__ == "__main__":` block.
 
-`run_rmc()` requires `config` and receives the execution objects from its caller. `scripts/rmc.py` constructs `Config("config.yml")`, `RmcPotLog`, and `RmcPotDat`, applies parameters through `rmc_init.py`, and calls `run_rmc(config=..., rmc_log=..., rmc_dat=..., rmc_pot=None, auto_converge=False, postprocess=True, msg=None, logger=...)`. The runner does not retain the legacy standalone `if __name__ == "__main__":` entry point.
-
-If you find this software helpful in your research, we would be grateful if you could mention Ohara Lab, Shimane University, in the acknowledgments of your publications.
+If this software is useful as a reference for research or contributes to research results, we would appreciate an acknowledgment of “Ohara Lab, Shimane University” in publications or other research outputs.
