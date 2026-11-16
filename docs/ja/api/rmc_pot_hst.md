@@ -1,400 +1,128 @@
 # `rmc_util.rmc_pot_hst`
 
+RMC_POT の `.hst` 履歴ファイルを読み込み、RMCループごとの統計量と収束判定を扱います。
+
 ソース: `src/rmc_util/rmc_pot_hst.py`
 
-## クラス `RmcPotHst`
+## `RmcPotHst`
 
-ソースにクラス説明の docstring はありません。
+`.hst` の履歴表から、`generated`、`tried`、`accepted`、`time`、`tried_per_gen`、`acc_per_tried`、`chi2_tot`、`chi2_set1` の8列を読み取ります。ヘッダー以降の数値行が履歴レコードです。
 
-### `__init__(self, hst_name: Optional[str]=None, cfg_name: Optional[str]=None, config: Optional[Config]=None, logger: Optional[XLogger]=None)`
+### `__init__(self, hst_name=None, cfg_name=None, config=None, logger=None)`
 
-RmcPotHst を初期化し、.hst ファイルの読み込みとパースを行う。
+ファイルの選択優先順位は `hst_name`、`cfg_name`、`config` の順です。`hst_name` はそのままファイル名として使用し、`cfg_name` には `.hst` を付けます。
 
-hst_name、cfg_name、config のいずれかを指定することで
-対象となる .hst ファイルが決定される。
-hst_name が指定されている場合はそれが最優先される。
+**実装上の注意:** `config` だけを指定した場合、渡されたオブジェクトを使用せず `Config("config.yaml")` を再生成します。
 
-1) cfg_name があればそれが優先
-   hst_nameと書いている場合がある
-   基本的には hst_name.hst ファイルを読む
-   内部的には cfg_name として扱う
-2) config があればそれが優先
-
-Args:
-    hst_name (Optional[str]): 読み込む .hst ファイル名。
-    cfg_name (Optional[str]): CFG 名。指定された場合は「{cfg_name}.hst」を対象とする。
-    config (Optional[Config]): Config オブジェクト。内部から cfg_name を参照する。
-    logger (Optional[XLogger]): 使用するロガー。
+```python
+RmcPotHst(hst_name="sample.hst")
+RmcPotHst(cfg_name="sample")
+```
 
 ### `read_chi2(self)`
 
-chi2_tot の履歴を取得するための互換 API。
+`(steps, chi2)` を返します。`.hst` に明示的なステップ列がないため、`steps` は0始まりのレコード番号です。
 
-旧 RmcPotHst クラスとの互換性を保つため、
-ステップ番号は行番号（0 始まり）として扱う。
+### `detect_convergence(self, rel_tol=0.01, acc_tol=0.001, min_consecutive=3)`
 
-（互換 API）
-旧 RmcPotHst は：
-    steps = [0, 1, 2, ...]
-    chi2_list = [chi2_tot_of_loop0, chi2_tot_of_loop1, ...]
-の形式で返していたため、それを再現する。
+隣接するループ間の `chi2_tot` の相対改善率と、`accepted/tried` の両方を判定します。
 
-※ hst には "step" が存在しないため、
-  行番号＝ステップ番号として扱う。
+```text
+delta = (chi2[i - 1] - chi2[i]) / chi2[i - 1]
+delta < rel_tol
+accepted / tried < acc_tol
+```
 
-Returns:
-    Tuple[List[int], List[float]]:
-        ステップ番号のリストと chi2_tot のリスト。
+条件を `min_consecutive` 回連続で満たしたとき、その連続区間の最初のループ番号を返します。条件を満たさなければ `None` を返します。
 
-### `detect_convergence(self, rel_tol: float=0.01, acc_tol: float=0.001, min_consecutive: int=3)`
+### `detect_convergence_set1(self, rel_tol=0.01, acc_tol=0.001, min_consecutive=2)`
 
-RMC の履歴データに基づいて「実質的な収束点」を判定する。
-
-本関数は、chi2_tot の絶対値ではなく、
-連続ループ間での「相対的な改善率」と
-探索の活動度（accepted/tried）を用いて収束を定義する。
-
-判定の考え方は以下の通り：
-
-1. 各ループ i について、直前ループとの差分から
-   相対改善率 delta を計算する。
-
-       delta = (chi2[i-1] - chi2[i]) / chi2[i-1]
-
-2. 次の 2 条件を同時に満たす場合、
-   そのループは「改善がほぼ止まっている」とみなす。
-
-   (a) 相対改善率が十分小さい
-       delta < rel_tol
-
-   (b) 試行の受理率が十分小さい
-       accepted/tried < acc_tol
-
-   これは、
-   「chi2 はほとんど下がらず、かつ探索も動いていない」
-   状態を意味する。
-
-3. 上記の「停滞状態」が min_consecutive 回
-   連続して観測された場合にのみ、
-   偶然ではない実質的な収束と判断する。
-
-4. 戻り値として返す loop index は、
-   「収束状態に最初に入ったループ番号」であり、
-   最終ループ番号ではない点に注意する。
-
-Args:
-    rel_tol (float):
-        連続ループ間の相対変化率
-        chi2 の相対改善率に対する閾値。
-        これ未満の改善は「停滞」とみなす。
-    acc_tol (float):
-        accepted/tried に対する閾値。
-        これ未満は「探索がほぼ停止」とみなす。
-    min_consecutive (int):
-        停滞状態が連続して必要な最小ループ数。
-
-Returns:
-    Optional[int]:
-        収束と判断された最初の loop index。
-        判定条件を満たさない場合は None。
-
-### `detect_convergence_set1(self, rel_tol: float=0.01, acc_tol: float=0.001, min_consecutive: int=2)`
-
-F(Q) set#1 の chi2 を用いて RMC の実質的収束点を判定する。
-
-chi2_tot ではなく、hst 中の
-「chi2/F(Q)_set#1」を評価量として用いる点のみが
-detect_convergence() との違いである。
-
-Returns:
-    Optional[int]:
-        収束と判断された最初の loop index。
-        判定できない場合は None。
+`chi2_tot` の代わりに第1データセットの `chi2_set1`（`.hst` の `chi2/F(Q)_set#1`）を用いる収束判定です。
 
 ### `get_num_rmc_loops(self)`
 
-.hst に含まれる履歴レコード数を返す。
+読み込んだ履歴レコード数を整数で返します。
 
-Returns:
-    int: RMC ループ回数。
+## 履歴値の取得
 
-### `get_generated(self, loop_index: Optional[int]=None)`
+### `get_generated(self, loop_index=None)`
 
-指定したループに対応する値、または全ループ分の値を取得する。
+履歴列 `generated`（生成した移動数）を取得します。
+ 
+`loop_index=None` なら全レコードのリスト、整数を指定するとそのレコードの値を返します。
 
-loop_index を指定しない場合は全ループ分のリストを返し、
-指定した場合は対応する単一の値を返す。
+戻り値: `Union[int, List[int]]`。
 
-generated（このループで生成した移動数）を返す。
-loop_index=None → 全ループ list
-loop_index=int → 当該ループの値
+### `get_tried(self, loop_index=None)`
 
-Args:
-    loop_index (Optional[int]):
-        取得対象のループ番号。
+履歴列 `tried`（試行した移動数）を取得します。
+ 
+`loop_index=None` なら全レコードのリスト、整数を指定するとそのレコードの値を返します。
 
-Returns:
-    Union[int, float, List[int], List[float]]:
-        対応する値。
+戻り値: `Union[int, List[int]]`。
 
-### `get_tried(self, loop_index: Optional[int]=None)`
+### `get_accepted(self, loop_index=None)`
 
-指定したループに対応する tried の値、または全ループ分の値を取得する。
+履歴列 `accepted`（受理された移動数）を取得します。
+ 
+`loop_index=None` なら全レコードのリスト、整数を指定するとそのレコードの値を返します。
 
-tried は、そのループにおいて試行された移動回数を表す。
+戻り値: `Union[int, List[int]]`。
 
-loop_index を指定しない場合は全ループ分のリストを返し、
-指定した場合は対応する単一の値を返す。
+### `get_time(self, loop_index=None)`
 
-Args:
-    loop_index (Optional[int]):
-        取得対象のループ番号。
+履歴列 `time`（履歴に記録された時間）を取得します。
+ 
+`loop_index=None` なら全レコードのリスト、整数を指定するとそのレコードの値を返します。
 
-Returns:
-    Union[int, List[int]]:
-        tried の値。
+戻り値: `Union[int, List[int]]`。
 
-### `get_accepted(self, loop_index: Optional[int]=None)`
+### `get_tried_per_generated(self, loop_index=None)`
 
-指定したループに対応する accepted の値、または全ループ分の値を取得する。
+履歴列 `tried_per_gen`（生成数に対する試行数の比）を取得します。
+ 
+`loop_index=None` なら全レコードのリスト、整数を指定するとそのレコードの値を返します。
 
-accepted は、そのループにおいて受理された移動回数を表す。
+戻り値: `Union[float, List[float]]`。
 
-loop_index を指定しない場合は全ループ分のリストを返し、
-指定した場合は対応する単一の値を返す。
+### `get_accepted_per_tried(self, loop_index=None)`
 
-Args:
-    loop_index (Optional[int]):
-        取得対象のループ番号。
+履歴列 `acc_per_tried`（試行数に対する受理数の比）を取得します。
+ 
+`loop_index=None` なら全レコードのリスト、整数を指定するとそのレコードの値を返します。
 
-Returns:
-    Union[int, List[int]]:
-        accepted の値。
+戻り値: `Union[float, List[float]]`。
 
-### `get_time(self, loop_index: Optional[int]=None)`
+### `get_chi2_tot(self, loop_index=None)`
 
-指定したループに対応する time の値、または全ループ分の値を取得する。
+履歴列 `chi2_tot`（全データセットのχ²評価量）を取得します。
+ 
+`loop_index=None` なら全レコードのリスト、整数を指定するとそのレコードの値を返します。
 
-time は、そのループに対応する経過時間（hst 出力に記録された値）を表す。
+戻り値: `Union[float, List[float]]`。
 
-loop_index を指定しない場合は全ループ分のリストを返し、
-指定した場合は対応する単一の値を返す。
+### `get_chi2_set1(self, loop_index=None)`
 
-Args:
-    loop_index (Optional[int]):
-        取得対象のループ番号。
+履歴列 `chi2_set1`（第1データセットのχ²評価量）を取得します。
+ 
+`loop_index=None` なら全レコードのリスト、整数を指定するとそのレコードの値を返します。
 
-Returns:
-    Union[int, List[int]]:
-        time の値。
+戻り値: `Union[float, List[float]]`。
 
-### `get_tried_per_generated(self, loop_index: Optional[int]=None)`
+## 実装との対応
 
-指定したループに対応する tried_per_gen の値、または全ループ分の値を取得する。
-
-tried_per_gen は、generated に対する tried の比率を表す。
-
-loop_index を指定しない場合は全ループ分のリストを返し、
-指定した場合は対応する単一の値を返す。
-
-Args:
-    loop_index (Optional[int]):
-        取得対象のループ番号。
-
-Returns:
-    Union[float, List[float]]:
-        tried_per_gen の値。
-
-### `get_accepted_per_tried(self, loop_index: Optional[int]=None)`
-
-指定したループに対応する acc_per_tried の値、または全ループ分の値を取得する。
-
-acc_per_tried は、tried に対する accepted の比率を表す。
-
-loop_index を指定しない場合は全ループ分のリストを返し、
-指定した場合は対応する単一の値を返す。
-
-Args:
-    loop_index (Optional[int]):
-        取得対象のループ番号。
-
-Returns:
-    Union[float, List[float]]:
-        acc_per_tried の値。
-
-### `get_chi2_tot(self, loop_index: Optional[int]=None)`
-
-全データーセットをまとめた chi
-chi2_tota/data_point
-
-Args:
-    loop_index:
-
-Returns:
-
-### `get_chi2_set1(self, loop_index: Optional[int]=None)`
-
-指定したループに対応する chi2_set1 の値、または全ループ分の値を取得する。
-
-chi2_set1 は、hst 出力における
-「chi2/F(Q)_set#1」に対応する chi2 値であり、
-第 1 データセット（set#1）の評価量を表す。
-
-loop_index を指定しない場合は全ループ分のリストを返し、
-指定した場合は対応する単一の値を返す。
-
-Args:
-    loop_index (Optional[int]):
-        取得対象のループ番号。
-
-Returns:
-    Union[float, List[float]]:
-        chi2_set1 の値。
-
-
-## 実装に基づく API 一覧
-
-
-### `RmcPotHst` のメソッド
-
-| メソッド | 定義位置 | 説明（docstring 冒頭） |
-|---|---:|---|
-| `__init__()` | 41 | RmcPotHst を初期化し、.hst ファイルの読み込みとパースを行う。 |
-| `read_chi2()` | 202 | chi2_tot の履歴を取得するための互換 API。 |
-| `detect_convergence()` | 231 | RMC の履歴データに基づいて「実質的な収束点」を判定する。 |
-| `detect_convergence_set1()` | 327 | F(Q) set#1 の chi2 を用いて RMC の実質的収束点を判定する。 |
-| `get_num_rmc_loops()` | 368 | .hst に含まれる履歴レコード数を返す。 |
-| `get_generated()` | 382 | 指定したループに対応する値、または全ループ分の値を取得する。 |
-| `get_tried()` | 413 | 指定したループに対応する tried の値、または全ループ分の値を取得する。 |
-| `get_accepted()` | 441 | 指定したループに対応する accepted の値、または全ループ分の値を取得する。 |
-| `get_time()` | 469 | 指定したループに対応する time の値、または全ループ分の値を取得する。 |
-| `get_tried_per_generated()` | 497 | 指定したループに対応する tried_per_gen の値、または全ループ分の値を取得する。 |
-| `get_accepted_per_tried()` | 525 | 指定したループに対応する acc_per_tried の値、または全ループ分の値を取得する。 |
-| `get_chi2_tot()` | 553 | 全データーセットをまとめた chi |
-| `get_chi2_set1()` | 575 | 指定したループに対応する chi2_set1 の値、または全ループ分の値を取得する。 |
-
-## ソースコードに基づく引数・戻り値一覧
-
-
-### `RmcPotHst.__init__`
-
-| 引数 | 型注釈 |
-|---|---|
-| `self` | `指定なし` |
-| `hst_name` | `Optional[str]` |
-| `cfg_name` | `Optional[str]` |
-| `config` | `Optional[Config]` |
-| `logger` | `Optional[XLogger]` |
-
-戻り値の型注釈: `None`。定義位置: `rmc_pot_hst(6).py:41`。
-
-### `RmcPotHst.read_chi2`
-
-| 引数 | 型注釈 |
-|---|---|
-| `self` | `指定なし` |
-
-戻り値の型注釈: `Tuple[List[int], List[float]]`。定義位置: `rmc_pot_hst(6).py:202`。
-
-### `RmcPotHst.detect_convergence`
-
-| 引数 | 型注釈 |
-|---|---|
-| `self` | `指定なし` |
-| `rel_tol` | `float` |
-| `acc_tol` | `float` |
-| `min_consecutive` | `int` |
-
-戻り値の型注釈: `Optional[int]`。定義位置: `rmc_pot_hst(6).py:231`。
-
-### `RmcPotHst.detect_convergence_set1`
-
-| 引数 | 型注釈 |
-|---|---|
-| `self` | `指定なし` |
-| `rel_tol` | `float` |
-| `acc_tol` | `float` |
-| `min_consecutive` | `int` |
-
-戻り値の型注釈: `Optional[int]`。定義位置: `rmc_pot_hst(6).py:327`。
-
-### `RmcPotHst.get_num_rmc_loops`
-
-| 引数 | 型注釈 |
-|---|---|
-| `self` | `指定なし` |
-
-戻り値の型注釈: `int`。定義位置: `rmc_pot_hst(6).py:368`。
-
-### `RmcPotHst.get_generated`
-
-| 引数 | 型注釈 |
-|---|---|
-| `self` | `指定なし` |
-| `loop_index` | `Optional[int]` |
-
-戻り値の型注釈: `Union[int, List[int]]`。定義位置: `rmc_pot_hst(6).py:382`。
-
-### `RmcPotHst.get_tried`
-
-| 引数 | 型注釈 |
-|---|---|
-| `self` | `指定なし` |
-| `loop_index` | `Optional[int]` |
-
-戻り値の型注釈: `Union[int, List[int]]`。定義位置: `rmc_pot_hst(6).py:413`。
-
-### `RmcPotHst.get_accepted`
-
-| 引数 | 型注釈 |
-|---|---|
-| `self` | `指定なし` |
-| `loop_index` | `Optional[int]` |
-
-戻り値の型注釈: `Union[int, List[int]]`。定義位置: `rmc_pot_hst(6).py:441`。
-
-### `RmcPotHst.get_time`
-
-| 引数 | 型注釈 |
-|---|---|
-| `self` | `指定なし` |
-| `loop_index` | `Optional[int]` |
-
-戻り値の型注釈: `Union[int, List[int]]`。定義位置: `rmc_pot_hst(6).py:469`。
-
-### `RmcPotHst.get_tried_per_generated`
-
-| 引数 | 型注釈 |
-|---|---|
-| `self` | `指定なし` |
-| `loop_index` | `Optional[int]` |
-
-戻り値の型注釈: `Union[float, List[float]]`。定義位置: `rmc_pot_hst(6).py:497`。
-
-### `RmcPotHst.get_accepted_per_tried`
-
-| 引数 | 型注釈 |
-|---|---|
-| `self` | `指定なし` |
-| `loop_index` | `Optional[int]` |
-
-戻り値の型注釈: `Union[float, List[float]]`。定義位置: `rmc_pot_hst(6).py:525`。
-
-### `RmcPotHst.get_chi2_tot`
-
-| 引数 | 型注釈 |
-|---|---|
-| `self` | `指定なし` |
-| `loop_index` | `Optional[int]` |
-
-戻り値の型注釈: `Union[float, List[float]]`。定義位置: `rmc_pot_hst(6).py:553`。
-
-### `RmcPotHst.get_chi2_set1`
-
-| 引数 | 型注釈 |
-|---|---|
-| `self` | `指定なし` |
-| `loop_index` | `Optional[int]` |
-
-戻り値の型注釈: `Union[float, List[float]]`。定義位置: `rmc_pot_hst(6).py:575`。
-
+| メソッド | 定義行 |
+|---|---:|
+| `__init__` | 41 |
+| `read_chi2` | 202 |
+| `detect_convergence` | 231 |
+| `detect_convergence_set1` | 327 |
+| `get_num_rmc_loops` | 368 |
+| `get_generated` | 382 |
+| `get_tried` | 413 |
+| `get_accepted` | 441 |
+| `get_time` | 469 |
+| `get_tried_per_generated` | 497 |
+| `get_accepted_per_tried` | 525 |
+| `get_chi2_tot` | 553 |
+| `get_chi2_set1` | 575 |
