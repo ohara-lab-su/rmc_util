@@ -1,0 +1,322 @@
+# ソフトウェア利用マニュアル
+
+RMC_UTIL のインストール、計算条件の設定、実行および結果解析について説明します。クラス・関数の仕様は [API リファレンス](../api/index.md)、操作手順は [チュートリアル](../tutorial/index.md) を参照してください。
+
+## rmc_util
+
+[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/ohara-lab-su/rmc_util/blob/main/README.md)
+[![ja](https://img.shields.io/badge/lang-ja-yellow.svg)](https://github.com/ohara-lab-su/rmc_util/blob/main/README.ja.md)
+
+[![GitHub](https://img.shields.io/badge/GitHub-ohara--lab--su%2Frmc_util-181717?logo=github)](https://github.com/ohara-lab-su/rmc_util/)
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Documentation-222222?logo=githubpages&logoColor=white)](https://ohara-lab-su.github.io/rmc_util/ja/)
+[![Ohara Lab](https://img.shields.io/badge/Ohara%20Lab-Home-4B5563?logo=homeassistant&logoColor=white)](https://ohara-lab-su.github.io/)
+
+`rmc_util` は、 **RMC_POT の入力作成・計算実行・結果解析を
+Python から扱うためのオープンソースライブラリ**です。
+RMC_POT の既存の計算エンジンを利用しながら、
+入力条件や構造拘束の編集、反復計算、
+収束評価をプログラムで自動化できます。
+
+`.dat`、FNC、topology の操作から、
+`.log`・`.hst`・`.fit`・`.ppcf`
+の解析までを対象とします。
+RMC_POT を単独で使う研究にも、
+RMC-DFT などの計算ワークフローにも利用できます。
+もともと `RMC_DFT` から独立させたパッケージです。
+
+**初期構造の作成には、
+同じく公開している
+[`packmol_util`](https://github.com/ohara-lab-su/packmol_util)
+も利用できます。**
+組成・密度・原子数からの非晶質構造生成に加え、
+RMC_POT 用 FNC ファイルの生成に対応しています。
+両パッケージは独立して利用できます。
+
+### インストール
+
+PyPI で公開されているパッケージは次のコマンドでインストールできます。
+
+```bash
+pip install rmc-util
+```
+
+PyPI 上のプロジェクト名は `rmc-util`、Python から利用するときのパッケージ名は `rmc_util` です。
+
+```python
+from rmc_util import RmcPot, RmcPotDat, RmcPotHst
+```
+
+開発版をローカルに clone して利用する場合は、リポジトリのルートで次を実行します。
+
+```bash
+pip install .
+```
+
+### 編集用パラメータースクリプトの配置
+
+`rmc-util` をインストールした後、同梱された起動スクリプト（`rmc.py`）と編集用パラメータースクリプト（`rmc_init.py`
+）をカレントディレクトリにコピーできます。
+
+```bash
+rmc_util install
+```
+
+既存の同名ファイルは上書きせず、スキップします。明示的に上書きする場合は次を実行します。
+
+```bash
+rmc_util install --force
+```
+
+コピーしたスクリプトは、計算条件などを利用者が編集して使用するためのものです。パッケージを更新しても、作業ディレクトリに配置済みのファイルは自動更新されません。
+
+### 実行処理と計算条件の分離（v0.1.6）
+
+RMC の実行系を、 **パッケージで管理する実行処理**と、 **計算ごとに編集するパラメーター**に分離します。従来は `examples/` から
+`rmc.py` と `rmc_init.py` を計算ディレクトリにコピーしていましたが、ほとんど変更しない実行処理まで複製されるため、パッケージの更新後に各計算ディレクトリのコードとの齟齬が生じる構造でした。
+
+- `src/rmc_util/runners/run_rmc.py`：パッケージ側で保守する RMC 実行処理。各作業ディレクトリにはコピーしません。
+- `scripts/rmc.py`：`rmc_util.runners.run_rmc` を起動するだけのスクリプト。`python rmc.py` で実行できます。
+- `scripts/rmc_init.py`：計算条件を編集するための初期化・パラメータースクリプト。`rmc_util install` で作業ディレクトリに展開し、パッケージ側の
+  runner を呼び出します。
+- `src/rmc_util/install.py`：編集用スクリプトの展開を担当します。RMC_POT の計算実行処理ではありません。
+- `find_next_log_index.py` の `next_log_dir_name()`：既存のログディレクトリを毎回検索して次の名前を決めます。番号は **0
+  始まり**で、中央管理のカウンターは持ちません。計算条件・実行スクリプトと計算結果を対応付けて保存するための命名規則です。
+
+リポジトリ直下の `scripts/` は配布する編集用ファイルの置き場所であり、Python パッケージ内の `runners/` とは役割が異なります。
+**`install` の配布対象は `rmc.py`（薄い起動スクリプト）と `rmc_init.py`
+（編集する計算条件）の2ファイルです。実行処理本体は含めません。** runner の修正はパッケージ更新で反映し、各計算ディレクトリには編集した条件だけを保持します。展開済みの
+`rmc_init.py` はパッケージ更新で自動的には書き換えません。
+
+`vasp_util` も同じ構成とすることで、`rmc_dft` は両パッケージの実行機能を呼び出して組み合わせる統合層に簡素化できます。RMC
+と VASP の単独実行も維持します。
+
+### rmc_util が扱う範囲
+
+#### RMC_POT の入力条件と実行
+
+`RmcPotDat` は RMC_POT の `.dat` を扱う中心的なインターフェースです。number density、cutoff、最大原子移動量、r
+spacing、実験データ範囲、計算時間・保存間隔などの計算条件を Python から設定できます。
+
+fixed format と free format に共通する計算条件は同じ API で扱えます。既存 `.dat` を `prefer_existing=True`
+で使用する場合は形式を判定して読み込み、新規作成時には形式を指定できます。free format 固有の構造制約なども `RmcPotDat`
+から設定できます。
+
+`RmcPot` は RMC_POT の実行を扱います。現在の実装では、preprocess、入力検証、RMC_POT の実行、計算後の結果回収・退避に加え、FNC
+の距離制約と原子種間 cutoff の整合性確認などを行えます。
+
+#### 自由形式の構造制約
+
+自由形式 `.dat` では、Python から次のような制約・potential 関連設定を作成・編集できます。
+
+- angle constraint
+- coordination constraint
+- SNC / Qn constraint
+- BVS constraint
+- pair potential
+- AENET potential
+
+そのため、RMC の実行ごとに `.dat` を手作業で書き換えるのではなく、上位スクリプトから計算条件を組み立てたり変更したりできます。
+
+#### FNC と topology
+
+`RmcPotDatFnc` は、FNC データの作成、読み込み、編集、検証、書き出しを扱います。constraint type ごとの距離範囲、各原子のneighbour、原子ペアなどを
+Python から操作できます。
+
+`RmcPotDatTop` は、RMC_POT の topology を Python から構築・編集するための機能を提供します。molecule、atom、bond、angle、dihedral、exclusion、virtual
+site などを扱い、topology の検証も行えます。
+
+#### 計算結果と解析
+
+RMC_POT の実行部分とは独立して、出力ファイルの読み取りにも利用できます。
+
+- `RmcPotLog`：RMC_POT のログを読み取り、generated / tried / accepted、χ²、Rw、RMC block / loop などを取得します。計算結果の収集・バックアップも扱います。
+- `RmcPotHst`：`.hst` の履歴を読み取り、acceptance や χ² の履歴取得、収束判定を行います。
+- `RmcPotFit`：`.fit` を読み取り、計算・実験 F (Q)、background、および対応する S (Q) を取得します。
+- `RmcPotPpcf`：`.ppcf` を読み取り、部分二体分布関数 `g_ij(r)` を取得します。
+
+### 基本例：RMC_POT `.dat` の設定
+
+`RmcPotDat` は必要になるまで初期化を遅延できますが、明示的に `init()` することもできます。
+
+```python
+from rmc_util import RmcPotDat
+
+rmc_dat = RmcPotDat(
+    cfg_name="sample",
+    auto_write=False,
+    use_free_format=True,
+)
+
+rmc_dat.init(
+    use_free_format=True,
+    prefer_existing=True,
+)
+
+rmc_dat.set_comment("SiO2 sample", auto_write=False)
+rmc_dat.set_density(0.0665715652, auto_write=False)
+rmc_dat.set_cutoffs([1.9, 1.1, 1.9], auto_write=False)
+rmc_dat.set_maximum_moves([0.01, 0.01], auto_write=False)
+rmc_dat.set_r_spacing(0.025, auto_write=False)
+rmc_dat.write()
+```
+
+`sample.dat` がすでに存在し、`prefer_existing=True` の場合は、固定形式・自由形式を自動判定して既存ファイルを使用します。
+
+### 例：自由形式の coordination / Qn constraint
+
+自由形式では、構造制約を Python から直接設定できます。
+
+```python
+from rmc_util import RmcPotDat
+
+rmc_dat = RmcPotDat(
+    cfg_name="sample",
+    use_free_format=True,
+)
+
+rmc_dat.init(
+    use_free_format=True,
+    prefer_existing=True,
+)
+
+rmc_dat.set_element_info(["Si", "O"])
+
+rmc_dat.set_coord_constraint(
+    central_type=1,
+    neighbors=[
+        (2, 1.40, 1.90),
+    ],
+    subconstraints=[
+        (4, 1.0, 0.01),
+    ],
+    index=0,
+)
+
+rmc_dat.set_qn_constraint(
+    central_type=1,
+    first_neighbor_type=2,
+    first_neighbor_minimum=1.45,
+    first_neighbor_maximum=1.80,
+    second_neighbors=[
+        (1, 1.45, 1.80),
+    ],
+    coordination_number=4,
+    fraction=1.0,
+    sigma=0.04,
+    index=0,
+)
+```
+
+複数原子種を含む系について、複数の coordination constraint や Qn constraint を設定することもできます。
+
+### 例：RMC ワークフローから利用する
+
+上位ワークフローでは、RMC の設定・実行オブジェクトを保持し、出力を読み取って次の処理を判断できます。
+
+```python
+from rmc_util import RmcPot, RmcPotDat, RmcPotHst, RmcPotLog
+
+rmc_dat = RmcPotDat(
+    cfg_name="sample",
+    use_free_format=True,
+)
+rmc_dat.init(prefer_existing=True)
+
+rmc_log = RmcPotLog(cfg_name="sample")
+
+rmc = RmcPot(
+    rmc_dat=rmc_dat,
+    rmc_log=rmc_log,
+    cfg_name="sample",
+)
+
+if not rmc.preprocess():
+    raise RuntimeError("RMC_POT input validation failed.")
+
+if not rmc.check_fnc_cutoff_consistency(cfg_name="sample"):
+    raise RuntimeError("FNC and cutoff settings are inconsistent.")
+
+try:
+    run_ok = rmc.run()
+finally:
+    rmc.postprocess(
+        cfg_name="sample",
+    )
+
+if not run_ok:
+    raise RuntimeError("RMC_POT execution failed.")
+
+hst = RmcPotHst(cfg_name="sample")
+loop = hst.detect_convergence(
+    rel_tol=1.0e-2,
+    acc_tol=1.0e-3,
+    min_consecutive=2,
+)
+```
+
+このような使い方では、RMC_POT を単独の計算として実行するだけでなく、より大きな計算フローの一工程として扱えます。たとえば
+RMC-DFT では、RMC 条件を変更して RMC_POT を実行し、収束状態を確認し、結果を退避した上で、得られた構造を DFT
+側へ渡す、といった制御に利用できます。
+
+`rmc_util` 自体は DFT 計算を提供するライブラリではなく、そのようなワークフローで必要となる RMC_POT 側のハンドリングを担当します。
+
+### 主なモジュール
+
+| 分野         | モジュール          | 内容                                                          |
+|--------------|---------------------|---------------------------------------------------------------|
+| RMC 実行     | `rmc_pot`           | RMC_POT の preprocess・実行・検証・postprocess                |
+| DAT 共通     | `rmc_pot_dat`       | fixed / free の違いを隠蔽し、共通の RMC 条件を同一 API で操作 |
+| 固定形式 DAT | `rmc_pot_dat_fixed` | 固定形式 RMC_POT パラメータの読み書き                         |
+| 自由形式 DAT | `rmc_pot_dat_free`  | 自由形式パラメータ・構造制約・potential 設定の読み書き        |
+| FNC          | `rmc_pot_dat_fnc`   | FNC の作成・編集・検証                                        |
+| topology     | `rmc_pot_dat_top`   | topology / ITP 形式データの作成・編集・検証                   |
+| RMC log      | `rmc_pot_log`       | RMC ログ解析、結果の収集・バックアップ                        |
+| history      | `rmc_pot_hst`       | `.hst` の解析と収束判定                                       |
+| fit          | `rmc_pot_fit`       | `.fit` の読み取りと F(Q) / S(Q) の取得                        |
+| PPCF         | `rmc_pot_ppcf`      | 部分二体分布関数の読み取り                                    |
+
+CFG / POSCAR 変換などの構造変換・補助機能は `rmc_util.util` に含まれます。
+
+### ドキュメント
+
+- [ドキュメントホーム](https://github.com/ohara-lab-su/rmc_util/blob/main/docs/index.md)
+- [RMC 法と RMC_POT](https://github.com/ohara-lab-su/rmc_util/blob/main/docs/guide/overview.md)
+- [入力ファイル](https://github.com/ohara-lab-su/rmc_util/blob/main/docs/guide/input.md)
+- [構造制約](https://github.com/ohara-lab-su/rmc_util/blob/main/docs/guide/constraints.md)
+- [出力と解析](https://github.com/ohara-lab-su/rmc_util/blob/main/docs/guide/output.md)
+- [ファイル形式の詳説](https://github.com/ohara-lab-su/rmc_util/blob/main/docs/reference/index.md)
+- [API リファレンス](https://github.com/ohara-lab-su/rmc_util/blob/main/docs/api/index.md)
+
+ドキュメントをローカルで HTML 化する場合は次を実行します。
+
+```bash
+docs/build.sh
+```
+
+HTML は `docs/_build/html/` に出力されます。
+
+### ソースコード
+
+ソースコードと開発履歴は [GitHub](https://github.com/ohara-lab-su/rmc_util) で公開しています。
+
+### 参考文献
+
+Orsolya Gereben, *RMC_POT user guide for version 2023.1* (2023).
+
+#### RMCの実行
+
+`rmc_util install` で `rmc.py` と `rmc_init.py` を展開し、`rmc_init.py` の計算条件を編集した後、同じ作業ディレクトリで実行します。
+
+```bash
+rmc_util install
+python rmc.py
+```
+
+`rmc.py` は `rmc_util.runners.run_rmc` を実行するだけで、実行処理を複製しません。runner が `__main__` として実行可能であることが前提です。
+
+`run_rmc()` は `config` を必須引数として受け取り、`rmc_dat` などの実行に必要なオブジェクトを呼び出し側から受け取ります。
+`scripts/rmc.py` で `Config("config.yml")`、`RmcPotLog`、`RmcPotDat` を生成し、`rmc_init.py` による条件設定後に
+`run_rmc(config=..., rmc_log=..., rmc_dat=..., rmc_pot=None, auto_converge=False, postprocess=True, msg=None, logger=...)`
+を呼び出します。runner 側に旧単独スクリプトの `if __name__ == "__main__":` は残しません。
+
+本ソフトウェアが研究の参考になったり、研究成果に役立ったりした場合には、論文等の謝辞（Acknowledgments）に「島根大学 Ohara Lab」の名前を記載していただけると幸いです。

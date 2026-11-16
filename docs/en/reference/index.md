@@ -1,6 +1,6 @@
-# File formats and RMC theory
+# Detailed Explanations of File Formats and the RMC Method
 
-The detailed reference materials are collected here.
+This section explains RMC theory and the RMC_POT configuration, input, and output file formats.
 
 ```{toctree}
 :maxdepth: 2
@@ -11,4 +11,4 @@ rmcpot_input_explained
 rmcpot_output_explained
 ```
 
-For authoritative syntax and keyword definitions, see Chapter II of Orsolya Gereben, *RMC_POT user guide for version 2023.1*.
+For precise definitions of RMC_POT formats and keywords, refer to Chapter II of Orsolya Gereben, *RMC_POT user guide for version 2023.1*.
