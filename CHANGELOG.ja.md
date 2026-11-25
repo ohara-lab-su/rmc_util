@@ -4,6 +4,10 @@
 [![ja](https://img.shields.io/badge/lang-ja-yellow.svg)](https://github.com/ohara-lab-su/rmc_util/blob/main/CHANGELOG.ja.md)
 
 
+## v0.1.11
+
+- 起動時の設定テンプレート `scripts/config.yml` を同梱し、`rmc_util install` で `rmc.py`、`rmc_init.py` と一緒に作業ディレクトリへコピーするようにした。既存の `config.yml` は通常スキップし、`--force` 指定時に上書きする。
+
 ## v0.1.10
 
 ### バグ修正

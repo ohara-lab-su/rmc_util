@@ -10,11 +10,11 @@ RMC_UTIL は RMC_POT 本体を置き換えるものではなく、入力ファ�
 | 実行 | `rmc_pot.py`、`runners/run_rmc.py` | 実行前検査、RMC_POT 起動、結果処理、反復処理 |
 | 出力解析 | `rmc_pot_log.py`、`rmc_pot_hst.py`、`rmc_pot_fit.py`、`rmc_pot_ppcf.py` | ログ、履歴、フィット、部分相関データの処理 |
 | ファイル変換 | `util/` | CFG・POSCAR・topology 等の変換と補助処理 |
-| 配布スクリプト | `install.py`、`scripts/rmc.py`、`scripts/rmc_init.py` | 作業ディレクトリへのスクリプト展開と起動 |
+| 配布ファイル | `install.py`、`scripts/rmc.py`、`scripts/rmc_init.py`、`scripts/config.yml` | 作業ディレクトリへの雛形の展開と起動 |
 
 ## 計算ディレクトリとパッケージの分離
 
-`rmc_util install` が展開する `rmc.py` は起動用、`rmc_init.py` は計算条件の編集用です。実行処理の本体はインストールされた `rmc_util.runners.run_rmc` 側にあります。パッケージの更新は展開済みの `rmc_init.py` を自動変更しません。
+`rmc_util install` が展開する `rmc.py` は起動用、`rmc_init.py` は計算条件の編集用、`config.yml` は起動時の設定ファイルです。実行処理の本体はインストールされた `rmc_util.runners.run_rmc` 側にあります。パッケージの更新は展開済みのファイルを自動変更しません。
 
 ## `.dat` の形式と初期化
 

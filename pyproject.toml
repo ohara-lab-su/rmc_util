@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "rmc-util"
-version = "0.1.10"
+version = "0.1.11"
 
 description = "Python toolkit for RMC_POT input preparation, calculation automation, and result analysis."
 authors = [
@@ -66,4 +66,5 @@ rmc_util = "rmc_util.install:main"
 "share/rmc_util/scripts" = [
     "scripts/rmc.py",
     "scripts/rmc_init.py",
+    "scripts/config.yml",
 ]

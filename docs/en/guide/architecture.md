@@ -10,11 +10,11 @@ RMC_UTIL is a Python library for editing RMC_POT input files, controlling execut
 | Execution | `rmc_pot.py`, `runners/run_rmc.py` | Pre-run checks, RMC_POT invocation, result processing, and iterative execution |
 | Output analysis | `rmc_pot_log.py`, `rmc_pot_hst.py`, `rmc_pot_fit.py`, `rmc_pot_ppcf.py` | Log, history, fit, and partial-correlation data |
 | File conversion | `util/` | CFG, POSCAR, topology conversion, and supporting operations |
-| Distributed scripts | `install.py`, `scripts/rmc.py`, `scripts/rmc_init.py` | Deployment of working scripts and execution |
+| Distributed files | `install.py`, `scripts/rmc.py`, `scripts/rmc_init.py`, `scripts/config.yml` | Deployment of working files and calculation startup |
 
 ## Separation of the calculation directory and the package
 
-The `rmc.py` file deployed by `rmc_util install` is the launcher, while `rmc_init.py` contains editable calculation settings. The execution implementation resides in the installed `rmc_util.runners.run_rmc` module. Updating the package does not automatically modify a previously deployed `rmc_init.py`.
+`rmc_util install` deploys the `rmc.py` launcher, the editable calculation settings in `rmc_init.py`, and the startup configuration in `config.yml`. The execution implementation resides in the installed `rmc_util.runners.run_rmc` module. Updating the package does not automatically modify previously deployed files.
 
 ## `.dat` formats and initialization
 
