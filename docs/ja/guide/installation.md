@@ -18,7 +18,7 @@ pip install rmc-util
 rmc_util install
 ```
 
-インストール済みパッケージに同梱された `rmc.py` と `rmc_init.py` を、**現在の作業ディレクトリ**に配置します。前者は計算の起動、後者は計算条件の編集に使用します。`rmc_util install` は新しい仮想環境の作成やRMC_POT本体の導入を行いません。
+インストール済みパッケージに同梱された `rmc.py`、`rmc_init.py`、`config.yml` を **現在の作業ディレクトリ**に配置します。`rmc.py` は起動用、`rmc_init.py` は計算条件の編集用です。`config.yml` には RMC_POT の実行ファイル、実験データ、入力ファイルの基底名などを設定します。`rmc_util install` は新しい仮想環境の作成やRMC_POT本体の導入を行いません。
 
 配置先に同名ファイルが存在すると、既定ではそのファイルをスキップします。既存ファイルを置き換える場合だけ、次を実行します。
 
@@ -26,7 +26,7 @@ rmc_util install
 rmc_util install --force
 ```
 
-`--force` は既存の `rmc.py`、`rmc_init.py` を上書きし得るため、利用者が編集した設定を保持する場合は使用しません。パッケージの更新によって、すでに計算ディレクトリへコピーしたスクリプトが自動更新されることもありません。
+`--force` を指定すると、編集済みの `config.yml` と `rmc_init.py` を含む同名ファイルを上書きします。パッケージの更新だけでは、計算ディレクトリに配置済みのファイルは自動更新されません。
 
 ## 配置元とコピー処理
 
@@ -53,4 +53,4 @@ from rmc_util.install import install_scripts
 copied, skipped = install_scripts(Path.cwd(), force=False)
 ```
 
-このAPIはスクリプトの配置を行います。計算条件の編集やRMC計算の開始は別の操作です。関数の詳細は [インストールAPI](../api/install.md)を参照してください。
+この API はスクリプトと設定ファイルを配置します。計算条件の編集やRMC計算の開始は別の操作です。関数の詳細は [インストールAPI](../api/install.md)を参照してください。

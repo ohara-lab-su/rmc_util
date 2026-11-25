@@ -18,11 +18,11 @@ pip install rmc-util
 rmc_util install
 ```
 
-`rmc.py`（起動）と `rmc_init.py`（計算条件の編集）を現在のディレクトリへ配置します。同名のファイルが既にある場合は、既定で上書きしません。`rmc_util install --force` は既存ファイルを上書きするため、編集済みの `rmc_init.py` を保存してから使用してください。詳細は [インストールガイド](../guide/installation.md) を参照してください。
+`rmc.py`（起動）、`rmc_init.py`（計算条件の編集）、`config.yml`（起動時の設定）を現在のディレクトリへ配置します。同名のファイルが既にある場合は、既定で上書きしません。`rmc_util install --force` は既存ファイルを上書きするため、編集済みの `rmc_init.py` と `config.yml` を保存してから使用してください。詳細は [インストールガイド](../guide/installation.md) を参照してください。
 
 ## 3. 入力と実行環境を準備する
 
-`config.yml`、初期原子配置 `.cfg`、実験データ、RMC_POT 実行ファイルを計算に合わせて準備します。構造制約を使用する場合は、対応する FNC やトポロジーなどの入力も確認します。
+配置した `config.yml` を計算に合わせて編集し、初期原子配置 `.cfg`、実験データ、RMC_POT 実行ファイルを準備します。構造制約を使用する場合は、対応する FNC やトポロジーなどの入力も確認します。
 
 `rmc.py` の初期構造作成処理はコメントアウトされています。`python rmc.py` を実行しても、初期構造が自動的に作成されるわけではありません。`.cfg` と `.dat` の形式は [入力ファイル](../guide/input.md)、RMC_POT 側の仕様は [入力形式リファレンス](../reference/rmcpot_input_explained.md) を参照してください。
 

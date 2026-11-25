@@ -31,9 +31,9 @@ To use a development version cloned locally, run the following in the repository
 pip install .
 ```
 
-### Installing Editable Parameter Scripts
+### Installing the Launcher and Configuration Files
 
-After installing `rmc-util`, the bundled launcher script (`rmc.py`) and editable parameter script (`rmc_init.py`) can be copied into the current directory.
+After installing `rmc-util`, copy the bundled `rmc.py`, `rmc_init.py`, and `config.yml` into the current directory.
 
 ```bash
 rmc_util install
@@ -45,7 +45,7 @@ Existing files with the same names are skipped rather than overwritten. To expli
 rmc_util install --force
 ```
 
-The copied scripts are intended for users to edit calculation conditions and other settings. Updating the package does not automatically update files already installed in working directories.
+Set the executable and experimental data in `config.yml` and edit calculation parameters in `rmc_init.py`. Updating the package does not automatically update files already installed in working directories.
 
 ### Separation of Execution Processing and Calculation Conditions (v0.1.6)
 
@@ -54,10 +54,11 @@ The RMC execution system is separated into **execution processing managed by the
 - `src/rmc_util/runners/run_rmc.py`: RMC execution processing maintained within the package. It is not copied into individual working directories.
 - `scripts/rmc.py`: A script that only launches `rmc_util.runners.run_rmc`. It can be executed with `python rmc.py`.
 - `scripts/rmc_init.py`: Initialization and parameter script for editing calculation conditions. It is deployed to working directories with `rmc_util install` and calls the package-side runner.
-- `src/rmc_util/install.py`: Responsible for deploying editable scripts. It does not execute RMC_POT calculations.
+- `scripts/config.yml` is the configuration template that `rmc.py` reads at startup.
+- `src/rmc_util/install.py` copies the bundled files into the working directory.
 - `next_log_dir_name()` in `find_next_log_index.py`: Searches existing log directories each time to determine the next name. Numbering **starts at 0**, and there is no centrally managed counter. This naming convention associates calculation conditions and execution scripts with their saved results.
 
-The repository-root `scripts/` directory holds editable files for distribution and has a different role from `runners/` inside the Python package. **The `install` command distributes two files: `rmc.py` (a thin launcher) and `rmc_init.py` (editable calculation conditions). It does not include the execution-processing implementation.** Changes to the runner take effect when the package is updated, while individual calculation directories retain only their edited conditions. A deployed `rmc_init.py` is not automatically rewritten by package updates.
+The repository-root `scripts/` directory holds editable files for distribution and has a different role from `runners/` inside the Python package. Changes to the runner take effect when the package is updated.
 
 Using the same organization for `vasp_util` allows `rmc_dft` to be simplified into an integration layer that calls and combines the execution functionality of both packages. Independent RMC and VASP execution is also preserved.
 
@@ -268,7 +269,7 @@ Orsolya Gereben, *RMC_POT user guide for version 2023.1* (2023).
 
 #### Running RMC
 
-Use `rmc_util install` to deploy `rmc.py` and `rmc_init.py`, edit the calculation conditions in `rmc_init.py`, and then execute in the same working directory.
+Use `rmc_util install` to deploy all three files, edit `config.yml` and `rmc_init.py` for the calculation, and then execute in the same working directory.
 
 ```bash
 rmc_util install

@@ -4,6 +4,10 @@
 [![ja](https://img.shields.io/badge/lang-ja-yellow.svg)](https://github.com/ohara-lab-su/rmc_util/blob/main/CHANGELOG.ja.md)
 
 
+## v0.1.11
+
+- Bundled `scripts/config.yml` so `rmc_util install` copies the launcher configuration alongside `rmc.py` and `rmc_init.py`. An existing `config.yml` is skipped by default and overwritten with `--force`.
+
 ## v0.1.10
 
 ### Bug fixes

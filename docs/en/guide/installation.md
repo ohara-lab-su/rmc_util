@@ -18,15 +18,15 @@ Change to the calculation directory and run:
 rmc_util install
 ```
 
-This copies the `rmc.py` and `rmc_init.py` scripts bundled with the installed distribution into the **current working directory**. The former launches calculations; the latter is used to edit calculation parameters. `rmc_util install` does not create a virtual environment or install the RMC_POT executable.
+This copies the bundled `rmc.py`, `rmc_init.py`, and `config.yml` into the **current working directory**. Use `rmc.py` to launch calculations, `rmc_init.py` to edit calculation parameters, and `config.yml` to set the RMC_POT executable, experimental data, and input file basename. `rmc_util install` does not create a virtual environment or install the RMC_POT executable.
 
-By default, an existing file with the same name is skipped. To replace existing scripts explicitly, run:
+By default, an existing file with the same name is skipped. To overwrite existing files, run:
 
 ```bash
 rmc_util install --force
 ```
 
-Because `--force` can overwrite modified copies of `rmc.py` and `rmc_init.py`, do not use it when you need to preserve local settings. Updating the Python package does not automatically update scripts already copied into calculation directories.
+`--force` overwrites files with the same names, including edited copies of `config.yml` and `rmc_init.py`. Updating the Python package does not automatically update files already copied into calculation directories.
 
 ## Script discovery and copying
 
@@ -53,4 +53,4 @@ from rmc_util.install import install_scripts
 copied, skipped = install_scripts(Path.cwd(), force=False)
 ```
 
-This API deploys scripts; editing calculation settings and starting an RMC calculation are separate operations. See the [installation API](../api/install.md) for details.
+This API deploys the scripts and configuration template. See the [installation API](../api/install.md) for details.

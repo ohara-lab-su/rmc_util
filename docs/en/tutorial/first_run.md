@@ -18,11 +18,11 @@ Change to the calculation directory and run:
 rmc_util install
 ```
 
-This places `rmc.py` (launcher) and `rmc_init.py` (editable calculation settings) in the current directory. Existing files are not overwritten by default. `rmc_util install --force` overwrites existing files; back up an edited `rmc_init.py` before using it. See the [installation guide](../guide/installation.md).
+This places `rmc.py` (launcher), `rmc_init.py` (calculation parameters), and `config.yml` (launcher configuration) in the current directory. Existing files are not overwritten by default. `rmc_util install --force` overwrites existing files, including edited copies of `rmc_init.py` and `config.yml`. See the [installation guide](../guide/installation.md).
 
 ## 3. Prepare inputs and the execution environment
 
-Prepare `config.yml`, the initial atomic configuration `.cfg`, experimental data, and the RMC_POT executable for the calculation. When structural constraints are used, also check the corresponding FNC or topology inputs.
+Edit the deployed `config.yml` for your calculation and prepare the initial atomic configuration `.cfg`, experimental data, and RMC_POT executable. When structural constraints are used, also check the corresponding FNC or topology inputs.
 
 The initial-structure preparation code in `rmc.py` is commented out. Running `python rmc.py` does not automatically create an initial configuration. See [input files](../guide/input.md) for `.cfg` and `.dat` formats and the [input-format reference](../reference/rmcpot_input_explained.md) for RMC_POT specifications.
 

@@ -1,6 +1,6 @@
 # `rmc_util.install`
 
-This module deploys calculation scripts included in the installed Python distribution to a specified directory. See the [installation guide](../guide/installation.md) for CLI usage.
+This module deploys calculation scripts and the configuration template included in the installed Python distribution to a specified directory. See the [installation guide](../guide/installation.md) for CLI usage.
 
 ## `find_installed_scripts() -> list[Path]`
 
@@ -8,7 +8,7 @@ Searches `share/rmc_util/scripts` under the directory returned by `sysconfig.get
 
 ## `install_scripts(destination: Path, *, force: bool = False) -> tuple[int, int]`
 
-Copies the bundled scripts to `destination`. Existing files are skipped when `force=False` and overwritten when `force=True`. Raises `IsADirectoryError` if a target path is a directory. Returns `(number_copied, number_skipped)`. On POSIX systems, adds executable permissions to `rmc.py`. Raises `RuntimeError` if no bundled scripts are found.
+Copies the bundled scripts and configuration template to `destination`. Existing files are skipped when `force=False` and overwritten when `force=True`. Raises `IsADirectoryError` if a target path is a directory. Returns `(number_copied, number_skipped)`. On POSIX systems, adds executable permissions to `rmc.py`. Raises `RuntimeError` if no bundled files are found.
 
 ```python
 from pathlib import Path

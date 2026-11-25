@@ -46,10 +46,9 @@ from rmc_util import RmcPot, RmcPotDat, RmcPotHst
 pip install .
 ```
 
-### 編集用パラメータースクリプトの配置
+### 起動スクリプトと設定ファイルの配置
 
-`rmc-util` をインストールした後、同梱された起動スクリプト（`rmc.py`）と編集用パラメータースクリプト（`rmc_init.py`
-）をカレントディレクトリにコピーできます。
+`rmc-util` をインストールした後、同梱された `rmc.py`、`rmc_init.py`、`config.yml` をカレントディレクトリにコピーできます。
 
 ```bash
 rmc_util install
@@ -61,7 +60,7 @@ rmc_util install
 rmc_util install --force
 ```
 
-コピーしたスクリプトは、計算条件などを利用者が編集して使用するためのものです。パッケージを更新しても、作業ディレクトリに配置済みのファイルは自動更新されません。
+配置した `config.yml` で実行ファイルや実験データなどを指定し、`rmc_init.py` で計算条件を編集します。パッケージを更新しても、作業ディレクトリに配置済みのファイルは自動更新されません。
 
 ### 実行処理と計算条件の分離（v0.1.6）
 
@@ -72,14 +71,13 @@ RMC の実行系を、 **パッケージで管理する実行処理**と、 **�
 - `scripts/rmc.py`：`rmc_util.runners.run_rmc` を起動するだけのスクリプト。`python rmc.py` で実行できます。
 - `scripts/rmc_init.py`：計算条件を編集するための初期化・パラメータースクリプト。`rmc_util install` で作業ディレクトリに展開し、パッケージ側の
   runner を呼び出します。
-- `src/rmc_util/install.py`：編集用スクリプトの展開を担当します。RMC_POT の計算実行処理ではありません。
+- `scripts/config.yml`：`rmc.py` が起動時に読み込む設定の雛形です。
+- `src/rmc_util/install.py`：同梱ファイルを作業ディレクトリに展開します。
 - `find_next_log_index.py` の `next_log_dir_name()`：既存のログディレクトリを毎回検索して次の名前を決めます。番号は **0
   始まり**で、中央管理のカウンターは持ちません。計算条件・実行スクリプトと計算結果を対応付けて保存するための命名規則です。
 
 リポジトリ直下の `scripts/` は配布する編集用ファイルの置き場所であり、Python パッケージ内の `runners/` とは役割が異なります。
-**`install` の配布対象は `rmc.py`（薄い起動スクリプト）と `rmc_init.py`
-（編集する計算条件）の2ファイルです。実行処理本体は含めません。** runner の修正はパッケージ更新で反映し、各計算ディレクトリには編集した条件だけを保持します。展開済みの
-`rmc_init.py` はパッケージ更新で自動的には書き換えません。
+runner の修正はパッケージの更新によって反映されます。
 
 `vasp_util` も同じ構成とすることで、`rmc_dft` は両パッケージの実行機能を呼び出して組み合わせる統合層に簡素化できます。RMC
 と VASP の単独実行も維持します。
@@ -299,7 +297,7 @@ Orsolya Gereben, *RMC_POT user guide for version 2023.1* (2023).
 
 #### RMCの実行
 
-`rmc_util install` で `rmc.py` と `rmc_init.py` を展開し、`rmc_init.py` の計算条件を編集した後、同じ作業ディレクトリで実行します。
+`rmc_util install` で3ファイルを展開し、`config.yml` と `rmc_init.py` を計算に合わせて編集した後、同じ作業ディレクトリで実行します。
 
 ```bash
 rmc_util install
