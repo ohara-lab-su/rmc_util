@@ -8,7 +8,7 @@ The package distinguishes **maintained execution logic** from **per-calculation 
 - `scripts/rmc.py`: thin entry script calling the packaged runner.
 - `scripts/rmc_init.py`: user-edited calculation settings.
 - `scripts/config.yml` provides the settings read by `rmc.py`.
-- `rmc_util.install` copies the launcher, calculation script, and configuration template.
+- `rmc_util.install` copies the launcher, calculation script, configuration template, and plotting scripts. Use `rmc_util list` to see the available files.
 - `rmc_util.util.find_next_log_index`: selects the next available log directory by scanning existing directories, starting numbering at zero.
 
 The `RmcPot` class coordinates execution and pre-/post-processing; `RmcPotDat` and related classes manage inputs; `RmcPotLog`, `RmcPotHst`, `RmcPotFit`, and `RmcPotPpcf` handle result files. See the [API reference](../api/index.md) for the source-derived declarations.

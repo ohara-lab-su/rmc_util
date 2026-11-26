@@ -7,7 +7,7 @@ pip install rmc-util
 rmc_util install
 ```
 
-`rmc_util install` places `rmc.py`, `rmc_init.py`, and `config.yml` in the working directory. Existing files are not overwritten; to explicitly overwrite them, use `rmc_util install --force`. Edit `config.yml` and `rmc_init.py` for your calculation, prepare the required initial structure and input data, and then execute:
+`rmc_util install` places `rmc.py`, `rmc_init.py`, `config.yml`, and the plotting scripts in the working directory. Existing files are not overwritten; to explicitly overwrite them, use `rmc_util install --force`. Edit `config.yml` and `rmc_init.py` for your calculation, prepare the required initial structure and input data, and then execute:
 
 ```bash
 python rmc.py

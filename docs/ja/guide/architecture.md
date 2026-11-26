@@ -14,7 +14,7 @@ RMC_UTIL は RMC_POT 本体を置き換えるものではなく、入力ファ�
 
 ## 計算ディレクトリとパッケージの分離
 
-`rmc_util install` が展開する `rmc.py` は起動用、`rmc_init.py` は計算条件の編集用、`config.yml` は起動時の設定ファイルです。実行処理の本体はインストールされた `rmc_util.runners.run_rmc` 側にあります。パッケージの更新は展開済みのファイルを自動変更しません。
+`rmc_util install` が展開する `rmc.py` は起動用、`rmc_init.py` は計算条件の編集用、`config.yml` は起動時の設定ファイルです。結果作図用の `plot_*.py` も同じコマンドで展開します。実行処理の本体はインストールされた `rmc_util.runners.run_rmc` 側にあります。パッケージの更新は展開済みのファイルを自動変更しません。
 
 ## `.dat` の形式と初期化
 

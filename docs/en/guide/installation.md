@@ -12,13 +12,20 @@ To install from a source checkout, run `pip install .` at the repository root. R
 
 ## What `rmc_util install` does
 
-Change to the calculation directory and run:
+`rmc_util install`, `rmc_util install all`, and `rmc_util install script` all deploy `rmc.py`, `rmc_init.py`, `config.yml`, and the four plotting scripts to the current directory.
 
 ```bash
 rmc_util install
+rmc_util list
+rmc_util install plot_fit.py
+rmc_util install config
 ```
 
-This copies the bundled `rmc.py`, `rmc_init.py`, and `config.yml` into the **current working directory**. Use `rmc.py` to launch calculations, `rmc_init.py` to edit calculation parameters, and `config.yml` to set the RMC_POT executable, experimental data, and input file basename. `rmc_util install` does not create a virtual environment or install the RMC_POT executable.
+`rmc_util list` shows the available filenames and their purpose. For an individual file, the `.py` and `.yml` extensions are optional. For example, `plot_fit` and `plot_fit.py` select the same file, as do `config` and `config.yml`.
+
+To plot a result, run a command such as `python plot_fit.py aaa` in the directory containing the result file. The argument `aaa` is the result file basename.
+
+Before launching a calculation, set the RMC_POT executable, experimental data, and input file basename in `config.yml`, and edit calculation parameters in `rmc_init.py`.
 
 By default, an existing file with the same name is skipped. To overwrite existing files, run:
 
@@ -26,13 +33,13 @@ By default, an existing file with the same name is skipped. To overwrite existin
 rmc_util install --force
 ```
 
-`--force` overwrites files with the same names, including edited copies of `config.yml` and `rmc_init.py`. Updating the Python package does not automatically update files already copied into calculation directories.
+`--force` works with both bulk and individual installs and overwrites existing files selected for deployment. Updating the Python package does not automatically update files already copied into calculation directories.
 
 ## Script discovery and copying
 
 `rmc_util.install.find_installed_scripts()` searches `share/rmc_util/scripts` under the Python installation data directory and the installed distribution's file records. Files with duplicate names are copied only once. An error is raised when no bundled scripts are found.
 
-`rmc_util.install.install_scripts(destination, force=False)` returns the numbers of copied and skipped files. On POSIX systems, it also adds executable permissions to `rmc.py`. The command accepts only `install` or `install --force`.
+`rmc_util.install.install_scripts(destination, force=False, script_name=None)` returns the numbers of copied and skipped files. On POSIX systems, it also adds executable permissions to `rmc.py`.
 
 ## Starting a calculation and separating configuration
 

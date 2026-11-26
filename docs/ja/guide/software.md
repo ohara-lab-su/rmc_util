@@ -43,11 +43,16 @@ pip install .
 
 ## 起動スクリプトと設定ファイルの配置
 
-`rmc-util` をインストールした後、同梱された `rmc.py`、`rmc_init.py`、`config.yml` をカレントディレクトリにコピーできます。
+指定なしの `rmc_util install`、`rmc_util install all`、`rmc_util install script` はいずれも、`rmc.py`、`rmc_init.py`、`config.yml` と4本の plot スクリプトをカレントディレクトリに配置します。
 
 ```bash
 rmc_util install
+rmc_util list
+rmc_util install plot_fit.py
+rmc_util install config
 ```
+
+`rmc_util list` は配置可能なファイル名と用途を表示します。個別指定では `.py` と `.yml` を省略できます。たとえば `plot_fit` と `plot_fit.py`、`config` と `config.yml` はそれぞれ同じファイルを指定します。
 
 既存の同名ファイルは上書きせず、スキップします。明示的に上書きする場合は次を実行します。
 
@@ -290,7 +295,7 @@ Orsolya Gereben, *RMC_POT user guide for version 2023.1* (2023).
 
 ### RMCの実行
 
-`rmc_util install` で3ファイルを展開し、`config.yml` と `rmc_init.py` を計算に合わせて編集した後、同じ作業ディレクトリで実行します。
+`rmc_util install` で同梱ファイルを展開し、`config.yml` と `rmc_init.py` を計算に合わせて編集した後、同じ作業ディレクトリで実行します。
 
 ```bash
 rmc_util install

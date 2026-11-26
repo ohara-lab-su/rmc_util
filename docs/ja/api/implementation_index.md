@@ -14,9 +14,9 @@ RMC_UTIL のモジュール別に、クラス、関数、メソッドと定義�
 ## [`install`](install.md)
 
 
-- 関数 `find_installed_scripts()`（定義行 19）
-- 関数 `install_scripts()`（定義行 41）
-- 関数 `main()`（定義行 76）
+- 関数 `find_installed_scripts()`（定義行 29）
+- 関数 `install_scripts()`（定義行 53）
+- 関数 `main()`（定義行 114）
 
 ## [`rmc_pot`](rmc_pot.md)
 

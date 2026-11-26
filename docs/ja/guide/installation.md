@@ -12,13 +12,20 @@ pip install rmc-util
 
 ## `rmc_util install` の役割
 
-計算を行うディレクトリに移動して、次を実行します。
+指定なしの `rmc_util install`、`rmc_util install all`、`rmc_util install script` はいずれも、`rmc.py`、`rmc_init.py`、`config.yml` と4本の plot スクリプトをカレントディレクトリに配置します。
 
 ```bash
 rmc_util install
+rmc_util list
+rmc_util install plot_fit.py
+rmc_util install config
 ```
 
-インストール済みパッケージに同梱された `rmc.py`、`rmc_init.py`、`config.yml` を **現在の作業ディレクトリ**に配置します。`rmc.py` は起動用、`rmc_init.py` は計算条件の編集用です。`config.yml` には RMC_POT の実行ファイル、実験データ、入力ファイルの基底名などを設定します。`rmc_util install` は新しい仮想環境の作成やRMC_POT本体の導入を行いません。
+`rmc_util list` は配置可能なファイル名と用途を表示します。個別指定では `.py` と `.yml` を省略できます。たとえば `plot_fit` と `plot_fit.py`、`config` と `config.yml` はそれぞれ同じファイルを指定します。
+
+作図するには、対象の結果ファイルがあるディレクトリで、たとえば `python plot_fit.py aaa` を実行します。引数の `aaa` は結果ファイルの基底名です。
+
+計算を起動するには、`config.yml` で RMC_POT の実行ファイル、実験データ、入力ファイルの基底名などを指定し、`rmc_init.py` で計算条件を編集します。
 
 配置先に同名ファイルが存在すると、既定ではそのファイルをスキップします。既存ファイルを置き換える場合だけ、次を実行します。
 
@@ -26,13 +33,13 @@ rmc_util install
 rmc_util install --force
 ```
 
-`--force` を指定すると、編集済みの `config.yml` と `rmc_init.py` を含む同名ファイルを上書きします。パッケージの更新だけでは、計算ディレクトリに配置済みのファイルは自動更新されません。
+`--force` は一括・個別配置のどちらにも指定でき、配置対象の同名ファイルを上書きします。パッケージの更新だけでは、計算ディレクトリに配置済みのファイルは自動更新されません。
 
 ## 配置元とコピー処理
 
 `rmc_util.install.find_installed_scripts()` は、Pythonのインストール先にある `share/rmc_util/scripts` と、インストール済み配布物のファイル記録から雛形を探します。同名ファイルは重複してコピーしません。雛形が見つからない場合はエラーになります。
 
-`rmc_util.install.install_scripts(destination, force=False)` はコピー件数とスキップ件数を返します。`rmc.py` についてはPOSIX環境で実行権限を付加します。コマンドの引数は `install` または `install --force` のみです。
+`rmc_util.install.install_scripts(destination, force=False, script_name=None)` はコピー件数とスキップ件数を返します。`rmc.py` についてはPOSIX環境で実行権限を付加します。
 
 ## 計算の開始と設定の分離
 

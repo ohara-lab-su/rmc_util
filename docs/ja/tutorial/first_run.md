@@ -18,7 +18,7 @@ pip install rmc-util
 rmc_util install
 ```
 
-`rmc.py`（起動）、`rmc_init.py`（計算条件の編集）、`config.yml`（起動時の設定）を現在のディレクトリへ配置します。同名のファイルが既にある場合は、既定で上書きしません。`rmc_util install --force` は既存ファイルを上書きするため、編集済みの `rmc_init.py` と `config.yml` を保存してから使用してください。詳細は [インストールガイド](../guide/installation.md) を参照してください。
+`rmc.py`（起動）、`rmc_init.py`（計算条件の編集）、`config.yml`（起動時の設定）、結果作図用スクリプトを現在のディレクトリへ配置します。同名のファイルが既にある場合は、既定で上書きしません。`rmc_util install --force` は既存ファイルを上書きするため、編集済みの `rmc_init.py` と `config.yml` を保存してから使用してください。詳細は [インストールガイド](../guide/installation.md) を参照してください。
 
 ## 3. 入力と実行環境を準備する
 

@@ -14,9 +14,9 @@ Classes, functions, methods, and their definition locations are listed by RMC_UT
 ## [`install`](install.md)
 
 
-- Function `find_installed_scripts()` (line 19)
-- Function `install_scripts()` (line 41)
-- Function `main()` (line 76)
+- Function `find_installed_scripts()` (line 29)
+- Function `install_scripts()` (line 53)
+- Function `main()` (line 114)
 
 ## [`rmc_pot`](rmc_pot.md)
 
