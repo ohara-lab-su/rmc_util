@@ -6,9 +6,9 @@
 
 Pythonの `sysconfig.get_path("data")` で得られるディレクトリ内の `share/rmc_util/scripts` と、`importlib.metadata.distribution("rmc-util")` のファイル記録を調べます。同名の雛形は一度だけ取得し、名前順の `Path` リストを返します。
 
-## `install_scripts(destination: Path, *, force: bool = False) -> tuple[int, int]`
+## `install_scripts(destination: Path, *, force: bool = False, script_name: str | None = None) -> tuple[int, int]`
 
-`destination` に雛形をコピーします。既存の同名ファイルは `force=False` ではスキップし、`force=True` では上書きします。コピー先がディレクトリであれば `IsADirectoryError` が発生します。戻り値は `(コピー件数, スキップ件数)` です。POSIXでは `rmc.py` に実行権限を付加します。雛形が見つからない場合は `RuntimeError` が発生します。
+`destination` に雛形をコピーします。`script_name=None` で全ファイル、ファイル名を指定すると1ファイルを配置します。`.py` と `.yml` は省略でき、指定名が見つからなければ `ValueError` になります。既存の同名ファイルは `force=False` ではスキップし、`force=True` では上書きします。コピー先がディレクトリであれば `IsADirectoryError` が発生します。戻り値は `(コピー件数, スキップ件数)` です。POSIXでは `rmc.py` に実行権限を付加します。雛形が見つからない場合は `RuntimeError` が発生します。
 
 ```python
 from pathlib import Path
@@ -19,4 +19,4 @@ copied, skipped = install_scripts(Path.cwd(), force=False)
 
 ## `main() -> None`
 
-CLIのエントリーポイントです。`rmc_util install` と `rmc_util install --force` を処理し、コピー・スキップ件数を表示します。それ以外の引数では使用方法を標準エラーへ表示し、終了コード2で終了します。
+CLI のエントリーポイントです。`rmc_util list` でファイル名と用途を表示します。`rmc_util install [all|script|ファイル名] [--force]` で配置し、コピー・スキップ件数を表示します。不正な引数や未知のファイル名は終了コード 2 です。

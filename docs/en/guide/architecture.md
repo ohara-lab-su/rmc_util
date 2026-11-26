@@ -14,7 +14,7 @@ RMC_UTIL is a Python library for editing RMC_POT input files, controlling execut
 
 ## Separation of the calculation directory and the package
 
-`rmc_util install` deploys the `rmc.py` launcher, the editable calculation settings in `rmc_init.py`, and the startup configuration in `config.yml`. The execution implementation resides in the installed `rmc_util.runners.run_rmc` module. Updating the package does not automatically modify previously deployed files.
+`rmc_util install` deploys the `rmc.py` launcher, the editable calculation settings in `rmc_init.py`, and the startup configuration in `config.yml`, along with the `plot_*.py` scripts for plotting results. The execution implementation resides in the installed `rmc_util.runners.run_rmc` module. Updating the package does not automatically modify previously deployed files.
 
 ## `.dat` formats and initialization
 

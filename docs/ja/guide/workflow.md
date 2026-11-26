@@ -1,6 +1,6 @@
 # 計算ワークフロー
 
-1. `rmc-util` をインストールし、`rmc_util install` で`rmc.py`、`rmc_init.py`、`config.yml` を配置します。
+1. `rmc-util` をインストールし、`rmc_util install` で`rmc.py`、`rmc_init.py`、`config.yml`、結果作図用スクリプトを配置します。
 2. 対象材料と計算に合わせて `config.yml` と `rmc_init.py` を編集します。
 3. 原子配置（`.cfg`）、RMC_POT の計算条件（`.dat`）、実験データ、および必要な FNC・トポロジーファイルを準備します。
 4. 計算ディレクトリで `python rmc.py` を実行します。

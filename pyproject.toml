@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "rmc-util"
-version = "0.1.11"
+version = "0.1.12"
 
 description = "Python toolkit for RMC_POT input preparation, calculation automation, and result analysis."
 authors = [
@@ -22,6 +22,7 @@ dependencies = [
     "packmol-util",
     # fnc
     "pymatgen",
+    "matplotlib",
     # basic
     "dataclasses",
     "coloredlogs",
@@ -67,4 +68,8 @@ rmc_util = "rmc_util.install:main"
     "scripts/rmc.py",
     "scripts/rmc_init.py",
     "scripts/config.yml",
+    "scripts/plot_fit.py",
+    "scripts/plot_hst.py",
+    "scripts/plot_ppcf.py",
+    "scripts/plot_ppcf2.py",
 ]

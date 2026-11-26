@@ -18,7 +18,7 @@ Change to the calculation directory and run:
 rmc_util install
 ```
 
-This places `rmc.py` (launcher), `rmc_init.py` (calculation parameters), and `config.yml` (launcher configuration) in the current directory. Existing files are not overwritten by default. `rmc_util install --force` overwrites existing files, including edited copies of `rmc_init.py` and `config.yml`. See the [installation guide](../guide/installation.md).
+This places `rmc.py` (launcher), `rmc_init.py` (calculation parameters), `config.yml` (launcher configuration), and the plotting scripts in the current directory. Existing files are not overwritten by default. `rmc_util install --force` overwrites existing files, including edited copies of `rmc_init.py` and `config.yml`. See the [installation guide](../guide/installation.md).
 
 ## 3. Prepare inputs and the execution environment
 

@@ -3,6 +3,15 @@
 [![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/ohara-lab-su/rmc_util/blob/main/CHANGELOG.md)
 [![ja](https://img.shields.io/badge/lang-ja-yellow.svg)](https://github.com/ohara-lab-su/rmc_util/blob/main/CHANGELOG.ja.md)
 
+[![GitHub](https://img.shields.io/badge/GitHub-ohara--lab--su%2Frmc_util-181717?logo=github)](https://github.com/ohara-lab-su/rmc_util/)
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Documentation-222222?logo=githubpages&logoColor=white)](https://ohara-lab-su.github.io/rmc_util/ja/)
+[![Ohara Lab](https://img.shields.io/badge/Ohara%20Lab-Home-4B5563?logo=homeassistant&logoColor=white)](https://ohara-lab-su.github.io/)
+
+## v0.1.12
+
+- 結果を作図する `plot_fit.py`、`plot_hst.py`、`plot_ppcf.py`、`plot_ppcf2.py` を同梱した。
+- `rmc_util list` で配置可能なファイルと用途を列表示し、`rmc_util install <ファイル名>` で個別に配置できるようにした。`.py` と `.yml` は省略できる。
+- `rmc_util install all` と `rmc_util install script` を引数なしの `rmc_util install` と同じ一括配置の別名として追加した。
 
 ## v0.1.11
 

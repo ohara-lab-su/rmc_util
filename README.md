@@ -35,11 +35,16 @@ pip install .
 
 ### Installing the Launcher and Configuration Files
 
-After installing `rmc-util`, copy the bundled `rmc.py`, `rmc_init.py`, and `config.yml` into the current directory.
+`rmc_util install`, `rmc_util install all`, and `rmc_util install script` all deploy `rmc.py`, `rmc_init.py`, `config.yml`, and the four plotting scripts to the current directory.
 
 ```bash
 rmc_util install
+rmc_util list
+rmc_util install plot_fit.py
+rmc_util install config
 ```
+
+`rmc_util list` shows the available filenames and their purpose. For an individual file, the `.py` and `.yml` extensions are optional. For example, `plot_fit` and `plot_fit.py` select the same file, as do `config` and `config.yml`.
 
 Existing files with the same names are skipped rather than overwritten. To explicitly overwrite them, run:
 
@@ -271,7 +276,7 @@ Orsolya Gereben, *RMC_POT user guide for version 2023.1* (2023).
 
 #### Running RMC
 
-Use `rmc_util install` to deploy all three files, edit `config.yml` and `rmc_init.py` for the calculation, and then execute in the same working directory.
+Use `rmc_util install` to deploy the bundled files, edit `config.yml` and `rmc_init.py` for the calculation, and then execute in the same working directory.
 
 ```bash
 rmc_util install
